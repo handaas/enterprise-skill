@@ -8,7 +8,7 @@
 ## 通用约定
 
 - 主体类型枚举（详情接口本身不传，但概念适用）：`name`（企业名称）/ `nameId`（企业 id）/ `regNumber`（注册号）/ `socialCreditCode`（统一社会信用代码）。
-- 分页：`pageIndex` 从 1 开始；`pageSize` 单页最多 50。
+- 分页：仅 `enterprise_get_keyword_search` 接受 `pageIndex`（从 1 开始）/ `pageSize`（单页最多 50），且仅用于主体唯一确认（单次调用，pageSize=1，不做候选遍历）。base / holder / invest / branch / person 五个详情接口只接受 `keyword`，schema 不支持分页参数，单次调用即可，不得向其传 pageIndex/pageSize 或自行翻页。
 - 所有工具返回 `dict`（list 类含 `total` + `resultList`，detail 类返回对象）。
 
 ---

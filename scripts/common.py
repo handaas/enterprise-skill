@@ -21,7 +21,7 @@ EXAMPLE_CONFIG = SKILL_DIR / "assets" / "config.example.json"
 DOMAIN = "enterprise"
 DOMAIN_UPPER = "ENTERPRISE"
 MCP_SERVER_DIR = "enterprise-mcp-server"
-MCP_SERVER_NAME = "HANDAAS企业大数据服务"
+MCP_SERVER_NAME = "企业信息洞察"
 REPORT_BANNER = "企业大数据报告"
 REPORT_TYPE = "enterprise_analysis"
 

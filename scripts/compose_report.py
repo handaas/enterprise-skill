@@ -21,8 +21,7 @@ import argparse
 import datetime as dt
 import json
 import pathlib
-import sys
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from common import REPORT_BANNER, REPORT_TYPE, json_dumps, load_json_file, print_json
 import mcp_client
@@ -45,45 +44,77 @@ T_PERSON = "enterprise_get_enterprise_main_person_info"
 # --------------------------------------------------------------------------- #
 
 
+
+
+def _is_empty_signal(value: Any) -> bool:
+    """Recognize documented no-data text without classifying it as an API failure."""
+    if not isinstance(value, str):
+        return False
+    text = value.strip()
+    return bool(text) and any(token in text for token in (
+        "查询数据为空", "暂无数据", "未查询到", "未检索到", "查询结果为空",
+    ))
+
 def _is_api_error(value: Any) -> bool:
-    """Detect MCP API error responses (not empty data, but actual failures like 405)."""
+    """Recognize failures without treating a documented empty result as an error."""
     if value is None:
         return False
     if isinstance(value, str):
-        return any(s in value for s in ("接口调用失败", "查询失败", "状态码：4", "状态码：5"))
-    if isinstance(value, dict):
-        for v in value.values():
-            if isinstance(v, str) and any(s in v for s in ("接口调用失败", "查询失败", "状态码：4", "状态码：5")):
-                return True
-    return False
+        text = value.strip()
+        if any(s in text for s in ("查询数据为空", "暂无数据", "未查询到", "未检索到")):
+            return False
+        return any(s in text for s in (
+            "接口调用失败", "查询失败", "Error executing tool", "validation error",
+            "状态码：4", "状态码：5", "密钥错误", "签名错误", "未配置",
+        ))
+    if not isinstance(value, dict):
+        return False
+    if value.get("isError") is True or value.get("success") is False:
+        return True
+    if value.get("_error") or value.get("error") or value.get("error_message"):
+        return True
+    if "code" in value and value.get("code") not in (None, 0, 200, "0", "200", "SUCCESS", "success"):
+        return True
+    if set(value) == {"text"} and value.get("text"):
+        return not any(s in str(value["text"]) for s in ("查询数据为空", "暂无数据", "未查询到", "未检索到"))
+    return any(_is_api_error(v) for v in value.values() if isinstance(v, (dict, str)))
+
 
 def _first_list(value: Any) -> List[Any]:
+    if _is_api_error(value):
+        return []
     if isinstance(value, list):
         return value
     if isinstance(value, dict):
-        if _is_api_error(value):
-            return []
-        # Some products return {total, resultList}
-        for key in ("resultList", "list", "items", "data"):
+        for key in ("resultList", "list", "items", "records", "data"):
             if isinstance(value.get(key), list):
                 return value[key]
-    if value in (None, "", {}):
-        return []
-    return [value]
+    return []
 
 
 def _first_record(value: Any) -> Dict[str, Any]:
-    records = _first_list(value)
-    for record in records:
-        if isinstance(record, dict):
+    for record in _first_list(value):
+        if isinstance(record, dict) and _has_evidence(record):
             return record
-    if isinstance(value, dict):
+    if isinstance(value, dict) and not _is_api_error(value) and _has_evidence(value):
         return value
     return {}
 
 
+def _has_evidence(value: Any) -> bool:
+    if value is None or value in ("", "-") or _is_empty_signal(value):
+        return False
+    if _is_api_error(value):
+        return False
+    if isinstance(value, dict):
+        return any(_has_evidence(v) for k, v in value.items() if k not in {"sections", "_raw"})
+    if isinstance(value, list):
+        return any(_has_evidence(v) for v in value)
+    return True
+
+
 def _text(value: Any, limit: int = 0) -> str:
-    if value is None:
+    if value is None or _is_empty_signal(value):
         return ""
     if isinstance(value, (dict, list)):
         text = json.dumps(value, ensure_ascii=False)
@@ -124,10 +155,13 @@ def resolve_enterprise_name(raw: str) -> Dict[str, Any]:
         return {"keyword": raw, "enterprise": raw, "resolved": True, "reason": "视为企业全称"}
     fuzzy = _safe_call(T_FUZZY, {"matchKeyword": raw, "pageSize": 1})
     record = _first_record(fuzzy)
+    total = _int(_safe_total(fuzzy))
     name = str(record.get("name") or "").strip()
-    if name:
-        return {"keyword": raw, "enterprise": name, "resolved": True, "reason": "由关键词模糊查询补全", "fuzzy_total": _int(_safe_total(fuzzy))}
-    return {"keyword": raw, "enterprise": raw, "resolved": False, "reason": "模糊查询未命中企业全称，按关键词直查"}
+    if name and total == 1:
+        return {"keyword": raw, "enterprise": name, "resolved": True, "reason": "模糊查询唯一候选补全", "fuzzy_total": total, "record": record}
+    if name and total and total > 1:
+        return {"keyword": raw, "enterprise": raw, "resolved": False, "reason": f"模糊查询返回 {total} 个候选，未静默采用首条", "fuzzy_total": total}
+    return {"keyword": raw, "enterprise": raw, "resolved": False, "reason": "模糊查询未命中唯一企业全称，按原始关键词查询"}
 
 
 def _safe_total(payload: Any) -> Any:
@@ -150,12 +184,15 @@ def build_subject(raw: str, resolved: Mapping[str, Any], keyword_type: str) -> D
         "match_raw": raw,
         "resolved": bool(resolved.get("resolved")),
         "resolve_reason": resolved.get("reason", ""),
+        "fuzzy_total": resolved.get("fuzzy_total"),
+        "requires_confirmation": bool((resolved.get("fuzzy_total") or 0) > 1),
     }
 
 
 def build_metrics(base: Mapping[str, Any], holder: Any, invest: Any, branch: Any, person: Any) -> List[Dict[str, Any]]:
     metrics: List[Dict[str, Any]] = []
-    info = base.get("base_info") if isinstance(base, dict) and isinstance(base.get("base_info"), dict) else (base if isinstance(base, dict) else {})
+    nested_info = base.get("base_info")
+    info: Mapping[str, Any] = nested_info if isinstance(nested_info, dict) else base
     metrics.append({"label": "注册资本", "value": _fmt_capital(info), "hint": "工商公示注册资本"})
     paid = _fmt_paid_capital(info)
     if paid != "-":
@@ -165,9 +202,14 @@ def build_metrics(base: Mapping[str, Any], holder: Any, invest: Any, branch: Any
             metrics.append({"label": "资本实缴率", "value": f"{ratio * 100:.1f}%", "hint": "实缴资本/注册资本", "delta": "实缴" if ratio >= 0.5 else None})
     metrics.append({"label": "成立时间", "value": _text(info.get("foundTime") or info.get("esDate") or info.get("establishmentDate")) or "-", "hint": "工商公示"})
     metrics.append({"label": "经营状态", "value": _text(info.get("operStatus") or info.get("openStatus")) or "-", "hint": "存续/在业/注销等"})
-    metrics.append({"label": "对外投资", "value": str(_safe_total(invest) or len(_first_list(invest))) + " 家", "hint": "对外投资企业数"})
-    metrics.append({"label": "分支机构", "value": str(_safe_total(branch) or len(_first_list(branch))) + " 家", "hint": "分支机构数"})
-    metrics.append({"label": "主要人员", "value": str(_safe_total(person) or len(_first_list(person))) + " 人", "hint": "工商公示主要人员"})
+    for label, payload, unit, hint in (
+        ("对外投资", invest, "家", "对外投资企业数"),
+        ("分支机构", branch, "家", "分支机构数"),
+        ("主要人员", person, "人", "工商公示主要人员"),
+    ):
+        count = _known_count(payload)
+        if count is not None:
+            metrics.append({"label": label, "value": f"{count} {unit}", "hint": hint})
     metrics.append({"label": "股东数量", "value": _holder_count(holder), "hint": "工商公示股东"})
     return [m for m in metrics if m.get("value") not in ("", None, "-")]
 
@@ -179,6 +221,8 @@ def _capital_value(info: Mapping[str, Any], key: str = "regCapital") -> Optional
         amount = raw.get("amount") if raw.get("amount") is not None else raw.get("value")
     else:
         amount = raw
+    if amount is None:
+        return None
     try:
         amount = float(amount)
     except (TypeError, ValueError):
@@ -240,11 +284,23 @@ def _paid_ratio(info: Mapping[str, Any]) -> Optional[float]:
 
 
 def _holder_count(holder: Any) -> str:
-    if isinstance(holder, dict):
-        lst = holder.get("holderList") or holder.get("stockHolderList") or []
-        if isinstance(lst, list):
-            return str(len(lst)) + " 个"
+    if isinstance(holder, dict) and not _is_api_error(holder):
+        for key in ("holderList", "stockHolderList"):
+            if key in holder and isinstance(holder[key], list):
+                return str(len(holder[key])) + " 个"
     return "-"
+
+
+def _known_count(payload: Any) -> Optional[int]:
+    if _is_api_error(payload):
+        return None
+    total = _int(_safe_total(payload))
+    if total is not None:
+        return total
+    if isinstance(payload, list):
+        return len(payload)
+    rows = _first_list(payload)
+    return len(rows) if rows else None
 
 
 def build_caliber(subject: Mapping[str, Any]) -> Dict[str, Any]:
@@ -323,7 +379,7 @@ def _shareholder_charts(holder: Any) -> Dict[str, List[Dict[str, Any]]]:
         return out
 
     # 1) Top shareholders by shareHoldingRatio (bar)
-    top = []
+    top: List[Dict[str, Any]] = []
     for sh in sh_list:
         if not isinstance(sh, dict):
             continue
@@ -331,10 +387,13 @@ def _shareholder_charts(holder: Any) -> Dict[str, List[Dict[str, Any]]]:
         if not name:
             continue
         ratio = sh.get("shareHoldingRatio")
-        try:
-            ratio_f = float(ratio)
-        except (TypeError, ValueError):
+        if ratio is None:
             ratio_f = 0.0
+        else:
+            try:
+                ratio_f = float(ratio)
+            except (TypeError, ValueError):
+                ratio_f = 0.0
         top.append({"股东": name, "持股比例": round(ratio_f * 100, 2)})
     top.sort(key=lambda r: r["持股比例"], reverse=True)
     out["shareholder_top"] = top[:10]
@@ -381,14 +440,15 @@ def _shareholder_charts(holder: Any) -> Dict[str, List[Dict[str, Any]]]:
 
 
 def build_core_analysis(base: Mapping[str, Any], holder: Any, invest: Any, branch: Any, person: Any) -> Dict[str, Any]:
-    info = base.get("base_info") if isinstance(base, dict) and isinstance(base.get("base_info"), dict) else (base if isinstance(base, dict) else {})
-    desc = base.get("desc") if isinstance(base, dict) else ""
+    nested_info = base.get("base_info")
+    info: Mapping[str, Any] = nested_info if isinstance(nested_info, dict) else base
+    desc = base.get("desc")
     if isinstance(desc, dict):  # desc may be {desc: "..."}
         desc = desc.get("desc") or ""
-    business = base.get("business_info") if isinstance(base, dict) else ""
+    business = base.get("business_info")
     if isinstance(business, dict):
         business = business.get("business") or business.get("business_info") or ""
-    tags = base.get("tag") if isinstance(base, dict) else ""
+    tags = base.get("tag")
 
     paid_capital = _fmt_paid_capital(info)
     former_names = info.get("formerNames")
@@ -572,7 +632,7 @@ def _parse_reg_capital(val: Any) -> str:
     else:
         raw = val
         coin = ""
-    if raw in (None, "", 0, "0"):
+    if raw is None or raw in ("", 0, "0"):
         return "-"
     try:
         v = float(raw)
@@ -643,7 +703,7 @@ def build_records(core: Mapping[str, Any]) -> List[Dict[str, Any]]:
     return records
 
 
-def build_insights(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: List[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+def build_insights(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
     insights: List[Dict[str, Any]] = []
     metric_map = {m["label"]: str(m["value"]) for m in metrics}
     holder_n = (metric_map.get("股东数量") or "0").split()[0]
@@ -655,49 +715,38 @@ def build_insights(subject: Mapping[str, Any], core: Mapping[str, Any], metrics:
         insights.append({
             "feature": "对外投资布局",
             "evidence": f"企业对外投资 {invest_n} 家。",
-            "interpretation": "对外投资数量反映该主体的对外扩张与多元化程度，结合投资地区与经营状态可判断其投资活跃度与版图范围。",
+            "interpretation": "该数量只描述工商数据中的投资主体数；扩张、多元化或活跃度需结合投资时间、金额和经营状态核验。",
         })
     if branch_n and branch_n.isdigit() and int(branch_n) > 0:
         insights.append({
             "feature": "分支机构网络",
             "evidence": f"工商公示分支机构 {branch_n} 家。",
-            "interpretation": "分支机构分布通常对应业务在地化部署，反映区域覆盖广度与连锁/网络化经营特征。",
+            "interpretation": "该数量只描述工商公示分支机构；实际区域经营范围和活跃程度需结合地址及经营状态核验。",
         })
     if holder_n and holder_n.isdigit() and int(holder_n) > 0:
         insights.append({
             "feature": "股权结构",
             "evidence": f"工商公示股东 {holder_n} 个。",
-            "interpretation": "股东类型与持股比例集中度决定企业控制权稳定性与治理结构；具体明细见核心分析章节。",
+            "interpretation": "股东数量本身不能判断控制权或治理稳定性；需结合持股比例、表决权和协议安排核验。",
         })
     # 资本实缴率洞察
     paid_ratio_str = metric_map.get("资本实缴率")
     if paid_ratio_str:
-        try:
-            ratio_v = float(paid_ratio_str.replace("%", "")) / 100
-            if ratio_v >= 0.7:
-                lvl = "实缴充分，出资能力与股东承诺兑现度高"
-            elif ratio_v >= 0.3:
-                lvl = "实缴部分到位，需关注剩余认缴额的实缴进度"
-            else:
-                lvl = "实缴比例偏低，需关注出资到位风险"
-            insights.append({
-                "feature": "资本实缴情况",
-                "evidence": f"注册资本 {metric_map.get('注册资本', '-')}，实缴资本 {metric_map.get('实缴资本', '-')}，资本实缴率 {paid_ratio_str}。",
-                "interpretation": f"资本实缴率反映股东实际出资到位程度；当前{lvl}。",
-            })
-        except (TypeError, ValueError):
-            pass
+        insights.append({
+            "feature": "资本实缴情况",
+            "evidence": f"注册资本 {metric_map.get('注册资本', '-')}，实缴资本 {metric_map.get('实缴资本', '-')}，资本实缴率 {paid_ratio_str}。",
+            "interpretation": "该比例仅按返回的实缴资本与注册资本计算，不能单独证明企业偿付能力、股东履约能力或未来出资风险。",
+        })
     # 股东集中度（基于 shareHoldingRatio）
     sh_top = core.get("shareholder_top") or []
     if sh_top:
         try:
-            total_ratio = sum(float(r.get("持股比例", 0) or 0) for r in sh_top)
             cr3 = sum(float(r.get("持股比例", 0) or 0) for r in sh_top[:3])
             top_name = sh_top[0].get("股东", "-")
             insights.append({
                 "feature": "股东集中度",
                 "evidence": f"第一大股东“{top_name}”持股约 {sh_top[0].get('持股比例', 0)}%，前三大股东合计约 {cr3:.2f}%（CR3）。",
-                "interpretation": "股权集中度高通常意味着控制权清晰、决策效率高，但也伴随大股东依赖；分散则治理更均衡，但需关注控制权稳定性。",
+                "interpretation": "CR3 只描述返回股东的持股集中度，不能单独判断控制权、决策效率或治理质量。",
             })
         except (TypeError, ValueError):
             pass
@@ -711,25 +760,16 @@ def build_insights(subject: Mapping[str, Any], core: Mapping[str, Any], metrics:
             ev_parts.append("具备“" + "、".join(positive) + "”标识")
         if anomaly:
             ev_parts.append("存在“" + "、".join(anomaly) + "”记录")
-        interp_parts = []
-        if "高新技术企业" in positive:
-            interp_parts.append("具备高新技术企业资质，通常享受研发税收优惠并体现较强的技术创新能力")
-        if "上市公司" in positive:
-            interp_parts.append("为上市主体，信息披露较透明、融资渠道通畅")
-        if "头部企业" in positive:
-            interp_parts.append("被识别为行业头部企业，市场地位领先")
-        if anomaly:
-            interp_parts.append("经营异常需重点关注，建议核查是否已申请移出异常名录")
         insights.append({
             "feature": "企业资质与风险标识",
             "evidence": "；".join(ev_parts) + "。",
-            "interpretation": "；".join(interp_parts) + "。",
+            "interpretation": "以上仅为上游返回标识，不能据此推断创新能力、市场地位、融资能力或异常原因；需核验对应认定和公示记录。",
         })
     if person_n and person_n.isdigit() and int(person_n) > 0:
         insights.append({
             "feature": "核心人员",
             "evidence": f"工商公示主要人员 {person_n} 人。",
-            "interpretation": "主要人员的任职企业数与历史履历可用于评估管理团队资源与潜在关联风险。",
+            "interpretation": "人数只描述工商公示名单规模；团队能力与关联风险需结合人员履历和任职关系核验。",
         })
     if not insights:
         insights.append({
@@ -740,8 +780,12 @@ def build_insights(subject: Mapping[str, Any], core: Mapping[str, Any], metrics:
     return insights
 
 
-def build_abstract(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: List[Mapping[str, Any]]) -> str:
+def build_abstract(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: Sequence[Mapping[str, Any]]) -> str:
     name = subject.get("enterprise") or subject.get("match_raw") or "目标企业"
+    if subject.get("requires_confirmation"):
+        return f"原始关键词“{subject.get('match_raw') or name}”返回多个候选主体，待人工确认；本报告未调用主体详情，也不形成企业结论。"
+    if not metrics and not any(_has_evidence(v) for k, v in core.items() if k != "sections"):
+        return f"本次未获得“{name}”的可用工商证据，核心维度覆盖率为 0；不得据此判断企业状态、规模或关联关系。"
     parts = [f"本报告以“{name}”为分析对象，基于工商公示及公开数据，系统呈现企业基础信息、股权结构、对外投资、分支机构与主要人员等核心维度。"]
     if metrics:
         kv = "、".join(f"{m['label']} {m['value']}" for m in metrics[:5])
@@ -774,7 +818,7 @@ def build_dry_run_payload(raw: str, keyword_type: str) -> Dict[str, Any]:
 # Assembly
 # --------------------------------------------------------------------------- #
 
-def _assemble(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: List[Mapping[str, Any]], *, dry_run: bool) -> Dict[str, Any]:
+def _assemble(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: Sequence[Mapping[str, Any]], *, dry_run: bool) -> Dict[str, Any]:
     abstract = build_abstract(subject, core, metrics)
     records = build_records(core)
     insights = build_insights(subject, core, metrics)
@@ -783,10 +827,10 @@ def _assemble(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: List
     secs = ca.get("sections", [])
     if secs:
         total_secs = len(secs)
-        populated = sum(1 for s in secs if isinstance(s, dict) and ca.get(s.get("key")) not in (None, "", [], {}))
+        populated = sum(1 for s in secs if isinstance(s, dict) and _has_evidence(ca.get(s.get("key"))))
     else:
         total_secs = max(1, len([k for k in ca if k != "sections"]))
-        populated = sum(1 for k in ca if k != "sections" and ca.get(k) not in (None, "", [], {}))
+        populated = sum(1 for k in ca if k != "sections" and _has_evidence(ca.get(k)))
     quality_report = {
         "total_sections": total_secs,
         "populated_sections": populated,
@@ -825,6 +869,10 @@ def _assemble(subject: Mapping[str, Any], core: Mapping[str, Any], metrics: List
 
 def build_payload(raw: str, keyword_type: str) -> Dict[str, Any]:
     resolved = resolve_enterprise_name(raw)
+    if (resolved.get("fuzzy_total") or 0) > 1:
+        subject = build_subject(raw, resolved, keyword_type)
+        core = build_core_analysis({}, {}, {}, {}, {})
+        return _assemble(subject, core, [], dry_run=False)
     enterprise = resolved["enterprise"]
     # All enterprise detail tools take the full name as `keyword`.
     base = _safe_call(T_BASE, {"keyword": enterprise})
