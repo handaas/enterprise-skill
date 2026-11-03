@@ -21,6 +21,7 @@ import argparse
 import datetime as dt
 import json
 import pathlib
+from decimal import Decimal, InvalidOperation
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from common import REPORT_BANNER, REPORT_TYPE, json_dumps, load_json_file, print_json
@@ -387,15 +388,10 @@ def _shareholder_charts(holder: Any) -> Dict[str, List[Dict[str, Any]]]:
         if not name:
             continue
         ratio = sh.get("shareHoldingRatio")
-        if ratio is None:
-            ratio_f = 0.0
-        else:
-            try:
-                ratio_f = float(ratio)
-            except (TypeError, ValueError):
-                ratio_f = 0.0
-        top.append({"股东": name, "持股比例": round(ratio_f * 100, 2)})
-    top.sort(key=lambda r: r["持股比例"], reverse=True)
+        pct = source_ratio_percent(ratio)
+        top.append({"股东": name, "持股比例": format_source_ratio(ratio),
+                    "持股比例数值": float(pct) if pct is not None else 0.0})
+    top.sort(key=lambda r: r["持股比例数值"], reverse=True)
     out["shareholder_top"] = top[:10]
 
     # 2) 流通/受限 donut from shareHoldingType (may be "流通A股" / "受限流通股" / "受限流通股,流通A股")
@@ -538,7 +534,7 @@ def build_core_analysis(base: Mapping[str, Any], holder: Any, invest: Any, branc
             {"key": "identity_tags", "title": "身份标签", "kind": "tags"},
             {"key": "description", "title": "企业简介", "kind": "text"},
             {"key": "business", "title": "经营范围", "kind": "text"},
-            {"key": "shareholder_top", "title": "股东持股排行", "kind": "bar", "chart": {"name": "股东", "value": "持股比例", "orient": "h"}, "columns": [("股东", "股东"), ("持股比例", "持股比例")]},
+            {"key": "shareholder_top", "title": "股东持股排行", "kind": "bar", "chart": {"name": "股东", "value": "持股比例数值", "orient": "h"}, "columns": [("股东", "股东"), ("持股比例", "持股比例")]},
             {"key": "shareholding_type", "title": "股东类型分布", "kind": "donut", "chart": {"name": "类型", "value": "数量"}, "columns": [("类型", "类型"), ("数量", "数量")]},
             {"key": "shareholder_entity", "title": "股东性质分布", "kind": "donut", "chart": {"name": "性质", "value": "数量"}, "columns": [("性质", "性质"), ("数量", "数量")]},
             {"key": "holders", "title": "股东信息", "kind": "table", "columns": [("股东名称", "股东名称"), ("股东类型", "股东类型"), ("持股比例", "持股比例"), ("认缴/实缴", "认缴/实缴")]},
@@ -647,23 +643,55 @@ def _parse_reg_capital(val: Any) -> str:
         return _text(raw) or "-"
 
 
-def _format_ratio(value: Any) -> str:
-    """ratio may be 0.8858 (fraction) or '88.58%' or a dict."""
+def source_ratio_percent(value: Any) -> Optional[Decimal]:
+    """Return a percentage as Decimal without rounding; None when unavailable.
+
+    Accepts a 0-1 fraction, an already-percent number, a '12.3456%' string,
+    or a dict. Zero is a real value; only missing/invalid input returns None.
+    """
     if isinstance(value, dict):
-        value = value.get("value") or value.get("ratio")
-    if value in (None, "", []):
-        return "-"
+        value = value.get("value", value.get("ratio", value.get("percent")))
+    if value is None or isinstance(value, bool):
+        return None
+    text = str(value).strip()
+    if not text or text in {"-", "—"}:
+        return None
+    if "%" in text:
+        text = text.replace("%", "").strip()
     try:
-        f = float(str(value).replace("%", "").replace(",", ""))
-    except (TypeError, ValueError):
-        return _text(value)
-    if f == 0:
+        number = Decimal(text)
+    except InvalidOperation:
+        return None
+    if number != 0 and abs(number) <= 1:
+        number *= 100
+    return number
+
+
+def format_source_ratio(value: Any) -> str:
+    """Render an upstream ratio without rounding, zero-padding, or unit guessing.
+
+    A percent string such as '12.3400%' is returned verbatim. Numeric 0-1
+    fractions keep their original significant digits (0.123456 -> 12.3456%).
+    Zero renders as '0%'; missing or invalid values render as '-'.
+    """
+    if isinstance(value, dict):
+        value = value.get("value", value.get("ratio", value.get("percent")))
+    if value is None:
         return "-"
-    if f < 1 and f > 0 and "." not in str(value) and "%" not in str(value):
-        return f"{f * 100:.2f}%"
-    if "%" in str(value) or f >= 1:
-        return f"{f:.2f}%"
-    return f"{f * 100:.2f}%"
+    text = str(value).strip()
+    if not text or text in {"-", "—"}:
+        return "-"
+    if "%" in text:
+        return text
+    number = source_ratio_percent(value)
+    if number is None:
+        return text
+    return f"{format(number.normalize(), 'f')}%"
+
+
+def _format_ratio(value: Any) -> str:
+    """Preserve the upstream ratio exactly; never round or zero-pad."""
+    return format_source_ratio(value)
 
 
 def _format_amount(value: Any) -> str:
@@ -741,11 +769,11 @@ def build_insights(subject: Mapping[str, Any], core: Mapping[str, Any], metrics:
     sh_top = core.get("shareholder_top") or []
     if sh_top:
         try:
-            cr3 = sum(float(r.get("持股比例", 0) or 0) for r in sh_top[:3])
+            cr3 = sum(float(r.get("持股比例数值") or 0) for r in sh_top[:3])
             top_name = sh_top[0].get("股东", "-")
             insights.append({
                 "feature": "股东集中度",
-                "evidence": f"第一大股东“{top_name}”持股约 {sh_top[0].get('持股比例', 0)}%，前三大股东合计约 {cr3:.2f}%（CR3）。",
+                "evidence": f"第一大股东“{top_name}”持股 {sh_top[0].get('持股比例', '-')}，前三大股东合计约 {cr3:.2f}%（CR3）。",
                 "interpretation": "CR3 只描述返回股东的持股集中度，不能单独判断控制权、决策效率或治理质量。",
             })
         except (TypeError, ValueError):
