@@ -17,7 +17,7 @@
         "business-review.json": "bbba8b002f4428d57fb25ecab829a609e622ae804e2db640cbb5670d6ae034f3",
         "browser-check.json": "d49b0b311bdb8e2dfdaae070057c969a500b6e9325ec53805523567d6bf31a69"
       },
-      "audit_record": "../../test-records/live-replaced-20261027/01-investment-dd.md"
+      "audit_record": "../test-records/live-replaced-20261027/01-investment-dd.md"
     },
     {
       "skill": "enterprise-skill",
@@ -35,7 +35,7 @@
         "business-review.json": "1cc5b75b1f299fe9eb0dbaa2b769f8e676b027ea6d3a77aa3525260b3bab28f4",
         "browser-check.json": "0fe6464e4494dcd4d5758f004e28bd7cdf023ab64cec9a163138af8259a00b6f"
       },
-      "audit_record": "../../test-records/live-replaced-20261027/02-supplier-onboarding.md"
+      "audit_record": "../test-records/live-replaced-20261027/02-supplier-onboarding.md"
     },
     {
       "skill": "enterprise-skill",
@@ -53,7 +53,7 @@
         "business-review.json": "13ce116870fb891f8bf3aec4b0a40204f6c2c4a809da1ab086424c5ce684bbbe",
         "browser-check.json": "267949cb73fecaf5c1d2ee847025313ab8ee4fa04e42fa873b9e4a9a6f1a0fe8"
       },
-      "audit_record": "../../test-records/live-replaced-20261027/03-customer-kyb.md"
+      "audit_record": "../test-records/live-replaced-20261027/03-customer-kyb.md"
     },
     {
       "skill": "enterprise-skill",
@@ -71,7 +71,7 @@
         "business-review.json": "b0859ba9582f32e17a1c1c757925e2213d2ea4e49f039a0abb8f24061e663b68",
         "browser-check.json": "aecc88cef7a315ed48a64692bedf82072a76f61443d966f85418775cf59122d5"
       },
-      "audit_record": "../../test-records/live-replaced-20261027/04-listed-company.md"
+      "audit_record": "../test-records/live-replaced-20261027/04-listed-company.md"
     },
     {
       "skill": "enterprise-skill",
@@ -89,7 +89,7 @@
         "business-review.json": "0a393def0b268764357fdfb0871bbaed29eb6bb11997c3c95280ddb7f2fa5641",
         "browser-check.json": "740bb1416730527ab8f542ede4af4e8c4be3af923e987c719690669fe13c9966"
       },
-      "audit_record": "../../test-records/live-replaced-20261027/05-contract-counterparty.md"
+      "audit_record": "../test-records/live-replaced-20261027/05-contract-counterparty.md"
     },
     {
       "skill": "enterprise-skill",
@@ -107,7 +107,7 @@
         "business-review.json": "ce069c51d9613089f18ec228e57db8e20e27540468d53130803c7ad5cf6df84e",
         "browser-check.json": "44cce1287e6895d8423896d60679d72d6314be38a4827d0335eead98352a53c7"
       },
-      "audit_record": "../../test-records/live-replaced-20261027/06-brand-company.md"
+      "audit_record": "../test-records/live-replaced-20261027/06-brand-company.md"
     }
   ]
 }
