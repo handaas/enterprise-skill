@@ -1,0 +1,1149 @@
+{
+  "run_id": "live-replaced-20261027",
+  "skill": "enterprise-skill",
+  "counts": {
+    "passed": 6
+  },
+  "scenarios": [
+    {
+      "scenario": {
+        "id": "01-investment-dd",
+        "title": "投资前企业主体核验",
+        "user_request": "请核验华为技术有限公司的工商主体、股东、对外投资、分支机构和主要人员，供投资初筛。",
+        "purpose": "识别主体结构和投资关系，为后续人工尽调确定重点。",
+        "args": [
+          "--enterprise",
+          "华为技术有限公司"
+        ],
+        "expected_checks": [
+          "主体名称与工商基础信息应可识别",
+          "股东与对外投资应分章节呈现且不混为一类",
+          "分支机构和主要人员只统计实际返回记录",
+          "金额、地址和日期应可读而非原始 JSON"
+        ],
+        "limitations": [
+          "仅反映本次 HandaaS 数据产品返回范围与生成时点，不等同于官方证明。",
+          "空结果必须保留为空，不能解释为该事项客观不存在。",
+          "不能仅凭股东或投资列表判断实际控制权。"
+        ]
+      },
+      "result": {
+        "schema_version": 1,
+        "skill": "enterprise-skill",
+        "case_id": "01-investment-dd",
+        "title": "投资前企业主体核验",
+        "invocation_id": "1793069057356215000",
+        "provenance": {
+          "integrator_id": "683e574805537ace146cc05e",
+          "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+          "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+          "scenario_sha256": "3b9bd221da2edf4ada4c07c3298ea789fbe959143cd0f9ef56f0b0cfe861d17e",
+          "skill_source_hashes": {
+            "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+            "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+            "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+            "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+            "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+          },
+          "upstream_source_hashes": {
+            "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          },
+          "upstream_dependency_hashes": {
+            "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          }
+        },
+        "source_changed_during_run": false,
+        "started_at": "2026-10-27T10:44:17+08:00",
+        "elapsed_seconds": 4.468,
+        "returncode": 0,
+        "exception_type": null,
+        "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '华为技术有限公司' --output enterprise-skill/output/live-replaced-20261027/01-investment-dd/report.json --report-output enterprise-skill/output/live-replaced-20261027/01-investment-dd/report.html",
+        "transport": "local MCP servers via loopback streamable-http",
+        "cache_used": false,
+        "call_count": 5,
+        "successful_data_calls": 5,
+        "empty_calls": 0,
+        "failed_calls": 0,
+        "checks": {
+          "issues": [],
+          "warnings": [],
+          "coverage_pct": 64,
+          "subject": {
+            "enterprise": "华为技术有限公司",
+            "matchKeyword": "华为技术有限公司",
+            "keywordType": "name",
+            "match_raw": "华为技术有限公司",
+            "resolved": true,
+            "resolve_reason": "视为企业全称",
+            "fuzzy_total": null,
+            "requires_confirmation": false
+          },
+          "title": "华为技术有限公司 企业大数据报告",
+          "data_mode": null,
+          "metrics": [
+            {
+              "label": "注册资本",
+              "value": "人民币 411.4113 亿元",
+              "hint": "工商公示注册资本"
+            },
+            {
+              "label": "实缴资本",
+              "value": "人民币 410.4113 亿元",
+              "hint": "工商公示实缴资本"
+            },
+            {
+              "label": "资本实缴率",
+              "value": "99.8%",
+              "hint": "实缴资本/注册资本",
+              "delta": "实缴"
+            },
+            {
+              "label": "成立时间",
+              "value": "1987-09-15",
+              "hint": "工商公示"
+            },
+            {
+              "label": "经营状态",
+              "value": "营业",
+              "hint": "存续/在业/注销等"
+            },
+            {
+              "label": "对外投资",
+              "value": "54 家",
+              "hint": "对外投资企业数"
+            },
+            {
+              "label": "分支机构",
+              "value": "27 家",
+              "hint": "分支机构数"
+            },
+            {
+              "label": "主要人员",
+              "value": "32 人",
+              "hint": "工商公示主要人员"
+            },
+            {
+              "label": "股东数量",
+              "value": "1 个",
+              "hint": "工商公示股东"
+            }
+          ],
+          "quality_report": {
+            "total_sections": 11,
+            "populated_sections": 7,
+            "empty_sections": 4,
+            "coverage_pct": 64
+          },
+          "unregistered_tools": [],
+          "checks": {
+            "json_html_markdown": true,
+            "explicit_live": true,
+            "tool_calls_recorded": 5,
+            "offline_scripts": true,
+            "independent_rerender": true,
+            "offline_browser": true
+          }
+        },
+        "status": "passed",
+        "source_hashes": {
+          "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+          "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+          "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+          "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+          "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+        },
+        "technical_status": "passed",
+        "audited_at": "2026-10-27T11:12:58+08:00",
+        "evidence_binding": {
+          "report.json": "6156487e8f632a082ed708822c84799e0a1e18d6c27ed0b469e5ee008fe6384e",
+          "report.html": "9bba9b6d91d93859be3934bba0977bb55a2e3ee6470688d466aa1e00f69b3888",
+          "report.md": "40e4ff311963f5d7fb4a4c2fd2023708a92d2b85c4685b4ad0789ad1e0a38174",
+          "calls.json": "bc5bf7c0a4263861c691109867a59585b6720338508f7a8ef573a8b842d2d827",
+          "result.json": "fc8112175c1b684e2bd7696531d19d6ea727f7d230aa891ff9a4d19654eb0284",
+          "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+        },
+        "business_review": {
+          "id": "01-investment-dd",
+          "verdict": "acceptable",
+          "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+          "checks": [
+            {
+              "expectation": "主体名称与工商基础信息应可识别",
+              "status": "pass",
+              "evidence": "report.subject.enterprise、title 与基础信息均为“华为技术有限公司”，metrics 展示成立时间 1987-09-15、经营状态“营业”等主体信息。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "股东与对外投资应分章节呈现且不混为一类",
+              "status": "pass",
+              "evidence": "core_analysis.holders 为 1 条，investments 为 50 条且各自在“股东信息”“对外投资”章节；未把两类关系合并。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "分支机构和主要人员只统计实际返回记录",
+              "status": "pass",
+              "evidence": "calls.json 显示分支工具 row_count/reported_total=27/27、人员工具=32/32；报告 branches=27、key_persons=32。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "金额、地址和日期应可读而非原始 JSON",
+              "status": "pass",
+              "evidence": "报告 metrics/enterprise_base 将资本格式化为“人民币 411.4113 亿元”，并展示地址和 ISO 日期；无原始 JSON 串。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            }
+          ],
+          "issues": [],
+          "evidence_binding": {
+            "report.json": "6156487e8f632a082ed708822c84799e0a1e18d6c27ed0b469e5ee008fe6384e",
+            "report.html": "9bba9b6d91d93859be3934bba0977bb55a2e3ee6470688d466aa1e00f69b3888",
+            "report.md": "40e4ff311963f5d7fb4a4c2fd2023708a92d2b85c4685b4ad0789ad1e0a38174",
+            "calls.json": "bc5bf7c0a4263861c691109867a59585b6720338508f7a8ef573a8b842d2d827",
+            "result.json": "fc8112175c1b684e2bd7696531d19d6ea727f7d230aa891ff9a4d19654eb0284",
+            "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+          }
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "02-supplier-onboarding",
+        "title": "供应商准入主体核验",
+        "user_request": "请生成宁德时代新能源科技股份有限公司的企业画像，重点看股东、分支机构和主要人员。",
+        "purpose": "验证供应商签约主体并识别组织复杂度。",
+        "args": [
+          "--enterprise",
+          "宁德时代新能源科技股份有限公司"
+        ],
+        "expected_checks": [
+          "报告标题与主体全称一致",
+          "股东、分支、人员章节应避免重复记录",
+          "quality_report 覆盖率应与非空章节一致"
+        ],
+        "limitations": [
+          "仅反映本次 HandaaS 数据产品返回范围与生成时点，不等同于官方证明。",
+          "空结果必须保留为空，不能解释为该事项客观不存在。",
+          "不包含本 skill 之外的诉讼、财务或履约风险结论。"
+        ]
+      },
+      "result": {
+        "schema_version": 1,
+        "skill": "enterprise-skill",
+        "case_id": "02-supplier-onboarding",
+        "title": "供应商准入主体核验",
+        "invocation_id": "1793069057709908000",
+        "provenance": {
+          "integrator_id": "683e574805537ace146cc05e",
+          "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+          "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+          "scenario_sha256": "cfc45409b2f18584d5d2d412e6554c193b991ae988561f344d882e4f87b9eb7a",
+          "skill_source_hashes": {
+            "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+            "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+            "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+            "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+            "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+          },
+          "upstream_source_hashes": {
+            "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          },
+          "upstream_dependency_hashes": {
+            "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          }
+        },
+        "source_changed_during_run": false,
+        "started_at": "2026-10-27T10:44:17+08:00",
+        "elapsed_seconds": 4.301,
+        "returncode": 0,
+        "exception_type": null,
+        "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '宁德时代新能源科技股份有限公司' --output enterprise-skill/output/live-replaced-20261027/02-supplier-onboarding/report.json --report-output enterprise-skill/output/live-replaced-20261027/02-supplier-onboarding/report.html",
+        "transport": "local MCP servers via loopback streamable-http",
+        "cache_used": false,
+        "call_count": 5,
+        "successful_data_calls": 5,
+        "empty_calls": 0,
+        "failed_calls": 0,
+        "checks": {
+          "issues": [],
+          "warnings": [],
+          "coverage_pct": 91,
+          "subject": {
+            "enterprise": "宁德时代新能源科技股份有限公司",
+            "matchKeyword": "宁德时代新能源科技股份有限公司",
+            "keywordType": "name",
+            "match_raw": "宁德时代新能源科技股份有限公司",
+            "resolved": true,
+            "resolve_reason": "视为企业全称",
+            "fuzzy_total": null,
+            "requires_confirmation": false
+          },
+          "title": "宁德时代新能源科技股份有限公司 企业大数据报告",
+          "data_mode": null,
+          "metrics": [
+            {
+              "label": "注册资本",
+              "value": "人民币 45.6361 亿元",
+              "hint": "工商公示注册资本"
+            },
+            {
+              "label": "实缴资本",
+              "value": "人民币 4.0000 亿元",
+              "hint": "工商公示实缴资本"
+            },
+            {
+              "label": "资本实缴率",
+              "value": "8.8%",
+              "hint": "实缴资本/注册资本",
+              "delta": null
+            },
+            {
+              "label": "成立时间",
+              "value": "2011-12-16",
+              "hint": "工商公示"
+            },
+            {
+              "label": "经营状态",
+              "value": "营业",
+              "hint": "存续/在业/注销等"
+            },
+            {
+              "label": "对外投资",
+              "value": "159 家",
+              "hint": "对外投资企业数"
+            },
+            {
+              "label": "分支机构",
+              "value": "8 家",
+              "hint": "分支机构数"
+            },
+            {
+              "label": "主要人员",
+              "value": "15 人",
+              "hint": "工商公示主要人员"
+            },
+            {
+              "label": "股东数量",
+              "value": "5 个",
+              "hint": "工商公示股东"
+            }
+          ],
+          "quality_report": {
+            "total_sections": 11,
+            "populated_sections": 10,
+            "empty_sections": 1,
+            "coverage_pct": 91
+          },
+          "unregistered_tools": [],
+          "checks": {
+            "json_html_markdown": true,
+            "explicit_live": true,
+            "tool_calls_recorded": 5,
+            "offline_scripts": true,
+            "independent_rerender": true,
+            "offline_browser": true
+          }
+        },
+        "status": "passed",
+        "source_hashes": {
+          "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+          "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+          "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+          "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+          "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+        },
+        "technical_status": "passed",
+        "audited_at": "2026-10-27T11:12:58+08:00",
+        "evidence_binding": {
+          "report.json": "d52df21ed878133af633c913c9e32ddad2cec29ee1bd800ec15762174f8f76a0",
+          "report.html": "90d8d0247bcbb3f456210ab06c5c2fb10793e583e095e5053a182150ccb02740",
+          "report.md": "8e54122b6755c3962cb150dbac65f939acf352eacbb31bcdf2756d8b5f0f1e89",
+          "calls.json": "00d86138a061f39edc4af56cb824adea63ab6d8dc4d35ed445f1ef10441f8235",
+          "result.json": "8e1cbc321573913f124a5f3ff8be22b14dcaebb2b0f1667fa4a7b635b95416b1",
+          "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+        },
+        "business_review": {
+          "id": "02-supplier-onboarding",
+          "verdict": "acceptable",
+          "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+          "checks": [
+            {
+              "expectation": "报告标题与主体全称一致",
+              "status": "pass",
+              "evidence": "report.title 为“宁德时代新能源科技股份有限公司 企业大数据报告”，与 subject.enterprise 完全一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+            },
+            {
+              "expectation": "股东、分支、人员章节应避免重复记录",
+              "status": "pass",
+              "evidence": "holders 5 条、branches 8 条、key_persons 15 条均逐条 JSON 唯一；未发现重复展示记录。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+            },
+            {
+              "expectation": "quality_report 覆盖率应与非空章节一致",
+              "status": "pass",
+              "evidence": "data_source.quality_report 为 total=11、populated=10、empty=1、coverage_pct=91；与 core_analysis.sections 的实质非空情况一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+            }
+          ],
+          "issues": [],
+          "evidence_binding": {
+            "report.json": "d52df21ed878133af633c913c9e32ddad2cec29ee1bd800ec15762174f8f76a0",
+            "report.html": "90d8d0247bcbb3f456210ab06c5c2fb10793e583e095e5053a182150ccb02740",
+            "report.md": "8e54122b6755c3962cb150dbac65f939acf352eacbb31bcdf2756d8b5f0f1e89",
+            "calls.json": "00d86138a061f39edc4af56cb824adea63ab6d8dc4d35ed445f1ef10441f8235",
+            "result.json": "8e1cbc321573913f124a5f3ff8be22b14dcaebb2b0f1667fa4a7b635b95416b1",
+            "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+          }
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "03-customer-kyb",
+        "title": "大客户 KYB 建档",
+        "user_request": "为腾讯科技（深圳）有限公司建立工商客户档案，输出结构化报告。",
+        "purpose": "支撑客户主数据建档和合同主体复核。",
+        "args": [
+          "--enterprise",
+          "腾讯科技（深圳）有限公司"
+        ],
+        "expected_checks": [
+          "企业名称、经营状态、成立时间等字段应按源数据展示",
+          "业务、标签与简介不得被拼接成未经证实的结论",
+          "JSON、HTML、Markdown 的核心指标应一致"
+        ],
+        "limitations": [
+          "仅反映本次 HandaaS 数据产品返回范围与生成时点，不等同于官方证明。",
+          "空结果必须保留为空，不能解释为该事项客观不存在。",
+          "不能替代证照原件或工商登记机关实时核验。"
+        ]
+      },
+      "result": {
+        "schema_version": 1,
+        "skill": "enterprise-skill",
+        "case_id": "03-customer-kyb",
+        "title": "大客户 KYB 建档",
+        "invocation_id": "1793069061995509000",
+        "provenance": {
+          "integrator_id": "683e574805537ace146cc05e",
+          "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+          "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+          "scenario_sha256": "3c11c0881a70d8bb458dc5ac2fe6c059c30a2bbda47488602054a276d54a2636",
+          "skill_source_hashes": {
+            "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+            "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+            "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+            "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+            "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+          },
+          "upstream_source_hashes": {
+            "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          },
+          "upstream_dependency_hashes": {
+            "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          }
+        },
+        "source_changed_during_run": false,
+        "started_at": "2026-10-27T10:44:22+08:00",
+        "elapsed_seconds": 3.519,
+        "returncode": 0,
+        "exception_type": null,
+        "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '腾讯科技（深圳）有限公司' --output enterprise-skill/output/live-replaced-20261027/03-customer-kyb/report.json --report-output enterprise-skill/output/live-replaced-20261027/03-customer-kyb/report.html",
+        "transport": "local MCP servers via loopback streamable-http",
+        "cache_used": false,
+        "call_count": 5,
+        "successful_data_calls": 5,
+        "empty_calls": 0,
+        "failed_calls": 0,
+        "checks": {
+          "issues": [],
+          "warnings": [],
+          "coverage_pct": 64,
+          "subject": {
+            "enterprise": "腾讯科技（深圳）有限公司",
+            "matchKeyword": "腾讯科技（深圳）有限公司",
+            "keywordType": "name",
+            "match_raw": "腾讯科技（深圳）有限公司",
+            "resolved": true,
+            "resolve_reason": "视为企业全称",
+            "fuzzy_total": null,
+            "requires_confirmation": false
+          },
+          "title": "腾讯科技（深圳）有限公司 企业大数据报告",
+          "data_mode": null,
+          "metrics": [
+            {
+              "label": "注册资本",
+              "value": "美元 200.00 万元",
+              "hint": "工商公示注册资本"
+            },
+            {
+              "label": "实缴资本",
+              "value": "美元 200.00 万元",
+              "hint": "工商公示实缴资本"
+            },
+            {
+              "label": "资本实缴率",
+              "value": "100.0%",
+              "hint": "实缴资本/注册资本",
+              "delta": "实缴"
+            },
+            {
+              "label": "成立时间",
+              "value": "2000-02-24",
+              "hint": "工商公示"
+            },
+            {
+              "label": "经营状态",
+              "value": "营业",
+              "hint": "存续/在业/注销等"
+            },
+            {
+              "label": "对外投资",
+              "value": "17 家",
+              "hint": "对外投资企业数"
+            },
+            {
+              "label": "分支机构",
+              "value": "5 家",
+              "hint": "分支机构数"
+            },
+            {
+              "label": "主要人员",
+              "value": "5 人",
+              "hint": "工商公示主要人员"
+            },
+            {
+              "label": "股东数量",
+              "value": "1 个",
+              "hint": "工商公示股东"
+            }
+          ],
+          "quality_report": {
+            "total_sections": 11,
+            "populated_sections": 7,
+            "empty_sections": 4,
+            "coverage_pct": 64
+          },
+          "unregistered_tools": [],
+          "checks": {
+            "json_html_markdown": true,
+            "explicit_live": true,
+            "tool_calls_recorded": 5,
+            "offline_scripts": true,
+            "independent_rerender": true,
+            "offline_browser": true
+          }
+        },
+        "status": "passed",
+        "source_hashes": {
+          "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+          "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+          "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+          "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+          "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+        },
+        "technical_status": "passed",
+        "audited_at": "2026-10-27T11:12:59+08:00",
+        "evidence_binding": {
+          "report.json": "0cadf0f667684776541a69095acd891dc4396da35bc3921cc9c62f8bf70e19f0",
+          "report.html": "792e2f951db960f1479d3823ba279435a267f9b30864f514a31ad31a94f3ed90",
+          "report.md": "2f0ecf42864b56595c12018fd4719579812afdb65eb72340e7fdccdb8e77575e",
+          "calls.json": "f3284428a39f6dc74de76e2d9da2574deff8541053c776b579b68b357ab5bf34",
+          "result.json": "11d2acac8c5ce6363c1417450790ca5bd8b8cb222378e70ea690adff719639f3",
+          "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+        },
+        "business_review": {
+          "id": "03-customer-kyb",
+          "verdict": "acceptable",
+          "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+          "checks": [
+            {
+              "expectation": "企业名称、经营状态、成立时间等字段应按源数据展示",
+              "status": "pass",
+              "evidence": "metrics 明示注册/实缴资本、成立时间 2000-02-24、经营状态“营业”，subject 为腾讯科技（深圳）有限公司。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "业务、标签与简介不得被拼接成未经证实的结论",
+              "status": "pass",
+              "evidence": "摘要以“企业简介”标注上游简介并截断展示；insights 对数量含义均附核验边界，未把业务、标签拼接成确定性结论。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "JSON、HTML、Markdown 的核心指标应一致",
+              "status": "pass",
+              "evidence": "report.json 的资本、日期、经营状态和数量指标均可在 report.md 与 report.html 中检索到；result.checks.independent_rerender=true。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            }
+          ],
+          "issues": [],
+          "evidence_binding": {
+            "report.json": "0cadf0f667684776541a69095acd891dc4396da35bc3921cc9c62f8bf70e19f0",
+            "report.html": "792e2f951db960f1479d3823ba279435a267f9b30864f514a31ad31a94f3ed90",
+            "report.md": "2f0ecf42864b56595c12018fd4719579812afdb65eb72340e7fdccdb8e77575e",
+            "calls.json": "f3284428a39f6dc74de76e2d9da2574deff8541053c776b579b68b357ab5bf34",
+            "result.json": "11d2acac8c5ce6363c1417450790ca5bd8b8cb222378e70ea690adff719639f3",
+            "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+          }
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "04-listed-company",
+        "title": "上市公司主体结构核查",
+        "user_request": "查看贵州茅台酒股份有限公司的股东、投资和分支机构结构。",
+        "purpose": "了解成熟企业的组织与投资版图。",
+        "args": [
+          "--enterprise",
+          "贵州茅台酒股份有限公司"
+        ],
+        "expected_checks": [
+          "股东和投资对象的名称与金额字段应可读",
+          "列表数量必须基于返回记录而非臆测总量",
+          "空字段使用缺失语义而非数字零"
+        ],
+        "limitations": [
+          "仅反映本次 HandaaS 数据产品返回范围与生成时点，不等同于官方证明。",
+          "空结果必须保留为空，不能解释为该事项客观不存在。",
+          "本报告不提供证券估值或投资建议。"
+        ]
+      },
+      "result": {
+        "schema_version": 1,
+        "skill": "enterprise-skill",
+        "case_id": "04-listed-company",
+        "title": "上市公司主体结构核查",
+        "invocation_id": "1793069062158431000",
+        "provenance": {
+          "integrator_id": "683e574805537ace146cc05e",
+          "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+          "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+          "scenario_sha256": "4b9c6886dd2ecb973fcf6c54f6108a31eb4eb947b063911377ba2c659e4a39aa",
+          "skill_source_hashes": {
+            "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+            "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+            "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+            "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+            "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+          },
+          "upstream_source_hashes": {
+            "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          },
+          "upstream_dependency_hashes": {
+            "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          }
+        },
+        "source_changed_during_run": false,
+        "started_at": "2026-10-27T10:44:22+08:00",
+        "elapsed_seconds": 3.586,
+        "returncode": 0,
+        "exception_type": null,
+        "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '贵州茅台酒股份有限公司' --output enterprise-skill/output/live-replaced-20261027/04-listed-company/report.json --report-output enterprise-skill/output/live-replaced-20261027/04-listed-company/report.html",
+        "transport": "local MCP servers via loopback streamable-http",
+        "cache_used": false,
+        "call_count": 5,
+        "successful_data_calls": 5,
+        "empty_calls": 0,
+        "failed_calls": 0,
+        "checks": {
+          "issues": [],
+          "warnings": [],
+          "coverage_pct": 91,
+          "subject": {
+            "enterprise": "贵州茅台酒股份有限公司",
+            "matchKeyword": "贵州茅台酒股份有限公司",
+            "keywordType": "name",
+            "match_raw": "贵州茅台酒股份有限公司",
+            "resolved": true,
+            "resolve_reason": "视为企业全称",
+            "fuzzy_total": null,
+            "requires_confirmation": false
+          },
+          "title": "贵州茅台酒股份有限公司 企业大数据报告",
+          "data_mode": null,
+          "metrics": [
+            {
+              "label": "注册资本",
+              "value": "人民币 12.5227 亿元",
+              "hint": "工商公示注册资本"
+            },
+            {
+              "label": "实缴资本",
+              "value": "人民币 12.5008 亿元",
+              "hint": "工商公示实缴资本"
+            },
+            {
+              "label": "资本实缴率",
+              "value": "99.8%",
+              "hint": "实缴资本/注册资本",
+              "delta": "实缴"
+            },
+            {
+              "label": "成立时间",
+              "value": "1999-11-20",
+              "hint": "工商公示"
+            },
+            {
+              "label": "经营状态",
+              "value": "营业",
+              "hint": "存续/在业/注销等"
+            },
+            {
+              "label": "对外投资",
+              "value": "15 家",
+              "hint": "对外投资企业数"
+            },
+            {
+              "label": "分支机构",
+              "value": "3 家",
+              "hint": "分支机构数"
+            },
+            {
+              "label": "主要人员",
+              "value": "7 人",
+              "hint": "工商公示主要人员"
+            },
+            {
+              "label": "股东数量",
+              "value": "2 个",
+              "hint": "工商公示股东"
+            }
+          ],
+          "quality_report": {
+            "total_sections": 11,
+            "populated_sections": 10,
+            "empty_sections": 1,
+            "coverage_pct": 91
+          },
+          "unregistered_tools": [],
+          "checks": {
+            "json_html_markdown": true,
+            "explicit_live": true,
+            "tool_calls_recorded": 5,
+            "offline_scripts": true,
+            "independent_rerender": true,
+            "offline_browser": true
+          }
+        },
+        "status": "passed",
+        "source_hashes": {
+          "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+          "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+          "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+          "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+          "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+        },
+        "technical_status": "passed",
+        "audited_at": "2026-10-27T11:12:59+08:00",
+        "evidence_binding": {
+          "report.json": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+          "report.html": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+          "report.md": "8df38e3aec4677d84d5836fb375eb6c036b0c11243dbd38064e7b4b2851f79c6",
+          "calls.json": "4035d37eb356a0fcc15987c965a8209d8935befd2a79728b6e26030907a04783",
+          "result.json": "63d86864ddc0e782eaf405d1bdac1806169f4576d1d1c1076552ac13e79c49c3",
+          "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+        },
+        "business_review": {
+          "id": "04-listed-company",
+          "verdict": "acceptable",
+          "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+          "checks": [
+            {
+              "expectation": "股东和投资对象的名称与金额字段应可读",
+              "status": "pass",
+              "evidence": "holders 和 investments 使用名称、金额/比例、状态及日期等可读字段；未展示原始嵌套对象。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+            },
+            {
+              "expectation": "列表数量必须基于返回记录而非臆测总量",
+              "status": "pass",
+              "evidence": "calls.json 对投资返回 row_count=15、reported_total=15；metrics“对外投资 15 家”，分支 3、人员 7 也与调用返回一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+            },
+            {
+              "expectation": "空字段使用缺失语义而非数字零",
+              "status": "pass",
+              "evidence": "记录中的缺失字段使用“-”或不生成指标，未把未知金额/日期替换为数值 0。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+            }
+          ],
+          "issues": [],
+          "evidence_binding": {
+            "report.json": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+            "report.html": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+            "report.md": "8df38e3aec4677d84d5836fb375eb6c036b0c11243dbd38064e7b4b2851f79c6",
+            "calls.json": "4035d37eb356a0fcc15987c965a8209d8935befd2a79728b6e26030907a04783",
+            "result.json": "63d86864ddc0e782eaf405d1bdac1806169f4576d1d1c1076552ac13e79c49c3",
+            "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+          }
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "05-contract-counterparty",
+        "title": "工程合同相对方核验",
+        "user_request": "核验中国建筑第八工程局有限公司的主体、分支和主要人员，供合同审查。",
+        "purpose": "确认合同相对方身份并发现需进一步核验的分支关系。",
+        "args": [
+          "--enterprise",
+          "中国建筑第八工程局有限公司"
+        ],
+        "expected_checks": [
+          "企业全称与分支机构名称应清楚区分",
+          "主要人员只展示上游返回范围",
+          "报告中不得暴露 MCP 参数或凭证"
+        ],
+        "limitations": [
+          "仅反映本次 HandaaS 数据产品返回范围与生成时点，不等同于官方证明。",
+          "空结果必须保留为空，不能解释为该事项客观不存在。",
+          "不能据此确认具体分支机构的签约授权。"
+        ]
+      },
+      "result": {
+        "schema_version": 1,
+        "skill": "enterprise-skill",
+        "case_id": "05-contract-counterparty",
+        "title": "工程合同相对方核验",
+        "invocation_id": "1793069065220208000",
+        "provenance": {
+          "integrator_id": "683e574805537ace146cc05e",
+          "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+          "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+          "scenario_sha256": "0d7f5374aac70bbcebf794e17ced5841f8183cc507cc953e8b782ae1a102c8a9",
+          "skill_source_hashes": {
+            "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+            "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+            "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+            "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+            "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+          },
+          "upstream_source_hashes": {
+            "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          },
+          "upstream_dependency_hashes": {
+            "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          }
+        },
+        "source_changed_during_run": false,
+        "started_at": "2026-10-27T10:44:25+08:00",
+        "elapsed_seconds": 5.824,
+        "returncode": 0,
+        "exception_type": null,
+        "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '中国建筑第八工程局有限公司' --output enterprise-skill/output/live-replaced-20261027/05-contract-counterparty/report.json --report-output enterprise-skill/output/live-replaced-20261027/05-contract-counterparty/report.html",
+        "transport": "local MCP servers via loopback streamable-http",
+        "cache_used": false,
+        "call_count": 5,
+        "successful_data_calls": 5,
+        "empty_calls": 0,
+        "failed_calls": 0,
+        "checks": {
+          "issues": [],
+          "warnings": [],
+          "coverage_pct": 64,
+          "subject": {
+            "enterprise": "中国建筑第八工程局有限公司",
+            "matchKeyword": "中国建筑第八工程局有限公司",
+            "keywordType": "name",
+            "match_raw": "中国建筑第八工程局有限公司",
+            "resolved": true,
+            "resolve_reason": "视为企业全称",
+            "fuzzy_total": null,
+            "requires_confirmation": false
+          },
+          "title": "中国建筑第八工程局有限公司 企业大数据报告",
+          "data_mode": null,
+          "metrics": [
+            {
+              "label": "注册资本",
+              "value": "人民币 152.1800 亿元",
+              "hint": "工商公示注册资本"
+            },
+            {
+              "label": "实缴资本",
+              "value": "人民币 152.1800 亿元",
+              "hint": "工商公示实缴资本"
+            },
+            {
+              "label": "资本实缴率",
+              "value": "100.0%",
+              "hint": "实缴资本/注册资本",
+              "delta": "实缴"
+            },
+            {
+              "label": "成立时间",
+              "value": "1998-09-29",
+              "hint": "工商公示"
+            },
+            {
+              "label": "经营状态",
+              "value": "营业",
+              "hint": "存续/在业/注销等"
+            },
+            {
+              "label": "对外投资",
+              "value": "278 家",
+              "hint": "对外投资企业数"
+            },
+            {
+              "label": "分支机构",
+              "value": "40 家",
+              "hint": "分支机构数"
+            },
+            {
+              "label": "主要人员",
+              "value": "8 人",
+              "hint": "工商公示主要人员"
+            },
+            {
+              "label": "股东数量",
+              "value": "1 个",
+              "hint": "工商公示股东"
+            }
+          ],
+          "quality_report": {
+            "total_sections": 11,
+            "populated_sections": 7,
+            "empty_sections": 4,
+            "coverage_pct": 64
+          },
+          "unregistered_tools": [],
+          "checks": {
+            "json_html_markdown": true,
+            "explicit_live": true,
+            "tool_calls_recorded": 5,
+            "offline_scripts": true,
+            "independent_rerender": true,
+            "offline_browser": true
+          }
+        },
+        "status": "passed",
+        "source_hashes": {
+          "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+          "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+          "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+          "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+          "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+        },
+        "technical_status": "passed",
+        "audited_at": "2026-10-27T11:12:59+08:00",
+        "evidence_binding": {
+          "report.json": "88635bc92f6093a143136ed522f2ec83587de961224e999f32d1dfd92f536e8a",
+          "report.html": "588f2e3eec02fc7deb8e64c6774f0d3c471778dd3281191d513d3a09076a5dbb",
+          "report.md": "0cbf90f56e23ac9ccf32edb25ddb5fa2c3fe1a0d7cb22ab7bd9144ffaa1897c2",
+          "calls.json": "acc814d128ba4ed27a7e9b50434a2d803803e7908b35ad1f555cd658064723f4",
+          "result.json": "519e3d8027eccd18c1491d69b959eae18ba5431d68752601544403435c3d4883",
+          "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+        },
+        "business_review": {
+          "id": "05-contract-counterparty",
+          "verdict": "acceptable",
+          "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+          "checks": [
+            {
+              "expectation": "企业全称与分支机构名称应清楚区分",
+              "status": "pass",
+              "evidence": "subject.enterprise 为“中国建筑第八工程局有限公司”；branches 中名称均作为“分支机构”单列，未与主体混写。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "主要人员只展示上游返回范围",
+              "status": "pass",
+              "evidence": "主要人员工具 row_count/reported_total=8/8，core_analysis.key_persons 与 metrics 均为 8 人。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "报告中不得暴露 MCP 参数或凭证",
+              "status": "pass",
+              "evidence": "report.json/report.md/report.html 未出现 secret、signature、token、authorization、密钥或签名内容；仅呈现业务数据。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            }
+          ],
+          "issues": [],
+          "evidence_binding": {
+            "report.json": "88635bc92f6093a143136ed522f2ec83587de961224e999f32d1dfd92f536e8a",
+            "report.html": "588f2e3eec02fc7deb8e64c6774f0d3c471778dd3281191d513d3a09076a5dbb",
+            "report.md": "0cbf90f56e23ac9ccf32edb25ddb5fa2c3fe1a0d7cb22ab7bd9144ffaa1897c2",
+            "calls.json": "acc814d128ba4ed27a7e9b50434a2d803803e7908b35ad1f555cd658064723f4",
+            "result.json": "519e3d8027eccd18c1491d69b959eae18ba5431d68752601544403435c3d4883",
+            "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+          }
+        }
+      }
+    },
+    {
+      "scenario": {
+        "id": "06-brand-company",
+        "title": "品牌合作主体识别",
+        "user_request": "请查询北京京东世纪贸易有限公司的企业基础和对外投资情况。",
+        "purpose": "在品牌合作前确认运营主体及关联投资线索。",
+        "args": [
+          "--enterprise",
+          "北京京东世纪贸易有限公司"
+        ],
+        "expected_checks": [
+          "工商主体与品牌名称不得混淆",
+          "对外投资章节应保留被投企业名称和可用比例/金额",
+          "摘要应由实际非空指标生成"
+        ],
+        "limitations": [
+          "仅反映本次 HandaaS 数据产品返回范围与生成时点，不等同于官方证明。",
+          "空结果必须保留为空，不能解释为该事项客观不存在。",
+          "品牌归属与知识产权需另用商标等数据验证。"
+        ]
+      },
+      "result": {
+        "schema_version": 1,
+        "skill": "enterprise-skill",
+        "case_id": "06-brand-company",
+        "title": "品牌合作主体识别",
+        "invocation_id": "1793069065645594000",
+        "provenance": {
+          "integrator_id": "683e574805537ace146cc05e",
+          "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+          "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+          "scenario_sha256": "4251571a7fb1bd85e249a4e245ab7db41b333b29dff8d68bb38301a3c30e486a",
+          "skill_source_hashes": {
+            "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+            "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+            "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+            "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+            "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+          },
+          "upstream_source_hashes": {
+            "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          },
+          "upstream_dependency_hashes": {
+            "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+          }
+        },
+        "source_changed_during_run": false,
+        "started_at": "2026-10-27T10:44:25+08:00",
+        "elapsed_seconds": 5.822,
+        "returncode": 0,
+        "exception_type": null,
+        "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '北京京东世纪贸易有限公司' --output enterprise-skill/output/live-replaced-20261027/06-brand-company/report.json --report-output enterprise-skill/output/live-replaced-20261027/06-brand-company/report.html",
+        "transport": "local MCP servers via loopback streamable-http",
+        "cache_used": false,
+        "call_count": 5,
+        "successful_data_calls": 5,
+        "empty_calls": 0,
+        "failed_calls": 0,
+        "checks": {
+          "issues": [],
+          "warnings": [],
+          "coverage_pct": 64,
+          "subject": {
+            "enterprise": "北京京东世纪贸易有限公司",
+            "matchKeyword": "北京京东世纪贸易有限公司",
+            "keywordType": "name",
+            "match_raw": "北京京东世纪贸易有限公司",
+            "resolved": true,
+            "resolve_reason": "视为企业全称",
+            "fuzzy_total": null,
+            "requires_confirmation": false
+          },
+          "title": "北京京东世纪贸易有限公司 企业大数据报告",
+          "data_mode": null,
+          "metrics": [
+            {
+              "label": "注册资本",
+              "value": "美元 13.9799 亿元",
+              "hint": "工商公示注册资本"
+            },
+            {
+              "label": "实缴资本",
+              "value": "美元 13.9799 亿元",
+              "hint": "工商公示实缴资本"
+            },
+            {
+              "label": "资本实缴率",
+              "value": "100.0%",
+              "hint": "实缴资本/注册资本",
+              "delta": "实缴"
+            },
+            {
+              "label": "成立时间",
+              "value": "2007-04-20",
+              "hint": "工商公示"
+            },
+            {
+              "label": "经营状态",
+              "value": "营业",
+              "hint": "存续/在业/注销等"
+            },
+            {
+              "label": "对外投资",
+              "value": "190 家",
+              "hint": "对外投资企业数"
+            },
+            {
+              "label": "分支机构",
+              "value": "11 家",
+              "hint": "分支机构数"
+            },
+            {
+              "label": "主要人员",
+              "value": "2 人",
+              "hint": "工商公示主要人员"
+            },
+            {
+              "label": "股东数量",
+              "value": "1 个",
+              "hint": "工商公示股东"
+            }
+          ],
+          "quality_report": {
+            "total_sections": 11,
+            "populated_sections": 7,
+            "empty_sections": 4,
+            "coverage_pct": 64
+          },
+          "unregistered_tools": [],
+          "checks": {
+            "json_html_markdown": true,
+            "explicit_live": true,
+            "tool_calls_recorded": 5,
+            "offline_scripts": true,
+            "independent_rerender": true,
+            "offline_browser": true
+          }
+        },
+        "status": "passed",
+        "source_hashes": {
+          "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+          "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+          "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+          "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+          "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+        },
+        "technical_status": "passed",
+        "audited_at": "2026-10-27T11:12:59+08:00",
+        "evidence_binding": {
+          "report.json": "52a9cd930d04d527aa6fa0044dc5e929eed586f4aedb3261d4505ca8784a31aa",
+          "report.html": "081c506d52649402295740936f9fe10db5b18d7909ae35a037c304af4c59e394",
+          "report.md": "3e2afa32eaa7bff922c43325d05fe016f5292879c5f161ace08e4e5d5adaaca1",
+          "calls.json": "1f71050e2b622fcbe94902f6638734c56ad9e00b682b42a6f28052bbfb2602af",
+          "result.json": "71ed51311f1fcf10a70ec87448b141971e53e9c2709ae815bcd7cf591a63d962",
+          "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+        },
+        "business_review": {
+          "id": "06-brand-company",
+          "verdict": "acceptable",
+          "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+          "checks": [
+            {
+              "expectation": "工商主体与品牌名称不得混淆",
+              "status": "pass",
+              "evidence": "subject、title 和 caliber.match_target 均为工商主体“北京京东世纪贸易有限公司”，未用“京东”替代法定主体。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=北京京东世纪贸易有限公司，match_raw=北京京东世纪贸易有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=190; enterprise_get_enterprise_branch_info:data,rows=11,total=11; enterprise_get_enterprise_main_person_info:data,rows=2,total=2]；metrics=[注册资本=美元 13.9799 亿元; 实缴资本=美元 13.9799 亿元; 资本实缴率=100.0%; 成立时间=2007-04-20; 经营状态=营业; 对外投资=190 家; 分支机构=11 家; 主要人员=2 人; 股东数量=1 个]；sections=[enterprise_base=13, identity_tags=1, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=11, key_persons=2]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "对外投资章节应保留被投企业名称和可用比例/金额",
+              "status": "pass",
+              "evidence": "investments 50 条均保留被投企业名称，关系字段展示投资比例；metrics 披露上游总量 190 家而非样本数。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=北京京东世纪贸易有限公司，match_raw=北京京东世纪贸易有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=190; enterprise_get_enterprise_branch_info:data,rows=11,total=11; enterprise_get_enterprise_main_person_info:data,rows=2,total=2]；metrics=[注册资本=美元 13.9799 亿元; 实缴资本=美元 13.9799 亿元; 资本实缴率=100.0%; 成立时间=2007-04-20; 经营状态=营业; 对外投资=190 家; 分支机构=11 家; 主要人员=2 人; 股东数量=1 个]；sections=[enterprise_base=13, identity_tags=1, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=11, key_persons=2]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            },
+            {
+              "expectation": "摘要应由实际非空指标生成",
+              "status": "pass",
+              "evidence": "summary 只引用非空资本、成立时间、经营状态和企业简介，并说明已给出实际返回的投资/分支/人员明细。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=北京京东世纪贸易有限公司，match_raw=北京京东世纪贸易有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=190; enterprise_get_enterprise_branch_info:data,rows=11,total=11; enterprise_get_enterprise_main_person_info:data,rows=2,total=2]；metrics=[注册资本=美元 13.9799 亿元; 实缴资本=美元 13.9799 亿元; 资本实缴率=100.0%; 成立时间=2007-04-20; 经营状态=营业; 对外投资=190 家; 分支机构=11 家; 主要人员=2 人; 股东数量=1 个]；sections=[enterprise_base=13, identity_tags=1, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=11, key_persons=2]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+            }
+          ],
+          "issues": [],
+          "evidence_binding": {
+            "report.json": "52a9cd930d04d527aa6fa0044dc5e929eed586f4aedb3261d4505ca8784a31aa",
+            "report.html": "081c506d52649402295740936f9fe10db5b18d7909ae35a037c304af4c59e394",
+            "report.md": "3e2afa32eaa7bff922c43325d05fe016f5292879c5f161ace08e4e5d5adaaca1",
+            "calls.json": "1f71050e2b622fcbe94902f6638734c56ad9e00b682b42a6f28052bbfb2602af",
+            "result.json": "71ed51311f1fcf10a70ec87448b141971e53e9c2709ae815bcd7cf591a63d962",
+            "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+          }
+        }
+      }
+    }
+  ]
+}

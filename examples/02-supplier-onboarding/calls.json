@@ -1,0 +1,324 @@
+[
+  {
+    "tool": "enterprise_get_enterprise_base_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "宁德时代新能源科技股份有限公司"
+    },
+    "invocation_id": "1793069057709908000",
+    "elapsed_seconds": 1.411,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "base_info",
+      "desc",
+      "tag"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "base_info.payAmountCount.amount",
+        "value": 400000000.0
+      },
+      {
+        "path": "base_info.regCapital.value",
+        "value": 4563608365.0
+      },
+      {
+        "path": "tag.hasStock",
+        "value": 1
+      },
+      {
+        "path": "tag.isAnomaly",
+        "value": 0
+      },
+      {
+        "path": "tag.isHighTechEnterprise",
+        "value": 1
+      },
+      {
+        "path": "tag.isTopEnterprise",
+        "value": 1
+      }
+    ],
+    "response_sha256": "d6029dcc81a3fb7478c309cc99a3304e90bbbc3f83d74e404d9cf24a4447c9b0"
+  },
+  {
+    "tool": "enterprise_get_enterprise_holder_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "宁德时代新能源科技股份有限公司"
+    },
+    "invocation_id": "1793069057709908000",
+    "elapsed_seconds": 0.625,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "holderList",
+      "stockHolderList"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "holderList[0].payAmount.value",
+        "value": 0
+      },
+      {
+        "path": "holderList[1].payAmount.value",
+        "value": 0
+      },
+      {
+        "path": "holderList[2].payAmount.value",
+        "value": 0
+      },
+      {
+        "path": "holderList[3].payAmount.value",
+        "value": 0
+      },
+      {
+        "path": "holderList[4].payAmount.value",
+        "value": 0
+      },
+      {
+        "path": "stockHolderList[0].shareHolding",
+        "value": 1020000000.0
+      },
+      {
+        "path": "stockHolderList[0].shareHoldingRatio",
+        "value": 0.2204
+      },
+      {
+        "path": "stockHolderList[1].shareHolding",
+        "value": 874000000.0
+      },
+      {
+        "path": "stockHolderList[1].shareHoldingRatio",
+        "value": 0.189
+      },
+      {
+        "path": "stockHolderList[2].shareHolding",
+        "value": 420000000.0
+      },
+      {
+        "path": "stockHolderList[2].shareHoldingRatio",
+        "value": 0.0909
+      },
+      {
+        "path": "stockHolderList[3].shareHolding",
+        "value": 225999999.0
+      },
+      {
+        "path": "stockHolderList[3].shareHoldingRatio",
+        "value": 0.0489
+      },
+      {
+        "path": "stockHolderList[4].shareHolding",
+        "value": 218000000.0
+      },
+      {
+        "path": "stockHolderList[4].shareHoldingRatio",
+        "value": 0.0472
+      }
+    ],
+    "response_sha256": "260d55d76b0f2792305f2f9fbad5122a827b34561de712a2b24efa6e15a5612b"
+  },
+  {
+    "tool": "enterprise_get_enterprise_invest_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "宁德时代新能源科技股份有限公司"
+    },
+    "invocation_id": "1793069057709908000",
+    "elapsed_seconds": 0.965,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 50,
+    "reported_total": 159,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[0].ratio",
+        "value": 0.04
+      },
+      {
+        "path": "resultList[0].regCapital.value",
+        "value": 10000000.0
+      },
+      {
+        "path": "resultList[0].subscriptionAmount.value",
+        "value": 400000.0
+      },
+      {
+        "path": "resultList[1].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[1].ratio",
+        "value": 0.110505
+      },
+      {
+        "path": "resultList[1].regCapital.value",
+        "value": 289580954.46
+      },
+      {
+        "path": "resultList[1].subscriptionAmount.value",
+        "value": 32000000.0
+      },
+      {
+        "path": "resultList[2].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[2].ratio",
+        "value": 0.51
+      },
+      {
+        "path": "resultList[2].regCapital.value",
+        "value": 1000000000.0
+      },
+      {
+        "path": "resultList[2].subscriptionAmount.value",
+        "value": 510000000.0
+      },
+      {
+        "path": "resultList[3].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[3].ratio",
+        "value": 0.1
+      },
+      {
+        "path": "resultList[3].regCapital.value",
+        "value": 500000000.0
+      },
+      {
+        "path": "resultList[3].subscriptionAmount.value",
+        "value": 50000000.0
+      },
+      {
+        "path": "resultList[4].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[4].regCapital.value",
+        "value": 250640000.0
+      },
+      {
+        "path": "resultList[4].subscriptionAmount.value",
+        "value": 250640000.0
+      },
+      {
+        "path": "total",
+        "value": 159
+      }
+    ],
+    "response_sha256": "8af0eb2914ad2fef4907a50266306981644150547a5db769568910e9509a7ac7"
+  },
+  {
+    "tool": "enterprise_get_enterprise_branch_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "宁德时代新能源科技股份有限公司"
+    },
+    "invocation_id": "1793069057709908000",
+    "elapsed_seconds": 0.525,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 8,
+    "reported_total": 8,
+    "numeric_evidence": [
+      {
+        "path": "total",
+        "value": 8
+      }
+    ],
+    "response_sha256": "8bb363877cb03482d7b7d124bcc7c968854dd9126ea764a7c4f60d71d2b7e181"
+  },
+  {
+    "tool": "enterprise_get_enterprise_main_person_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "宁德时代新能源科技股份有限公司"
+    },
+    "invocation_id": "1793069057709908000",
+    "elapsed_seconds": 0.678,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 15,
+    "reported_total": 15,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].relatedEnterpriseCurrentNum",
+        "value": 10
+      },
+      {
+        "path": "resultList[0].relatedEnterpriseHistoryNum",
+        "value": 12
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseCurrentNum",
+        "value": 11
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseHistoryNum",
+        "value": 17
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseCurrentNum",
+        "value": 4
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseHistoryNum",
+        "value": 1
+      },
+      {
+        "path": "resultList[3].relatedEnterpriseCurrentNum",
+        "value": 6
+      },
+      {
+        "path": "resultList[3].relatedEnterpriseHistoryNum",
+        "value": 4
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseCurrentNum",
+        "value": 27
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseHistoryNum",
+        "value": 10
+      },
+      {
+        "path": "total",
+        "value": 15
+      }
+    ],
+    "response_sha256": "65c801a19f07b2cf78b47fc552ed2ab3f7cc7fcb36166c5aa15ac5723832c74b"
+  }
+]

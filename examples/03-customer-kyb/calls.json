@@ -1,0 +1,259 @@
+[
+  {
+    "tool": "enterprise_get_enterprise_base_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "腾讯科技（深圳）有限公司"
+    },
+    "invocation_id": "1793069061995509000",
+    "elapsed_seconds": 0.957,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "base_info",
+      "desc",
+      "tag"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "base_info.payAmountCount.amount",
+        "value": 2000000.0
+      },
+      {
+        "path": "base_info.regCapital.value",
+        "value": 2000000.0
+      },
+      {
+        "path": "tag.isAnomaly",
+        "value": 0
+      },
+      {
+        "path": "tag.isHighTechEnterprise",
+        "value": 1
+      }
+    ],
+    "response_sha256": "8a2345f4568e432b4bde6d439699b0b8b753e7b392e9859867edf5672f608a54"
+  },
+  {
+    "tool": "enterprise_get_enterprise_holder_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "腾讯科技（深圳）有限公司"
+    },
+    "invocation_id": "1793069061995509000",
+    "elapsed_seconds": 0.837,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "holderList"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "holderList[0].payAmount.value",
+        "value": 2000000.0
+      },
+      {
+        "path": "holderList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "holderList[0].subscriptionDetail.amount",
+        "value": 2000000.0
+      }
+    ],
+    "response_sha256": "da8fa58c770b432a06a4ce4e3f7c6fe84eaa900cf03215ff8183b445fee01f9c"
+  },
+  {
+    "tool": "enterprise_get_enterprise_invest_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "腾讯科技（深圳）有限公司"
+    },
+    "invocation_id": "1793069061995509000",
+    "elapsed_seconds": 0.713,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 17,
+    "reported_total": 17,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[0].regCapital.value",
+        "value": 10000000.0
+      },
+      {
+        "path": "resultList[0].subscriptionAmount.value",
+        "value": 10000000.0
+      },
+      {
+        "path": "resultList[1].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[1].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[1].regCapital.value",
+        "value": 5000000.0
+      },
+      {
+        "path": "resultList[1].subscriptionAmount.value",
+        "value": 5000000.0
+      },
+      {
+        "path": "resultList[2].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[2].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[2].regCapital.value",
+        "value": 20000000.0
+      },
+      {
+        "path": "resultList[2].subscriptionAmount.value",
+        "value": 20000000.0
+      },
+      {
+        "path": "resultList[3].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[3].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[3].regCapital.value",
+        "value": 70000000.0
+      },
+      {
+        "path": "resultList[3].subscriptionAmount.value",
+        "value": 70000000.0
+      },
+      {
+        "path": "resultList[4].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[4].regCapital.value",
+        "value": 5000000.0
+      },
+      {
+        "path": "resultList[4].subscriptionAmount.value",
+        "value": 5000000.0
+      },
+      {
+        "path": "total",
+        "value": 17
+      }
+    ],
+    "response_sha256": "5c9d16927699caa1d394181d3adf7b2743f30da9d5ab0a4aabba7db106f7355c"
+  },
+  {
+    "tool": "enterprise_get_enterprise_branch_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "腾讯科技（深圳）有限公司"
+    },
+    "invocation_id": "1793069061995509000",
+    "elapsed_seconds": 0.542,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 5,
+    "reported_total": 5,
+    "numeric_evidence": [
+      {
+        "path": "total",
+        "value": 5
+      }
+    ],
+    "response_sha256": "3553b0b26c8042f0654f991639cb7745cf9771f9b0e91af0df958f6c66920134"
+  },
+  {
+    "tool": "enterprise_get_enterprise_main_person_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "腾讯科技（深圳）有限公司"
+    },
+    "invocation_id": "1793069061995509000",
+    "elapsed_seconds": 0.377,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 5,
+    "reported_total": 5,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].relatedEnterpriseCurrentNum",
+        "value": 31
+      },
+      {
+        "path": "resultList[0].relatedEnterpriseHistoryNum",
+        "value": 16
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseCurrentNum",
+        "value": 12
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseHistoryNum",
+        "value": 2
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseCurrentNum",
+        "value": 8
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseHistoryNum",
+        "value": 6
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseCurrentNum",
+        "value": 18
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseHistoryNum",
+        "value": 1
+      },
+      {
+        "path": "total",
+        "value": 5
+      }
+    ],
+    "response_sha256": "40362516f5540655b238e30f6d757756f39736c50ccac112a416463fc27bd8e1"
+  }
+]

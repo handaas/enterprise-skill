@@ -1,0 +1,46 @@
+{
+  "metric_overflows": [],
+  "document_title": "宁德时代新能源科技股份有限公司 企业大数据报告",
+  "title_matches": true,
+  "charts": 3,
+  "rendered_charts": 3,
+  "zero_size_charts": 0,
+  "chart_details": [
+    {
+      "width": 984,
+      "height": 300,
+      "instance": true,
+      "renderer": true,
+      "graphics": 55
+    },
+    {
+      "width": 984,
+      "height": 300,
+      "instance": true,
+      "renderer": true,
+      "graphics": 13
+    },
+    {
+      "width": 984,
+      "height": 300,
+      "instance": true,
+      "renderer": true,
+      "graphics": 7
+    }
+  ],
+  "page_width": 1905,
+  "viewport_width": 1920,
+  "empty_headers": 0,
+  "script_errors": [],
+  "external_resources": 0,
+  "external_asset_references": 0,
+  "ok": true,
+  "report_html_sha256": "90d8d0247bcbb3f456210ab06c5c2fb10793e583e095e5053a182150ccb02740",
+  "report_json_sha256": "d52df21ed878133af633c913c9e32ddad2cec29ee1bd800ec15762174f8f76a0",
+  "skill": "enterprise-skill",
+  "id": "02-supplier-onboarding",
+  "browser": "Ego Lite",
+  "space_id": 4,
+  "offline": true,
+  "checked_at": "2026-10-27T03:02:55.553Z"
+}

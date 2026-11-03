@@ -1,0 +1,31 @@
+{
+  "id": "05-contract-counterparty",
+  "verdict": "acceptable",
+  "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+  "checks": [
+    {
+      "expectation": "企业全称与分支机构名称应清楚区分",
+      "status": "pass",
+      "evidence": "subject.enterprise 为“中国建筑第八工程局有限公司”；branches 中名称均作为“分支机构”单列，未与主体混写。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    },
+    {
+      "expectation": "主要人员只展示上游返回范围",
+      "status": "pass",
+      "evidence": "主要人员工具 row_count/reported_total=8/8，core_analysis.key_persons 与 metrics 均为 8 人。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    },
+    {
+      "expectation": "报告中不得暴露 MCP 参数或凭证",
+      "status": "pass",
+      "evidence": "report.json/report.md/report.html 未出现 secret、signature、token、authorization、密钥或签名内容；仅呈现业务数据。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    }
+  ],
+  "issues": [],
+  "evidence_binding": {
+    "report.json": "88635bc92f6093a143136ed522f2ec83587de961224e999f32d1dfd92f536e8a",
+    "report.html": "588f2e3eec02fc7deb8e64c6774f0d3c471778dd3281191d513d3a09076a5dbb",
+    "report.md": "0cbf90f56e23ac9ccf32edb25ddb5fa2c3fe1a0d7cb22ab7bd9144ffaa1897c2",
+    "calls.json": "acc814d128ba4ed27a7e9b50434a2d803803e7908b35ad1f555cd658064723f4",
+    "result.json": "519e3d8027eccd18c1491d69b959eae18ba5431d68752601544403435c3d4883",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  }
+}

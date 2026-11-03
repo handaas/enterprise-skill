@@ -1,0 +1,36 @@
+{
+  "id": "01-investment-dd",
+  "verdict": "acceptable",
+  "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+  "checks": [
+    {
+      "expectation": "主体名称与工商基础信息应可识别",
+      "status": "pass",
+      "evidence": "report.subject.enterprise、title 与基础信息均为“华为技术有限公司”，metrics 展示成立时间 1987-09-15、经营状态“营业”等主体信息。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    },
+    {
+      "expectation": "股东与对外投资应分章节呈现且不混为一类",
+      "status": "pass",
+      "evidence": "core_analysis.holders 为 1 条，investments 为 50 条且各自在“股东信息”“对外投资”章节；未把两类关系合并。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    },
+    {
+      "expectation": "分支机构和主要人员只统计实际返回记录",
+      "status": "pass",
+      "evidence": "calls.json 显示分支工具 row_count/reported_total=27/27、人员工具=32/32；报告 branches=27、key_persons=32。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    },
+    {
+      "expectation": "金额、地址和日期应可读而非原始 JSON",
+      "status": "pass",
+      "evidence": "报告 metrics/enterprise_base 将资本格式化为“人民币 411.4113 亿元”，并展示地址和 ISO 日期；无原始 JSON 串。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    }
+  ],
+  "issues": [],
+  "evidence_binding": {
+    "report.json": "6156487e8f632a082ed708822c84799e0a1e18d6c27ed0b469e5ee008fe6384e",
+    "report.html": "9bba9b6d91d93859be3934bba0977bb55a2e3ee6470688d466aa1e00f69b3888",
+    "report.md": "40e4ff311963f5d7fb4a4c2fd2023708a92d2b85c4685b4ad0789ad1e0a38174",
+    "calls.json": "bc5bf7c0a4263861c691109867a59585b6720338508f7a8ef573a8b842d2d827",
+    "result.json": "fc8112175c1b684e2bd7696531d19d6ea727f7d230aa891ff9a4d19654eb0284",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  }
+}

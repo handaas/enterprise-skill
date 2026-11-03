@@ -1,0 +1,46 @@
+{
+  "metric_overflows": [],
+  "document_title": "贵州茅台酒股份有限公司 企业大数据报告",
+  "title_matches": true,
+  "charts": 3,
+  "rendered_charts": 3,
+  "zero_size_charts": 0,
+  "chart_details": [
+    {
+      "width": 984,
+      "height": 300,
+      "instance": true,
+      "renderer": true,
+      "graphics": 57
+    },
+    {
+      "width": 984,
+      "height": 300,
+      "instance": true,
+      "renderer": true,
+      "graphics": 7
+    },
+    {
+      "width": 984,
+      "height": 300,
+      "instance": true,
+      "renderer": true,
+      "graphics": 7
+    }
+  ],
+  "page_width": 1905,
+  "viewport_width": 1920,
+  "empty_headers": 0,
+  "script_errors": [],
+  "external_resources": 0,
+  "external_asset_references": 0,
+  "ok": true,
+  "report_html_sha256": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+  "report_json_sha256": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+  "skill": "enterprise-skill",
+  "id": "04-listed-company",
+  "browser": "Ego Lite",
+  "space_id": 4,
+  "offline": true,
+  "checked_at": "2026-10-27T03:02:56.939Z"
+}

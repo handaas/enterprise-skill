@@ -1,0 +1,324 @@
+[
+  {
+    "tool": "enterprise_get_enterprise_base_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "贵州茅台酒股份有限公司"
+    },
+    "invocation_id": "1793069062158431000",
+    "elapsed_seconds": 1.418,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "base_info",
+      "desc",
+      "tag"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "base_info.payAmountCount.amount",
+        "value": 1250081601.0
+      },
+      {
+        "path": "base_info.regCapital.value",
+        "value": 1252270215.0
+      },
+      {
+        "path": "tag.hasStock",
+        "value": 1
+      },
+      {
+        "path": "tag.isAnomaly",
+        "value": 0
+      },
+      {
+        "path": "tag.isTopEnterprise",
+        "value": 1
+      }
+    ],
+    "response_sha256": "f4ce6ce0652546e8305787cc8c926384e301135e96cd934cf04d41153b4b2df3"
+  },
+  {
+    "tool": "enterprise_get_enterprise_holder_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "贵州茅台酒股份有限公司"
+    },
+    "invocation_id": "1793069062158431000",
+    "elapsed_seconds": 0.442,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "holderList",
+      "stockHolderList"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "holderList[0].payAmount.value",
+        "value": 0
+      },
+      {
+        "path": "holderList[0].ratio",
+        "value": 0.6175840057
+      },
+      {
+        "path": "holderList[0].subscriptionDetail.amount",
+        "value": 641163363.0
+      },
+      {
+        "path": "holderList[1].payAmount.value",
+        "value": 0
+      },
+      {
+        "path": "holderList[1].ratio",
+        "value": 0.3824159943
+      },
+      {
+        "path": "holderList[1].subscriptionDetail.amount",
+        "value": 397016637.0
+      },
+      {
+        "path": "stockHolderList[0].shareHolding",
+        "value": 681000000.0
+      },
+      {
+        "path": "stockHolderList[0].shareHoldingRatio",
+        "value": 0.545
+      },
+      {
+        "path": "stockHolderList[1].shareHolding",
+        "value": 56996800.0
+      },
+      {
+        "path": "stockHolderList[1].shareHoldingRatio",
+        "value": 0.0456
+      },
+      {
+        "path": "stockHolderList[2].shareHolding",
+        "value": 53711700.0
+      },
+      {
+        "path": "stockHolderList[2].shareHoldingRatio",
+        "value": 0.043
+      },
+      {
+        "path": "stockHolderList[3].shareHolding",
+        "value": 27849699.0
+      },
+      {
+        "path": "stockHolderList[3].shareHoldingRatio",
+        "value": 0.0223
+      },
+      {
+        "path": "stockHolderList[4].shareHolding",
+        "value": 5583900.0
+      },
+      {
+        "path": "stockHolderList[4].shareHoldingRatio",
+        "value": 0.0045
+      }
+    ],
+    "response_sha256": "a239780a68582070661ae69bcd2601aabe484fd7b00979ea81f860cec69232ff"
+  },
+  {
+    "tool": "enterprise_get_enterprise_invest_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "贵州茅台酒股份有限公司"
+    },
+    "invocation_id": "1793069062158431000",
+    "elapsed_seconds": 0.752,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 15,
+    "reported_total": 15,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[0].regCapital.value",
+        "value": 600000000.0
+      },
+      {
+        "path": "resultList[0].subscriptionAmount.value",
+        "value": 600000000.0
+      },
+      {
+        "path": "resultList[1].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[1].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[1].regCapital.value",
+        "value": 200000000.0
+      },
+      {
+        "path": "resultList[1].subscriptionAmount.value",
+        "value": 200000000.0
+      },
+      {
+        "path": "resultList[2].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[2].ratio",
+        "value": 0.95
+      },
+      {
+        "path": "resultList[2].regCapital.value",
+        "value": 10000000.0
+      },
+      {
+        "path": "resultList[2].subscriptionAmount.value",
+        "value": 9500000.0
+      },
+      {
+        "path": "resultList[3].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[3].ratio",
+        "value": 0.9074410163
+      },
+      {
+        "path": "resultList[3].regCapital.value",
+        "value": 5510000000.0
+      },
+      {
+        "path": "resultList[3].subscriptionAmount.value",
+        "value": 5000000000.0
+      },
+      {
+        "path": "resultList[4].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].ratio",
+        "value": 0.7
+      },
+      {
+        "path": "resultList[4].regCapital.value",
+        "value": 8000000.0
+      },
+      {
+        "path": "resultList[4].subscriptionAmount.value",
+        "value": 5600000.0
+      },
+      {
+        "path": "total",
+        "value": 15
+      }
+    ],
+    "response_sha256": "de276f78803a0428735d3ff51fed874d791106a0f9a7dbecbf350804db6a2341"
+  },
+  {
+    "tool": "enterprise_get_enterprise_branch_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "贵州茅台酒股份有限公司"
+    },
+    "invocation_id": "1793069062158431000",
+    "elapsed_seconds": 0.473,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 3,
+    "reported_total": 3,
+    "numeric_evidence": [
+      {
+        "path": "total",
+        "value": 3
+      }
+    ],
+    "response_sha256": "8afba39a96fdb5a8b61a9264447df7681a922e72b95d7fe726bafeea19f5060e"
+  },
+  {
+    "tool": "enterprise_get_enterprise_main_person_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "贵州茅台酒股份有限公司"
+    },
+    "invocation_id": "1793069062158431000",
+    "elapsed_seconds": 0.408,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 7,
+    "reported_total": 7,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].relatedEnterpriseCurrentNum",
+        "value": 10
+      },
+      {
+        "path": "resultList[0].relatedEnterpriseHistoryNum",
+        "value": 22
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseCurrentNum",
+        "value": 1
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseHistoryNum",
+        "value": 0
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseCurrentNum",
+        "value": 5
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseHistoryNum",
+        "value": 0
+      },
+      {
+        "path": "resultList[3].relatedEnterpriseCurrentNum",
+        "value": 2
+      },
+      {
+        "path": "resultList[3].relatedEnterpriseHistoryNum",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseCurrentNum",
+        "value": 2
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseHistoryNum",
+        "value": 4
+      },
+      {
+        "path": "total",
+        "value": 7
+      }
+    ],
+    "response_sha256": "8ffb134a8c8d3f3ecc27bc23babe3598d40473821b8084de4aca17a057cc1935"
+  }
+]

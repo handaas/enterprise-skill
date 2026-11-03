@@ -1,0 +1,31 @@
+{
+  "id": "03-customer-kyb",
+  "verdict": "acceptable",
+  "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+  "checks": [
+    {
+      "expectation": "企业名称、经营状态、成立时间等字段应按源数据展示",
+      "status": "pass",
+      "evidence": "metrics 明示注册/实缴资本、成立时间 2000-02-24、经营状态“营业”，subject 为腾讯科技（深圳）有限公司。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    },
+    {
+      "expectation": "业务、标签与简介不得被拼接成未经证实的结论",
+      "status": "pass",
+      "evidence": "摘要以“企业简介”标注上游简介并截断展示；insights 对数量含义均附核验边界，未把业务、标签拼接成确定性结论。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    },
+    {
+      "expectation": "JSON、HTML、Markdown 的核心指标应一致",
+      "status": "pass",
+      "evidence": "report.json 的资本、日期、经营状态和数量指标均可在 report.md 与 report.html 中检索到；result.checks.independent_rerender=true。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+    }
+  ],
+  "issues": [],
+  "evidence_binding": {
+    "report.json": "0cadf0f667684776541a69095acd891dc4396da35bc3921cc9c62f8bf70e19f0",
+    "report.html": "792e2f951db960f1479d3823ba279435a267f9b30864f514a31ad31a94f3ed90",
+    "report.md": "2f0ecf42864b56595c12018fd4719579812afdb65eb72340e7fdccdb8e77575e",
+    "calls.json": "f3284428a39f6dc74de76e2d9da2574deff8541053c776b579b68b357ab5bf34",
+    "result.json": "11d2acac8c5ce6363c1417450790ca5bd8b8cb222378e70ea690adff719639f3",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  }
+}

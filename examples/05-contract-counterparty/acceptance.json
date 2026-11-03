@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "skill": "enterprise-skill",
+  "case_id": "05-contract-counterparty",
+  "title": "工程合同相对方核验",
+  "invocation_id": "1793069065220208000",
+  "provenance": {
+    "integrator_id": "683e574805537ace146cc05e",
+    "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+    "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+    "scenario_sha256": "0d7f5374aac70bbcebf794e17ced5841f8183cc507cc953e8b782ae1a102c8a9",
+    "skill_source_hashes": {
+      "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+      "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+      "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+      "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+      "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+    },
+    "upstream_source_hashes": {
+      "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    },
+    "upstream_dependency_hashes": {
+      "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    }
+  },
+  "source_changed_during_run": false,
+  "started_at": "2026-10-27T10:44:25+08:00",
+  "elapsed_seconds": 5.824,
+  "returncode": 0,
+  "exception_type": null,
+  "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '中国建筑第八工程局有限公司' --output enterprise-skill/output/live-replaced-20261027/05-contract-counterparty/report.json --report-output enterprise-skill/output/live-replaced-20261027/05-contract-counterparty/report.html",
+  "transport": "local MCP servers via loopback streamable-http",
+  "cache_used": false,
+  "call_count": 5,
+  "successful_data_calls": 5,
+  "empty_calls": 0,
+  "failed_calls": 0,
+  "checks": {
+    "issues": [],
+    "warnings": [],
+    "coverage_pct": 64,
+    "subject": {
+      "enterprise": "中国建筑第八工程局有限公司",
+      "matchKeyword": "中国建筑第八工程局有限公司",
+      "keywordType": "name",
+      "match_raw": "中国建筑第八工程局有限公司",
+      "resolved": true,
+      "resolve_reason": "视为企业全称",
+      "fuzzy_total": null,
+      "requires_confirmation": false
+    },
+    "title": "中国建筑第八工程局有限公司 企业大数据报告",
+    "data_mode": null,
+    "metrics": [
+      {
+        "label": "注册资本",
+        "value": "人民币 152.1800 亿元",
+        "hint": "工商公示注册资本"
+      },
+      {
+        "label": "实缴资本",
+        "value": "人民币 152.1800 亿元",
+        "hint": "工商公示实缴资本"
+      },
+      {
+        "label": "资本实缴率",
+        "value": "100.0%",
+        "hint": "实缴资本/注册资本",
+        "delta": "实缴"
+      },
+      {
+        "label": "成立时间",
+        "value": "1998-09-29",
+        "hint": "工商公示"
+      },
+      {
+        "label": "经营状态",
+        "value": "营业",
+        "hint": "存续/在业/注销等"
+      },
+      {
+        "label": "对外投资",
+        "value": "278 家",
+        "hint": "对外投资企业数"
+      },
+      {
+        "label": "分支机构",
+        "value": "40 家",
+        "hint": "分支机构数"
+      },
+      {
+        "label": "主要人员",
+        "value": "8 人",
+        "hint": "工商公示主要人员"
+      },
+      {
+        "label": "股东数量",
+        "value": "1 个",
+        "hint": "工商公示股东"
+      }
+    ],
+    "quality_report": {
+      "total_sections": 11,
+      "populated_sections": 7,
+      "empty_sections": 4,
+      "coverage_pct": 64
+    },
+    "unregistered_tools": [],
+    "checks": {
+      "json_html_markdown": true,
+      "explicit_live": true,
+      "tool_calls_recorded": 5,
+      "offline_scripts": true,
+      "independent_rerender": true,
+      "offline_browser": true
+    }
+  },
+  "status": "passed",
+  "source_hashes": {
+    "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+    "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+    "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+    "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+    "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+  },
+  "technical_status": "passed",
+  "audited_at": "2026-10-27T11:12:59+08:00",
+  "evidence_binding": {
+    "report.json": "88635bc92f6093a143136ed522f2ec83587de961224e999f32d1dfd92f536e8a",
+    "report.html": "588f2e3eec02fc7deb8e64c6774f0d3c471778dd3281191d513d3a09076a5dbb",
+    "report.md": "0cbf90f56e23ac9ccf32edb25ddb5fa2c3fe1a0d7cb22ab7bd9144ffaa1897c2",
+    "calls.json": "acc814d128ba4ed27a7e9b50434a2d803803e7908b35ad1f555cd658064723f4",
+    "result.json": "519e3d8027eccd18c1491d69b959eae18ba5431d68752601544403435c3d4883",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  },
+  "business_review": {
+    "id": "05-contract-counterparty",
+    "verdict": "acceptable",
+    "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+    "checks": [
+      {
+        "expectation": "企业全称与分支机构名称应清楚区分",
+        "status": "pass",
+        "evidence": "subject.enterprise 为“中国建筑第八工程局有限公司”；branches 中名称均作为“分支机构”单列，未与主体混写。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+      },
+      {
+        "expectation": "主要人员只展示上游返回范围",
+        "status": "pass",
+        "evidence": "主要人员工具 row_count/reported_total=8/8，core_analysis.key_persons 与 metrics 均为 8 人。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+      },
+      {
+        "expectation": "报告中不得暴露 MCP 参数或凭证",
+        "status": "pass",
+        "evidence": "report.json/report.md/report.html 未出现 secret、signature、token、authorization、密钥或签名内容；仅呈现业务数据。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+      }
+    ],
+    "issues": [],
+    "evidence_binding": {
+      "report.json": "88635bc92f6093a143136ed522f2ec83587de961224e999f32d1dfd92f536e8a",
+      "report.html": "588f2e3eec02fc7deb8e64c6774f0d3c471778dd3281191d513d3a09076a5dbb",
+      "report.md": "0cbf90f56e23ac9ccf32edb25ddb5fa2c3fe1a0d7cb22ab7bd9144ffaa1897c2",
+      "calls.json": "acc814d128ba4ed27a7e9b50434a2d803803e7908b35ad1f555cd658064723f4",
+      "result.json": "519e3d8027eccd18c1491d69b959eae18ba5431d68752601544403435c3d4883",
+      "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+    }
+  }
+}

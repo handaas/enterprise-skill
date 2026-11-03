@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "skill": "enterprise-skill",
+  "case_id": "03-customer-kyb",
+  "title": "大客户 KYB 建档",
+  "invocation_id": "1793069061995509000",
+  "provenance": {
+    "integrator_id": "683e574805537ace146cc05e",
+    "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+    "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+    "scenario_sha256": "3c11c0881a70d8bb458dc5ac2fe6c059c30a2bbda47488602054a276d54a2636",
+    "skill_source_hashes": {
+      "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+      "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+      "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+      "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+      "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+    },
+    "upstream_source_hashes": {
+      "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    },
+    "upstream_dependency_hashes": {
+      "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    }
+  },
+  "source_changed_during_run": false,
+  "started_at": "2026-10-27T10:44:22+08:00",
+  "elapsed_seconds": 3.519,
+  "returncode": 0,
+  "exception_type": null,
+  "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '腾讯科技（深圳）有限公司' --output enterprise-skill/output/live-replaced-20261027/03-customer-kyb/report.json --report-output enterprise-skill/output/live-replaced-20261027/03-customer-kyb/report.html",
+  "transport": "local MCP servers via loopback streamable-http",
+  "cache_used": false,
+  "call_count": 5,
+  "successful_data_calls": 5,
+  "empty_calls": 0,
+  "failed_calls": 0,
+  "checks": {
+    "issues": [],
+    "warnings": [],
+    "coverage_pct": 64,
+    "subject": {
+      "enterprise": "腾讯科技（深圳）有限公司",
+      "matchKeyword": "腾讯科技（深圳）有限公司",
+      "keywordType": "name",
+      "match_raw": "腾讯科技（深圳）有限公司",
+      "resolved": true,
+      "resolve_reason": "视为企业全称",
+      "fuzzy_total": null,
+      "requires_confirmation": false
+    },
+    "title": "腾讯科技（深圳）有限公司 企业大数据报告",
+    "data_mode": null,
+    "metrics": [
+      {
+        "label": "注册资本",
+        "value": "美元 200.00 万元",
+        "hint": "工商公示注册资本"
+      },
+      {
+        "label": "实缴资本",
+        "value": "美元 200.00 万元",
+        "hint": "工商公示实缴资本"
+      },
+      {
+        "label": "资本实缴率",
+        "value": "100.0%",
+        "hint": "实缴资本/注册资本",
+        "delta": "实缴"
+      },
+      {
+        "label": "成立时间",
+        "value": "2000-02-24",
+        "hint": "工商公示"
+      },
+      {
+        "label": "经营状态",
+        "value": "营业",
+        "hint": "存续/在业/注销等"
+      },
+      {
+        "label": "对外投资",
+        "value": "17 家",
+        "hint": "对外投资企业数"
+      },
+      {
+        "label": "分支机构",
+        "value": "5 家",
+        "hint": "分支机构数"
+      },
+      {
+        "label": "主要人员",
+        "value": "5 人",
+        "hint": "工商公示主要人员"
+      },
+      {
+        "label": "股东数量",
+        "value": "1 个",
+        "hint": "工商公示股东"
+      }
+    ],
+    "quality_report": {
+      "total_sections": 11,
+      "populated_sections": 7,
+      "empty_sections": 4,
+      "coverage_pct": 64
+    },
+    "unregistered_tools": [],
+    "checks": {
+      "json_html_markdown": true,
+      "explicit_live": true,
+      "tool_calls_recorded": 5,
+      "offline_scripts": true,
+      "independent_rerender": true,
+      "offline_browser": true
+    }
+  },
+  "status": "passed",
+  "source_hashes": {
+    "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+    "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+    "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+    "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+    "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+  },
+  "technical_status": "passed",
+  "audited_at": "2026-10-27T11:12:59+08:00",
+  "evidence_binding": {
+    "report.json": "0cadf0f667684776541a69095acd891dc4396da35bc3921cc9c62f8bf70e19f0",
+    "report.html": "792e2f951db960f1479d3823ba279435a267f9b30864f514a31ad31a94f3ed90",
+    "report.md": "2f0ecf42864b56595c12018fd4719579812afdb65eb72340e7fdccdb8e77575e",
+    "calls.json": "f3284428a39f6dc74de76e2d9da2574deff8541053c776b579b68b357ab5bf34",
+    "result.json": "11d2acac8c5ce6363c1417450790ca5bd8b8cb222378e70ea690adff719639f3",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  },
+  "business_review": {
+    "id": "03-customer-kyb",
+    "verdict": "acceptable",
+    "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+    "checks": [
+      {
+        "expectation": "企业名称、经营状态、成立时间等字段应按源数据展示",
+        "status": "pass",
+        "evidence": "metrics 明示注册/实缴资本、成立时间 2000-02-24、经营状态“营业”，subject 为腾讯科技（深圳）有限公司。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+      },
+      {
+        "expectation": "业务、标签与简介不得被拼接成未经证实的结论",
+        "status": "pass",
+        "evidence": "摘要以“企业简介”标注上游简介并截断展示；insights 对数量含义均附核验边界，未把业务、标签拼接成确定性结论。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+      },
+      {
+        "expectation": "JSON、HTML、Markdown 的核心指标应一致",
+        "status": "pass",
+        "evidence": "report.json 的资本、日期、经营状态和数量指标均可在 report.md 与 report.html 中检索到；result.checks.independent_rerender=true。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+      }
+    ],
+    "issues": [],
+    "evidence_binding": {
+      "report.json": "0cadf0f667684776541a69095acd891dc4396da35bc3921cc9c62f8bf70e19f0",
+      "report.html": "792e2f951db960f1479d3823ba279435a267f9b30864f514a31ad31a94f3ed90",
+      "report.md": "2f0ecf42864b56595c12018fd4719579812afdb65eb72340e7fdccdb8e77575e",
+      "calls.json": "f3284428a39f6dc74de76e2d9da2574deff8541053c776b579b68b357ab5bf34",
+      "result.json": "11d2acac8c5ce6363c1417450790ca5bd8b8cb222378e70ea690adff719639f3",
+      "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+    }
+  }
+}

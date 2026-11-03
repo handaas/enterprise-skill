@@ -1,0 +1,198 @@
+{
+  "schema_version": 2,
+  "run_id": "live-replaced-20261027",
+  "review_scope": "仅筛选原已验收的正向案例；未重新调用或改写业务结论",
+  "cases": [
+    {
+      "id": "01-investment-dd",
+      "verdict": "acceptable",
+      "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+      "checks": [
+        {
+          "expectation": "主体名称与工商基础信息应可识别",
+          "status": "pass",
+          "evidence": "report.subject.enterprise、title 与基础信息均为“华为技术有限公司”，metrics 展示成立时间 1987-09-15、经营状态“营业”等主体信息。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "股东与对外投资应分章节呈现且不混为一类",
+          "status": "pass",
+          "evidence": "core_analysis.holders 为 1 条，investments 为 50 条且各自在“股东信息”“对外投资”章节；未把两类关系合并。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "分支机构和主要人员只统计实际返回记录",
+          "status": "pass",
+          "evidence": "calls.json 显示分支工具 row_count/reported_total=27/27、人员工具=32/32；报告 branches=27、key_persons=32。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "金额、地址和日期应可读而非原始 JSON",
+          "status": "pass",
+          "evidence": "报告 metrics/enterprise_base 将资本格式化为“人民币 411.4113 亿元”，并展示地址和 ISO 日期；无原始 JSON 串。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=华为技术有限公司，match_raw=华为技术有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=54; enterprise_get_enterprise_branch_info:data,rows=27,total=27; enterprise_get_enterprise_main_person_info:data,rows=32,total=32]；metrics=[注册资本=人民币 411.4113 亿元; 实缴资本=人民币 410.4113 亿元; 资本实缴率=99.8%; 成立时间=1987-09-15; 经营状态=营业; 对外投资=54 家; 分支机构=27 家; 主要人员=32 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=27, key_persons=32]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        }
+      ],
+      "issues": [],
+      "evidence_binding": {
+        "report.json": "6156487e8f632a082ed708822c84799e0a1e18d6c27ed0b469e5ee008fe6384e",
+        "report.html": "9bba9b6d91d93859be3934bba0977bb55a2e3ee6470688d466aa1e00f69b3888",
+        "report.md": "40e4ff311963f5d7fb4a4c2fd2023708a92d2b85c4685b4ad0789ad1e0a38174",
+        "calls.json": "bc5bf7c0a4263861c691109867a59585b6720338508f7a8ef573a8b842d2d827",
+        "result.json": "fc8112175c1b684e2bd7696531d19d6ea727f7d230aa891ff9a4d19654eb0284",
+        "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+      }
+    },
+    {
+      "id": "02-supplier-onboarding",
+      "verdict": "acceptable",
+      "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+      "checks": [
+        {
+          "expectation": "报告标题与主体全称一致",
+          "status": "pass",
+          "evidence": "report.title 为“宁德时代新能源科技股份有限公司 企业大数据报告”，与 subject.enterprise 完全一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+        },
+        {
+          "expectation": "股东、分支、人员章节应避免重复记录",
+          "status": "pass",
+          "evidence": "holders 5 条、branches 8 条、key_persons 15 条均逐条 JSON 唯一；未发现重复展示记录。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+        },
+        {
+          "expectation": "quality_report 覆盖率应与非空章节一致",
+          "status": "pass",
+          "evidence": "data_source.quality_report 为 total=11、populated=10、empty=1、coverage_pct=91；与 core_analysis.sections 的实质非空情况一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+        }
+      ],
+      "issues": [],
+      "evidence_binding": {
+        "report.json": "d52df21ed878133af633c913c9e32ddad2cec29ee1bd800ec15762174f8f76a0",
+        "report.html": "90d8d0247bcbb3f456210ab06c5c2fb10793e583e095e5053a182150ccb02740",
+        "report.md": "8e54122b6755c3962cb150dbac65f939acf352eacbb31bcdf2756d8b5f0f1e89",
+        "calls.json": "00d86138a061f39edc4af56cb824adea63ab6d8dc4d35ed445f1ef10441f8235",
+        "result.json": "8e1cbc321573913f124a5f3ff8be22b14dcaebb2b0f1667fa4a7b635b95416b1",
+        "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+      }
+    },
+    {
+      "id": "03-customer-kyb",
+      "verdict": "acceptable",
+      "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+      "checks": [
+        {
+          "expectation": "企业名称、经营状态、成立时间等字段应按源数据展示",
+          "status": "pass",
+          "evidence": "metrics 明示注册/实缴资本、成立时间 2000-02-24、经营状态“营业”，subject 为腾讯科技（深圳）有限公司。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "业务、标签与简介不得被拼接成未经证实的结论",
+          "status": "pass",
+          "evidence": "摘要以“企业简介”标注上游简介并截断展示；insights 对数量含义均附核验边界，未把业务、标签拼接成确定性结论。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "JSON、HTML、Markdown 的核心指标应一致",
+          "status": "pass",
+          "evidence": "report.json 的资本、日期、经营状态和数量指标均可在 report.md 与 report.html 中检索到；result.checks.independent_rerender=true。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=腾讯科技（深圳）有限公司，match_raw=腾讯科技（深圳）有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=17,total=17; enterprise_get_enterprise_branch_info:data,rows=5,total=5; enterprise_get_enterprise_main_person_info:data,rows=5,total=5]；metrics=[注册资本=美元 200.00 万元; 实缴资本=美元 200.00 万元; 资本实缴率=100.0%; 成立时间=2000-02-24; 经营状态=营业; 对外投资=17 家; 分支机构=5 家; 主要人员=5 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=17, branches=5, key_persons=5]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        }
+      ],
+      "issues": [],
+      "evidence_binding": {
+        "report.json": "0cadf0f667684776541a69095acd891dc4396da35bc3921cc9c62f8bf70e19f0",
+        "report.html": "792e2f951db960f1479d3823ba279435a267f9b30864f514a31ad31a94f3ed90",
+        "report.md": "2f0ecf42864b56595c12018fd4719579812afdb65eb72340e7fdccdb8e77575e",
+        "calls.json": "f3284428a39f6dc74de76e2d9da2574deff8541053c776b579b68b357ab5bf34",
+        "result.json": "11d2acac8c5ce6363c1417450790ca5bd8b8cb222378e70ea690adff719639f3",
+        "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+      }
+    },
+    {
+      "id": "04-listed-company",
+      "verdict": "acceptable",
+      "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+      "checks": [
+        {
+          "expectation": "股东和投资对象的名称与金额字段应可读",
+          "status": "pass",
+          "evidence": "holders 和 investments 使用名称、金额/比例、状态及日期等可读字段；未展示原始嵌套对象。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+        },
+        {
+          "expectation": "列表数量必须基于返回记录而非臆测总量",
+          "status": "pass",
+          "evidence": "calls.json 对投资返回 row_count=15、reported_total=15；metrics“对外投资 15 家”，分支 3、人员 7 也与调用返回一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+        },
+        {
+          "expectation": "空字段使用缺失语义而非数字零",
+          "status": "pass",
+          "evidence": "记录中的缺失字段使用“-”或不生成指标，未把未知金额/日期替换为数值 0。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+        }
+      ],
+      "issues": [],
+      "evidence_binding": {
+        "report.json": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+        "report.html": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+        "report.md": "8df38e3aec4677d84d5836fb375eb6c036b0c11243dbd38064e7b4b2851f79c6",
+        "calls.json": "4035d37eb356a0fcc15987c965a8209d8935befd2a79728b6e26030907a04783",
+        "result.json": "63d86864ddc0e782eaf405d1bdac1806169f4576d1d1c1076552ac13e79c49c3",
+        "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+      }
+    },
+    {
+      "id": "05-contract-counterparty",
+      "verdict": "acceptable",
+      "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+      "checks": [
+        {
+          "expectation": "企业全称与分支机构名称应清楚区分",
+          "status": "pass",
+          "evidence": "subject.enterprise 为“中国建筑第八工程局有限公司”；branches 中名称均作为“分支机构”单列，未与主体混写。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "主要人员只展示上游返回范围",
+          "status": "pass",
+          "evidence": "主要人员工具 row_count/reported_total=8/8，core_analysis.key_persons 与 metrics 均为 8 人。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "报告中不得暴露 MCP 参数或凭证",
+          "status": "pass",
+          "evidence": "report.json/report.md/report.html 未出现 secret、signature、token、authorization、密钥或签名内容；仅呈现业务数据。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=中国建筑第八工程局有限公司，match_raw=中国建筑第八工程局有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=278; enterprise_get_enterprise_branch_info:data,rows=40,total=40; enterprise_get_enterprise_main_person_info:data,rows=8,total=8]；metrics=[注册资本=人民币 152.1800 亿元; 实缴资本=人民币 152.1800 亿元; 资本实缴率=100.0%; 成立时间=1998-09-29; 经营状态=营业; 对外投资=278 家; 分支机构=40 家; 主要人员=8 人; 股东数量=1 个]；sections=[enterprise_base=14, identity_tags=2, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=40, key_persons=8]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        }
+      ],
+      "issues": [],
+      "evidence_binding": {
+        "report.json": "88635bc92f6093a143136ed522f2ec83587de961224e999f32d1dfd92f536e8a",
+        "report.html": "588f2e3eec02fc7deb8e64c6774f0d3c471778dd3281191d513d3a09076a5dbb",
+        "report.md": "0cbf90f56e23ac9ccf32edb25ddb5fa2c3fe1a0d7cb22ab7bd9144ffaa1897c2",
+        "calls.json": "acc814d128ba4ed27a7e9b50434a2d803803e7908b35ad1f555cd658064723f4",
+        "result.json": "519e3d8027eccd18c1491d69b959eae18ba5431d68752601544403435c3d4883",
+        "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+      }
+    },
+    {
+      "id": "06-brand-company",
+      "verdict": "acceptable",
+      "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+      "checks": [
+        {
+          "expectation": "工商主体与品牌名称不得混淆",
+          "status": "pass",
+          "evidence": "subject、title 和 caliber.match_target 均为工商主体“北京京东世纪贸易有限公司”，未用“京东”替代法定主体。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=北京京东世纪贸易有限公司，match_raw=北京京东世纪贸易有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=190; enterprise_get_enterprise_branch_info:data,rows=11,total=11; enterprise_get_enterprise_main_person_info:data,rows=2,total=2]；metrics=[注册资本=美元 13.9799 亿元; 实缴资本=美元 13.9799 亿元; 资本实缴率=100.0%; 成立时间=2007-04-20; 经营状态=营业; 对外投资=190 家; 分支机构=11 家; 主要人员=2 人; 股东数量=1 个]；sections=[enterprise_base=13, identity_tags=1, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=11, key_persons=2]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "对外投资章节应保留被投企业名称和可用比例/金额",
+          "status": "pass",
+          "evidence": "investments 50 条均保留被投企业名称，关系字段展示投资比例；metrics 披露上游总量 190 家而非样本数。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=北京京东世纪贸易有限公司，match_raw=北京京东世纪贸易有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=190; enterprise_get_enterprise_branch_info:data,rows=11,total=11; enterprise_get_enterprise_main_person_info:data,rows=2,total=2]；metrics=[注册资本=美元 13.9799 亿元; 实缴资本=美元 13.9799 亿元; 资本实缴率=100.0%; 成立时间=2007-04-20; 经营状态=营业; 对外投资=190 家; 分支机构=11 家; 主要人员=2 人; 股东数量=1 个]；sections=[enterprise_base=13, identity_tags=1, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=11, key_persons=2]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        },
+        {
+          "expectation": "摘要应由实际非空指标生成",
+          "status": "pass",
+          "evidence": "summary 只引用非空资本、成立时间、经营状态和企业简介，并说明已给出实际返回的投资/分支/人员明细。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=北京京东世纪贸易有限公司，match_raw=北京京东世纪贸易有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=190; enterprise_get_enterprise_branch_info:data,rows=11,total=11; enterprise_get_enterprise_main_person_info:data,rows=2,total=2]；metrics=[注册资本=美元 13.9799 亿元; 实缴资本=美元 13.9799 亿元; 资本实缴率=100.0%; 成立时间=2007-04-20; 经营状态=营业; 对外投资=190 家; 分支机构=11 家; 主要人员=2 人; 股东数量=1 个]；sections=[enterprise_base=13, identity_tags=1, description=1, business=0, tags=1, shareholder_top=0, shareholding_type=0, shareholder_entity=0, holders=1, investments=50, branches=11, key_persons=2]；quality_report={\"total_sections\":11,\"populated_sections\":7,\"empty_sections\":4,\"coverage_pct\":64}。"
+        }
+      ],
+      "issues": [],
+      "evidence_binding": {
+        "report.json": "52a9cd930d04d527aa6fa0044dc5e929eed586f4aedb3261d4505ca8784a31aa",
+        "report.html": "081c506d52649402295740936f9fe10db5b18d7909ae35a037c304af4c59e394",
+        "report.md": "3e2afa32eaa7bff922c43325d05fe016f5292879c5f161ace08e4e5d5adaaca1",
+        "calls.json": "1f71050e2b622fcbe94902f6638734c56ad9e00b682b42a6f28052bbfb2602af",
+        "result.json": "71ed51311f1fcf10a70ec87448b141971e53e9c2709ae815bcd7cf591a63d962",
+        "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+      }
+    }
+  ]
+}

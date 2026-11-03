@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "skill": "enterprise-skill",
+  "case_id": "04-listed-company",
+  "title": "上市公司主体结构核查",
+  "invocation_id": "1793069062158431000",
+  "provenance": {
+    "integrator_id": "683e574805537ace146cc05e",
+    "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+    "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+    "scenario_sha256": "4b9c6886dd2ecb973fcf6c54f6108a31eb4eb947b063911377ba2c659e4a39aa",
+    "skill_source_hashes": {
+      "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+      "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+      "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+      "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+      "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+    },
+    "upstream_source_hashes": {
+      "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    },
+    "upstream_dependency_hashes": {
+      "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    }
+  },
+  "source_changed_during_run": false,
+  "started_at": "2026-10-27T10:44:22+08:00",
+  "elapsed_seconds": 3.586,
+  "returncode": 0,
+  "exception_type": null,
+  "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '贵州茅台酒股份有限公司' --output enterprise-skill/output/live-replaced-20261027/04-listed-company/report.json --report-output enterprise-skill/output/live-replaced-20261027/04-listed-company/report.html",
+  "transport": "local MCP servers via loopback streamable-http",
+  "cache_used": false,
+  "call_count": 5,
+  "successful_data_calls": 5,
+  "empty_calls": 0,
+  "failed_calls": 0,
+  "checks": {
+    "issues": [],
+    "warnings": [],
+    "coverage_pct": 91,
+    "subject": {
+      "enterprise": "贵州茅台酒股份有限公司",
+      "matchKeyword": "贵州茅台酒股份有限公司",
+      "keywordType": "name",
+      "match_raw": "贵州茅台酒股份有限公司",
+      "resolved": true,
+      "resolve_reason": "视为企业全称",
+      "fuzzy_total": null,
+      "requires_confirmation": false
+    },
+    "title": "贵州茅台酒股份有限公司 企业大数据报告",
+    "data_mode": null,
+    "metrics": [
+      {
+        "label": "注册资本",
+        "value": "人民币 12.5227 亿元",
+        "hint": "工商公示注册资本"
+      },
+      {
+        "label": "实缴资本",
+        "value": "人民币 12.5008 亿元",
+        "hint": "工商公示实缴资本"
+      },
+      {
+        "label": "资本实缴率",
+        "value": "99.8%",
+        "hint": "实缴资本/注册资本",
+        "delta": "实缴"
+      },
+      {
+        "label": "成立时间",
+        "value": "1999-11-20",
+        "hint": "工商公示"
+      },
+      {
+        "label": "经营状态",
+        "value": "营业",
+        "hint": "存续/在业/注销等"
+      },
+      {
+        "label": "对外投资",
+        "value": "15 家",
+        "hint": "对外投资企业数"
+      },
+      {
+        "label": "分支机构",
+        "value": "3 家",
+        "hint": "分支机构数"
+      },
+      {
+        "label": "主要人员",
+        "value": "7 人",
+        "hint": "工商公示主要人员"
+      },
+      {
+        "label": "股东数量",
+        "value": "2 个",
+        "hint": "工商公示股东"
+      }
+    ],
+    "quality_report": {
+      "total_sections": 11,
+      "populated_sections": 10,
+      "empty_sections": 1,
+      "coverage_pct": 91
+    },
+    "unregistered_tools": [],
+    "checks": {
+      "json_html_markdown": true,
+      "explicit_live": true,
+      "tool_calls_recorded": 5,
+      "offline_scripts": true,
+      "independent_rerender": true,
+      "offline_browser": true
+    }
+  },
+  "status": "passed",
+  "source_hashes": {
+    "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+    "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+    "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+    "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+    "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+  },
+  "technical_status": "passed",
+  "audited_at": "2026-10-27T11:12:59+08:00",
+  "evidence_binding": {
+    "report.json": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+    "report.html": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+    "report.md": "8df38e3aec4677d84d5836fb375eb6c036b0c11243dbd38064e7b4b2851f79c6",
+    "calls.json": "4035d37eb356a0fcc15987c965a8209d8935befd2a79728b6e26030907a04783",
+    "result.json": "63d86864ddc0e782eaf405d1bdac1806169f4576d1d1c1076552ac13e79c49c3",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  },
+  "business_review": {
+    "id": "04-listed-company",
+    "verdict": "acceptable",
+    "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+    "checks": [
+      {
+        "expectation": "股东和投资对象的名称与金额字段应可读",
+        "status": "pass",
+        "evidence": "holders 和 investments 使用名称、金额/比例、状态及日期等可读字段；未展示原始嵌套对象。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+      },
+      {
+        "expectation": "列表数量必须基于返回记录而非臆测总量",
+        "status": "pass",
+        "evidence": "calls.json 对投资返回 row_count=15、reported_total=15；metrics“对外投资 15 家”，分支 3、人员 7 也与调用返回一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+      },
+      {
+        "expectation": "空字段使用缺失语义而非数字零",
+        "status": "pass",
+        "evidence": "记录中的缺失字段使用“-”或不生成指标，未把未知金额/日期替换为数值 0。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+      }
+    ],
+    "issues": [],
+    "evidence_binding": {
+      "report.json": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+      "report.html": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+      "report.md": "8df38e3aec4677d84d5836fb375eb6c036b0c11243dbd38064e7b4b2851f79c6",
+      "calls.json": "4035d37eb356a0fcc15987c965a8209d8935befd2a79728b6e26030907a04783",
+      "result.json": "63d86864ddc0e782eaf405d1bdac1806169f4576d1d1c1076552ac13e79c49c3",
+      "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+    }
+  }
+}

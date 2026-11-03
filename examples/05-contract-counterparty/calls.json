@@ -1,0 +1,267 @@
+[
+  {
+    "tool": "enterprise_get_enterprise_base_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "中国建筑第八工程局有限公司"
+    },
+    "invocation_id": "1793069065220208000",
+    "elapsed_seconds": 1.069,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "base_info",
+      "desc",
+      "tag"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "base_info.payAmountCount.amount",
+        "value": 15218000000.0
+      },
+      {
+        "path": "base_info.regCapital.value",
+        "value": 15218000000.0
+      },
+      {
+        "path": "tag.isAnomaly",
+        "value": 0
+      },
+      {
+        "path": "tag.isHighTechEnterprise",
+        "value": 1
+      }
+    ],
+    "response_sha256": "dfca44e2fec768b071eae3a6f198d4dc310b8451b9c6ae877ef8b5fe43a89705"
+  },
+  {
+    "tool": "enterprise_get_enterprise_holder_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "中国建筑第八工程局有限公司"
+    },
+    "invocation_id": "1793069065220208000",
+    "elapsed_seconds": 1.554,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "holderList"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "holderList[0].payAmount.value",
+        "value": 3539621500.0
+      },
+      {
+        "path": "holderList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "holderList[0].subscriptionDetail.amount",
+        "value": 15218000000.0
+      }
+    ],
+    "response_sha256": "c89f2ea2416dd53e42d6c0e79b3e4e0c9141037f6820753c08f024501b1e8ae9"
+  },
+  {
+    "tool": "enterprise_get_enterprise_invest_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "中国建筑第八工程局有限公司"
+    },
+    "invocation_id": "1793069065220208000",
+    "elapsed_seconds": 1.523,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 50,
+    "reported_total": 278,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[0].regCapital.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "resultList[0].subscriptionAmount.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "resultList[1].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[1].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[1].regCapital.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "resultList[1].subscriptionAmount.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "resultList[2].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[2].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[2].regCapital.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "resultList[2].subscriptionAmount.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "resultList[3].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[3].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[3].regCapital.value",
+        "value": 5100000.0
+      },
+      {
+        "path": "resultList[3].subscriptionAmount.value",
+        "value": 5100000.0
+      },
+      {
+        "path": "resultList[4].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[4].regCapital.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "resultList[4].subscriptionAmount.value",
+        "value": 100000000.0
+      },
+      {
+        "path": "total",
+        "value": 278
+      }
+    ],
+    "response_sha256": "e0b98a5101f9ce001c9e60fa4dd4ae55ceee96ef239bc3bd43c12aa0a548753c"
+  },
+  {
+    "tool": "enterprise_get_enterprise_branch_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "中国建筑第八工程局有限公司"
+    },
+    "invocation_id": "1793069065220208000",
+    "elapsed_seconds": 0.965,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 40,
+    "reported_total": 40,
+    "numeric_evidence": [
+      {
+        "path": "total",
+        "value": 40
+      }
+    ],
+    "response_sha256": "050bfa990d3007c39f7c8291d1f0dbdee159ede24f67543b3029122002785d65"
+  },
+  {
+    "tool": "enterprise_get_enterprise_main_person_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "中国建筑第八工程局有限公司"
+    },
+    "invocation_id": "1793069065220208000",
+    "elapsed_seconds": 0.613,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 8,
+    "reported_total": 8,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].relatedEnterpriseCurrentNum",
+        "value": 3
+      },
+      {
+        "path": "resultList[0].relatedEnterpriseHistoryNum",
+        "value": 5
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseCurrentNum",
+        "value": 2
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseHistoryNum",
+        "value": 3
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseCurrentNum",
+        "value": 3
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseHistoryNum",
+        "value": 8
+      },
+      {
+        "path": "resultList[3].relatedEnterpriseCurrentNum",
+        "value": 2
+      },
+      {
+        "path": "resultList[3].relatedEnterpriseHistoryNum",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseCurrentNum",
+        "value": 3
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseHistoryNum",
+        "value": 5
+      },
+      {
+        "path": "total",
+        "value": 8
+      }
+    ],
+    "response_sha256": "647fc68932edcb9ff12e02f75ebf01e01fb08c6434c548053f9dabcc21316f07"
+  }
+]

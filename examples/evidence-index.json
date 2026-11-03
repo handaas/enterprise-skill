@@ -1,0 +1,113 @@
+{
+  "run_id": "live-replaced-20261027",
+  "cases": [
+    {
+      "skill": "enterprise-skill",
+      "id": "01-investment-dd",
+      "status": "passed",
+      "positive_business_pass": true,
+      "files_sha256": {
+        "report.json": "6156487e8f632a082ed708822c84799e0a1e18d6c27ed0b469e5ee008fe6384e",
+        "report.html": "9bba9b6d91d93859be3934bba0977bb55a2e3ee6470688d466aa1e00f69b3888",
+        "report.md": "40e4ff311963f5d7fb4a4c2fd2023708a92d2b85c4685b4ad0789ad1e0a38174",
+        "calls.json": "bc5bf7c0a4263861c691109867a59585b6720338508f7a8ef573a8b842d2d827",
+        "result.json": "fc8112175c1b684e2bd7696531d19d6ea727f7d230aa891ff9a4d19654eb0284",
+        "audit.json": "9feb363e90f365f73706611a99968eb8039f7df922c2e25ba34aeb66e1710c78",
+        "acceptance.json": "c3b675fe6f1c23e7d830c701f2b6151c68d32f9c8c26f62d3d106b1bc43d0582",
+        "business-review.json": "bbba8b002f4428d57fb25ecab829a609e622ae804e2db640cbb5670d6ae034f3",
+        "browser-check.json": "d49b0b311bdb8e2dfdaae070057c969a500b6e9325ec53805523567d6bf31a69"
+      },
+      "audit_record": "../../test-records/live-replaced-20261027/01-investment-dd.md"
+    },
+    {
+      "skill": "enterprise-skill",
+      "id": "02-supplier-onboarding",
+      "status": "passed",
+      "positive_business_pass": true,
+      "files_sha256": {
+        "report.json": "d52df21ed878133af633c913c9e32ddad2cec29ee1bd800ec15762174f8f76a0",
+        "report.html": "90d8d0247bcbb3f456210ab06c5c2fb10793e583e095e5053a182150ccb02740",
+        "report.md": "8e54122b6755c3962cb150dbac65f939acf352eacbb31bcdf2756d8b5f0f1e89",
+        "calls.json": "00d86138a061f39edc4af56cb824adea63ab6d8dc4d35ed445f1ef10441f8235",
+        "result.json": "8e1cbc321573913f124a5f3ff8be22b14dcaebb2b0f1667fa4a7b635b95416b1",
+        "audit.json": "742f7253045589b965815480bccf9bb0300b8cda537a4ce572a9f9ecc2cd50b6",
+        "acceptance.json": "eca617672ee9f79613023a872f26d4420ea17ab40715bc2ec619717d0e6b21bf",
+        "business-review.json": "1cc5b75b1f299fe9eb0dbaa2b769f8e676b027ea6d3a77aa3525260b3bab28f4",
+        "browser-check.json": "0fe6464e4494dcd4d5758f004e28bd7cdf023ab64cec9a163138af8259a00b6f"
+      },
+      "audit_record": "../../test-records/live-replaced-20261027/02-supplier-onboarding.md"
+    },
+    {
+      "skill": "enterprise-skill",
+      "id": "03-customer-kyb",
+      "status": "passed",
+      "positive_business_pass": true,
+      "files_sha256": {
+        "report.json": "0cadf0f667684776541a69095acd891dc4396da35bc3921cc9c62f8bf70e19f0",
+        "report.html": "792e2f951db960f1479d3823ba279435a267f9b30864f514a31ad31a94f3ed90",
+        "report.md": "2f0ecf42864b56595c12018fd4719579812afdb65eb72340e7fdccdb8e77575e",
+        "calls.json": "f3284428a39f6dc74de76e2d9da2574deff8541053c776b579b68b357ab5bf34",
+        "result.json": "11d2acac8c5ce6363c1417450790ca5bd8b8cb222378e70ea690adff719639f3",
+        "audit.json": "20ed2b114cd6e84d1fc3abc75e0ec93a796b0dd4164164167f49844c422d880a",
+        "acceptance.json": "1059734671927c754e1428b71d8f94a55776e85a2273ce745cc86b188ad3d758",
+        "business-review.json": "13ce116870fb891f8bf3aec4b0a40204f6c2c4a809da1ab086424c5ce684bbbe",
+        "browser-check.json": "267949cb73fecaf5c1d2ee847025313ab8ee4fa04e42fa873b9e4a9a6f1a0fe8"
+      },
+      "audit_record": "../../test-records/live-replaced-20261027/03-customer-kyb.md"
+    },
+    {
+      "skill": "enterprise-skill",
+      "id": "04-listed-company",
+      "status": "passed",
+      "positive_business_pass": true,
+      "files_sha256": {
+        "report.json": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+        "report.html": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+        "report.md": "8df38e3aec4677d84d5836fb375eb6c036b0c11243dbd38064e7b4b2851f79c6",
+        "calls.json": "4035d37eb356a0fcc15987c965a8209d8935befd2a79728b6e26030907a04783",
+        "result.json": "63d86864ddc0e782eaf405d1bdac1806169f4576d1d1c1076552ac13e79c49c3",
+        "audit.json": "05fec4ca37a45a19cd760fbf325506f763b9bc9146d28d885be1b7e817fcc2c9",
+        "acceptance.json": "528e019ac38598649fa25c9d179f00b9126b177488db21e05812984f30497695",
+        "business-review.json": "b0859ba9582f32e17a1c1c757925e2213d2ea4e49f039a0abb8f24061e663b68",
+        "browser-check.json": "aecc88cef7a315ed48a64692bedf82072a76f61443d966f85418775cf59122d5"
+      },
+      "audit_record": "../../test-records/live-replaced-20261027/04-listed-company.md"
+    },
+    {
+      "skill": "enterprise-skill",
+      "id": "05-contract-counterparty",
+      "status": "passed",
+      "positive_business_pass": true,
+      "files_sha256": {
+        "report.json": "88635bc92f6093a143136ed522f2ec83587de961224e999f32d1dfd92f536e8a",
+        "report.html": "588f2e3eec02fc7deb8e64c6774f0d3c471778dd3281191d513d3a09076a5dbb",
+        "report.md": "0cbf90f56e23ac9ccf32edb25ddb5fa2c3fe1a0d7cb22ab7bd9144ffaa1897c2",
+        "calls.json": "acc814d128ba4ed27a7e9b50434a2d803803e7908b35ad1f555cd658064723f4",
+        "result.json": "519e3d8027eccd18c1491d69b959eae18ba5431d68752601544403435c3d4883",
+        "audit.json": "c427453097e01d59a3166b9cfbcfcaff060f79af5a3f9505e9fbe9b076d26787",
+        "acceptance.json": "20a9cca8f5d3f0f613a5df425f12ccb59bead95f1f93d49af5c215ea1b8c57c3",
+        "business-review.json": "0a393def0b268764357fdfb0871bbaed29eb6bb11997c3c95280ddb7f2fa5641",
+        "browser-check.json": "740bb1416730527ab8f542ede4af4e8c4be3af923e987c719690669fe13c9966"
+      },
+      "audit_record": "../../test-records/live-replaced-20261027/05-contract-counterparty.md"
+    },
+    {
+      "skill": "enterprise-skill",
+      "id": "06-brand-company",
+      "status": "passed",
+      "positive_business_pass": true,
+      "files_sha256": {
+        "report.json": "52a9cd930d04d527aa6fa0044dc5e929eed586f4aedb3261d4505ca8784a31aa",
+        "report.html": "081c506d52649402295740936f9fe10db5b18d7909ae35a037c304af4c59e394",
+        "report.md": "3e2afa32eaa7bff922c43325d05fe016f5292879c5f161ace08e4e5d5adaaca1",
+        "calls.json": "1f71050e2b622fcbe94902f6638734c56ad9e00b682b42a6f28052bbfb2602af",
+        "result.json": "71ed51311f1fcf10a70ec87448b141971e53e9c2709ae815bcd7cf591a63d962",
+        "audit.json": "fe83558c377372e9385ceb22712b1ce8a2c97ae8cf11042a2b124ebffdeeba6e",
+        "acceptance.json": "77954ec412d47f90a897efb0344eb45882f6fe1bd5c9a3bec326a5a1e6e6ae31",
+        "business-review.json": "ce069c51d9613089f18ec228e57db8e20e27540468d53130803c7ad5cf6df84e",
+        "browser-check.json": "44cce1287e6895d8423896d60679d72d6314be38a4827d0335eead98352a53c7"
+      },
+      "audit_record": "../../test-records/live-replaced-20261027/06-brand-company.md"
+    }
+  ]
+}

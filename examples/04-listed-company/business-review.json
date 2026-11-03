@@ -1,0 +1,31 @@
+{
+  "id": "04-listed-company",
+  "verdict": "acceptable",
+  "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+  "checks": [
+    {
+      "expectation": "股东和投资对象的名称与金额字段应可读",
+      "status": "pass",
+      "evidence": "holders 和 investments 使用名称、金额/比例、状态及日期等可读字段；未展示原始嵌套对象。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+    },
+    {
+      "expectation": "列表数量必须基于返回记录而非臆测总量",
+      "status": "pass",
+      "evidence": "calls.json 对投资返回 row_count=15、reported_total=15；metrics“对外投资 15 家”，分支 3、人员 7 也与调用返回一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+    },
+    {
+      "expectation": "空字段使用缺失语义而非数字零",
+      "status": "pass",
+      "evidence": "记录中的缺失字段使用“-”或不生成指标，未把未知金额/日期替换为数值 0。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=贵州茅台酒股份有限公司，match_raw=贵州茅台酒股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=15,total=15; enterprise_get_enterprise_branch_info:data,rows=3,total=3; enterprise_get_enterprise_main_person_info:data,rows=7,total=7]；metrics=[注册资本=人民币 12.5227 亿元; 实缴资本=人民币 12.5008 亿元; 资本实缴率=99.8%; 成立时间=1999-11-20; 经营状态=营业; 对外投资=15 家; 分支机构=3 家; 主要人员=7 人; 股东数量=2 个]；sections=[enterprise_base=13, identity_tags=3, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=1, shareholder_entity=2, holders=2, investments=15, branches=3, key_persons=7]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+    }
+  ],
+  "issues": [],
+  "evidence_binding": {
+    "report.json": "951c59dc1a1f995ed6301222fa60cc63b73d1eb41c1429e88b89d62d5de2dde9",
+    "report.html": "9e42a11bfa63f12b9e23eadc4a130ee09f48135b926f3d1697034b0b9db876f6",
+    "report.md": "8df38e3aec4677d84d5836fb375eb6c036b0c11243dbd38064e7b4b2851f79c6",
+    "calls.json": "4035d37eb356a0fcc15987c965a8209d8935befd2a79728b6e26030907a04783",
+    "result.json": "63d86864ddc0e782eaf405d1bdac1806169f4576d1d1c1076552ac13e79c49c3",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  }
+}

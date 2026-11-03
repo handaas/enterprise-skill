@@ -1,0 +1,243 @@
+[
+  {
+    "tool": "enterprise_get_enterprise_base_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "北京京东世纪贸易有限公司"
+    },
+    "invocation_id": "1793069065645594000",
+    "elapsed_seconds": 2.193,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "base_info",
+      "desc",
+      "tag"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "base_info.payAmountCount.amount",
+        "value": 1397985564.0
+      },
+      {
+        "path": "base_info.regCapital.value",
+        "value": 1397985564.0
+      },
+      {
+        "path": "tag.isAnomaly",
+        "value": 0
+      },
+      {
+        "path": "tag.isGazelleEnterprise",
+        "value": 1
+      }
+    ],
+    "response_sha256": "740a94d0b9f67fa997d257d8187c2912f9906830b9b35d9739d73a8fcf422bf4"
+  },
+  {
+    "tool": "enterprise_get_enterprise_holder_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "北京京东世纪贸易有限公司"
+    },
+    "invocation_id": "1793069065645594000",
+    "elapsed_seconds": 1.524,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "holderList"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "holderList[0].payAmount.value",
+        "value": 1397985564.0
+      },
+      {
+        "path": "holderList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "holderList[0].subscriptionDetail.amount",
+        "value": 1397985564.0
+      }
+    ],
+    "response_sha256": "48cacde814e14c04014b647ccda8f03e3e92b50b110ee8e9fd1da1d6bb3f043d"
+  },
+  {
+    "tool": "enterprise_get_enterprise_invest_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "北京京东世纪贸易有限公司"
+    },
+    "invocation_id": "1793069065645594000",
+    "elapsed_seconds": 0.968,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 50,
+    "reported_total": 190,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[0].regCapital.value",
+        "value": 1000000.0
+      },
+      {
+        "path": "resultList[0].subscriptionAmount.value",
+        "value": 1000000.0
+      },
+      {
+        "path": "resultList[1].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[1].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[1].regCapital.value",
+        "value": 1000000.0
+      },
+      {
+        "path": "resultList[1].subscriptionAmount.value",
+        "value": 1000000.0
+      },
+      {
+        "path": "resultList[2].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[2].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[2].regCapital.value",
+        "value": 20000000.0
+      },
+      {
+        "path": "resultList[2].subscriptionAmount.value",
+        "value": 20000000.0
+      },
+      {
+        "path": "resultList[3].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[3].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[3].regCapital.value",
+        "value": 100000.0
+      },
+      {
+        "path": "resultList[3].subscriptionAmount.value",
+        "value": 100000.0
+      },
+      {
+        "path": "resultList[4].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[4].regCapital.value",
+        "value": 20000000.0
+      },
+      {
+        "path": "resultList[4].subscriptionAmount.value",
+        "value": 20000000.0
+      },
+      {
+        "path": "total",
+        "value": 190
+      }
+    ],
+    "response_sha256": "1d0884d1516a359c78cd433c369a432a67e02c7f62ba6624655b1e78cff792f1"
+  },
+  {
+    "tool": "enterprise_get_enterprise_branch_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "北京京东世纪贸易有限公司"
+    },
+    "invocation_id": "1793069065645594000",
+    "elapsed_seconds": 0.612,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 11,
+    "reported_total": 11,
+    "numeric_evidence": [
+      {
+        "path": "total",
+        "value": 11
+      }
+    ],
+    "response_sha256": "84af50f7d73a1ebdcde01426a31f43480ce0004a9cf799cfa80fb298257b947d"
+  },
+  {
+    "tool": "enterprise_get_enterprise_main_person_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "北京京东世纪贸易有限公司"
+    },
+    "invocation_id": "1793069065645594000",
+    "elapsed_seconds": 0.427,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 2,
+    "reported_total": 2,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].relatedEnterpriseCurrentNum",
+        "value": 3
+      },
+      {
+        "path": "resultList[0].relatedEnterpriseHistoryNum",
+        "value": 3
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseCurrentNum",
+        "value": 15
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseHistoryNum",
+        "value": 72
+      },
+      {
+        "path": "total",
+        "value": 2
+      }
+    ],
+    "response_sha256": "49597bafc98ef4a165dd51eb030d2f1445780f528619201757727b0c570f8a9a"
+  }
+]

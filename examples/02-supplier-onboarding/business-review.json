@@ -1,0 +1,31 @@
+{
+  "id": "02-supplier-onboarding",
+  "verdict": "acceptable",
+  "summary": "本轮正式真实产物已逐项复核；结论限于上游公开数据、本次分页样本及报告声明口径。",
+  "checks": [
+    {
+      "expectation": "报告标题与主体全称一致",
+      "status": "pass",
+      "evidence": "report.title 为“宁德时代新能源科技股份有限公司 企业大数据报告”，与 subject.enterprise 完全一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+    },
+    {
+      "expectation": "股东、分支、人员章节应避免重复记录",
+      "status": "pass",
+      "evidence": "holders 5 条、branches 8 条、key_persons 15 条均逐条 JSON 唯一；未发现重复展示记录。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+    },
+    {
+      "expectation": "quality_report 覆盖率应与非空章节一致",
+      "status": "pass",
+      "evidence": "data_source.quality_report 为 total=11、populated=10、empty=1、coverage_pct=91；与 core_analysis.sections 的实质非空情况一致。 本轮实际产物：technical_status=passed，successful_data_calls=5，subject.enterprise=宁德时代新能源科技股份有限公司，match_raw=宁德时代新能源科技股份有限公司，resolved=True；calls=[enterprise_get_enterprise_base_info:data,rows=None,total=None; enterprise_get_enterprise_holder_info:data,rows=None,total=None; enterprise_get_enterprise_invest_info:data,rows=50,total=159; enterprise_get_enterprise_branch_info:data,rows=8,total=8; enterprise_get_enterprise_main_person_info:data,rows=15,total=15]；metrics=[注册资本=人民币 45.6361 亿元; 实缴资本=人民币 4.0000 亿元; 资本实缴率=8.8%; 成立时间=2011-12-16; 经营状态=营业; 对外投资=159 家; 分支机构=8 家; 主要人员=15 人; 股东数量=5 个]；sections=[enterprise_base=14, identity_tags=4, description=1, business=0, tags=1, shareholder_top=10, shareholding_type=2, shareholder_entity=2, holders=5, investments=50, branches=8, key_persons=15]；quality_report={\"total_sections\":11,\"populated_sections\":10,\"empty_sections\":1,\"coverage_pct\":91}。"
+    }
+  ],
+  "issues": [],
+  "evidence_binding": {
+    "report.json": "d52df21ed878133af633c913c9e32ddad2cec29ee1bd800ec15762174f8f76a0",
+    "report.html": "90d8d0247bcbb3f456210ab06c5c2fb10793e583e095e5053a182150ccb02740",
+    "report.md": "8e54122b6755c3962cb150dbac65f939acf352eacbb31bcdf2756d8b5f0f1e89",
+    "calls.json": "00d86138a061f39edc4af56cb824adea63ab6d8dc4d35ed445f1ef10441f8235",
+    "result.json": "8e1cbc321573913f124a5f3ff8be22b14dcaebb2b0f1667fa4a7b635b95416b1",
+    "source_manifest_sha256": "014e0c39ccd221d4b037bfafc75dc705b73521da54c003be18fa8ca62d4dab92"
+  }
+}

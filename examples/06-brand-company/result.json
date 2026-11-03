@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "skill": "enterprise-skill",
+  "case_id": "06-brand-company",
+  "title": "品牌合作主体识别",
+  "invocation_id": "1793069065645594000",
+  "provenance": {
+    "integrator_id": "683e574805537ace146cc05e",
+    "runner_sha256": "05777c2f2b0791cb5157aef691206606dade8df7af3b17212285b7ae74632a66",
+    "credential_policy_sha256": "bcabf08a1ca92f28357c0e57a8bae9bfa910eb1d4b204d8195ee3b7a77106eed",
+    "scenario_sha256": "4251571a7fb1bd85e249a4e245ab7db41b333b29dff8d68bb38301a3c30e486a",
+    "skill_source_hashes": {
+      "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+      "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+      "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+      "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+      "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+    },
+    "upstream_source_hashes": {
+      "enterprise-mcp-server": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    },
+    "upstream_dependency_hashes": {
+      "enterprise-mcp-server/server/mcp_server.py": "09953383194a4e48706af21c2c5b2c6e728f20df35c8c8c2f53c8d8f6c81e722"
+    }
+  },
+  "source_changed_during_run": false,
+  "started_at": "2026-10-27T10:44:25+08:00",
+  "elapsed_seconds": 5.822,
+  "returncode": 0,
+  "exception_type": null,
+  "command": "python3 enterprise-skill/scripts/compose_report.py --enterprise '北京京东世纪贸易有限公司' --output enterprise-skill/output/live-replaced-20261027/06-brand-company/report.json --report-output enterprise-skill/output/live-replaced-20261027/06-brand-company/report.html",
+  "transport": "local MCP servers via loopback streamable-http",
+  "cache_used": false,
+  "call_count": 5,
+  "successful_data_calls": 5,
+  "empty_calls": 0,
+  "failed_calls": 0,
+  "checks": {
+    "issues": [],
+    "warnings": [],
+    "coverage_pct": 64,
+    "subject": {
+      "enterprise": "北京京东世纪贸易有限公司",
+      "matchKeyword": "北京京东世纪贸易有限公司",
+      "keywordType": "name",
+      "match_raw": "北京京东世纪贸易有限公司",
+      "resolved": true,
+      "resolve_reason": "视为企业全称",
+      "fuzzy_total": null,
+      "requires_confirmation": false
+    },
+    "title": "北京京东世纪贸易有限公司 企业大数据报告",
+    "data_mode": null,
+    "metrics": [
+      {
+        "label": "注册资本",
+        "value": "美元 13.9799 亿元",
+        "hint": "工商公示注册资本"
+      },
+      {
+        "label": "实缴资本",
+        "value": "美元 13.9799 亿元",
+        "hint": "工商公示实缴资本"
+      },
+      {
+        "label": "资本实缴率",
+        "value": "100.0%",
+        "hint": "实缴资本/注册资本",
+        "delta": "实缴"
+      },
+      {
+        "label": "成立时间",
+        "value": "2007-04-20",
+        "hint": "工商公示"
+      },
+      {
+        "label": "经营状态",
+        "value": "营业",
+        "hint": "存续/在业/注销等"
+      },
+      {
+        "label": "对外投资",
+        "value": "190 家",
+        "hint": "对外投资企业数"
+      },
+      {
+        "label": "分支机构",
+        "value": "11 家",
+        "hint": "分支机构数"
+      },
+      {
+        "label": "主要人员",
+        "value": "2 人",
+        "hint": "工商公示主要人员"
+      },
+      {
+        "label": "股东数量",
+        "value": "1 个",
+        "hint": "工商公示股东"
+      }
+    ],
+    "quality_report": {
+      "total_sections": 11,
+      "populated_sections": 7,
+      "empty_sections": 4,
+      "coverage_pct": 64
+    },
+    "unregistered_tools": [],
+    "checks": {
+      "json_html_markdown": true,
+      "explicit_live": true,
+      "tool_calls_recorded": 5,
+      "offline_scripts": true,
+      "independent_rerender": true
+    }
+  },
+  "status": "passed",
+  "source_hashes": {
+    "scripts/common.py": "2b227ff6e83edab8958eaea4f912c65ccdd753c36666a06e0945fb111f2f7d58",
+    "scripts/compose_report.py": "5d9cbb4562c6a1db8f7f5d31d2806ec898b8bfbc2972c5ca3f09fcf55397b5d9",
+    "scripts/mcp_client.py": "9e6a41c3fef4ce41aca1b051813c62ee74195142448d1f6753851960d9a19231",
+    "scripts/render_report.py": "d4393b95ca419a0095fbb2f280476552535c8379f6d2b29ae265cb63d0df0355",
+    "scripts/validate_config.py": "0373279f2397deebba3407ef0264937ef626a84d6d627c708227e0aa6443b034"
+  }
+}

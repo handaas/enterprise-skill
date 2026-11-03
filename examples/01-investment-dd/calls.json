@@ -1,0 +1,251 @@
+[
+  {
+    "tool": "enterprise_get_enterprise_base_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "华为技术有限公司"
+    },
+    "invocation_id": "1793069057356215000",
+    "elapsed_seconds": 0.968,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "base_info",
+      "desc",
+      "tag"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "base_info.payAmountCount.amount",
+        "value": 41041131820.0
+      },
+      {
+        "path": "base_info.regCapital.value",
+        "value": 41141131820.0
+      },
+      {
+        "path": "tag.isAnomaly",
+        "value": 0
+      },
+      {
+        "path": "tag.isHighTechEnterprise",
+        "value": 1
+      }
+    ],
+    "response_sha256": "f129a4852d80335a7f0c20e9becf8ce00d796606d4faecd2c1fe9e13178c84dc"
+  },
+  {
+    "tool": "enterprise_get_enterprise_holder_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "华为技术有限公司"
+    },
+    "invocation_id": "1793069057356215000",
+    "elapsed_seconds": 1.051,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "holderList"
+    ],
+    "row_count": null,
+    "reported_total": null,
+    "numeric_evidence": [
+      {
+        "path": "holderList[0].payAmount.value",
+        "value": 40541131800.0
+      },
+      {
+        "path": "holderList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "holderList[0].subscriptionDetail.amount",
+        "value": 41141131820.0
+      }
+    ],
+    "response_sha256": "bc3be2a1afb4e26d106da3c8559eb258e90c9128b89e5d78b1def677a5c545bb"
+  },
+  {
+    "tool": "enterprise_get_enterprise_invest_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "华为技术有限公司"
+    },
+    "invocation_id": "1793069057356215000",
+    "elapsed_seconds": 1.001,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 50,
+    "reported_total": 54,
+    "numeric_evidence": [
+      {
+        "path": "resultList[0].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[0].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[0].regCapital.value",
+        "value": 5100000000.0
+      },
+      {
+        "path": "resultList[0].subscriptionAmount.value",
+        "value": 5100000000.0
+      },
+      {
+        "path": "resultList[1].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[1].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[1].regCapital.value",
+        "value": 2000000000.0
+      },
+      {
+        "path": "resultList[1].subscriptionAmount.value",
+        "value": 2000000000.0
+      },
+      {
+        "path": "resultList[2].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[2].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[2].regCapital.value",
+        "value": 200000000.0
+      },
+      {
+        "path": "resultList[2].subscriptionAmount.value",
+        "value": 200000000.0
+      },
+      {
+        "path": "resultList[3].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[3].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[3].regCapital.value",
+        "value": 12000000.0
+      },
+      {
+        "path": "resultList[3].subscriptionAmount.value",
+        "value": 12000000.0
+      },
+      {
+        "path": "resultList[4].isListed",
+        "value": 0
+      },
+      {
+        "path": "resultList[4].ratio",
+        "value": 1.0
+      },
+      {
+        "path": "resultList[4].regCapital.value",
+        "value": 15000000.0
+      },
+      {
+        "path": "resultList[4].subscriptionAmount.value",
+        "value": 15000000.0
+      },
+      {
+        "path": "total",
+        "value": 54
+      }
+    ],
+    "response_sha256": "7cd3d2f7dab3e0f9f3e9e6cdb3e2d5cc698e816bcd64772612099df1b9ebd167"
+  },
+  {
+    "tool": "enterprise_get_enterprise_branch_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "华为技术有限公司"
+    },
+    "invocation_id": "1793069057356215000",
+    "elapsed_seconds": 0.635,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 27,
+    "reported_total": 27,
+    "numeric_evidence": [
+      {
+        "path": "total",
+        "value": 27
+      }
+    ],
+    "response_sha256": "0abb109187cf1ba6c99b390047f599e92854ec0ef6cae1060262fee6050260df"
+  },
+  {
+    "tool": "enterprise_get_enterprise_main_person_info",
+    "domain": null,
+    "arguments": {
+      "keyword": "华为技术有限公司"
+    },
+    "invocation_id": "1793069057356215000",
+    "elapsed_seconds": 0.699,
+    "status": "data",
+    "error_category": null,
+    "result_type": "dict",
+    "top_level_fields": [
+      "resultList",
+      "total"
+    ],
+    "row_count": 32,
+    "reported_total": 32,
+    "numeric_evidence": [
+      {
+        "path": "resultList[1].relatedEnterpriseCurrentNum",
+        "value": 5
+      },
+      {
+        "path": "resultList[1].relatedEnterpriseHistoryNum",
+        "value": 4
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseCurrentNum",
+        "value": 2
+      },
+      {
+        "path": "resultList[2].relatedEnterpriseHistoryNum",
+        "value": 28
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseCurrentNum",
+        "value": 2
+      },
+      {
+        "path": "resultList[4].relatedEnterpriseHistoryNum",
+        "value": 3
+      },
+      {
+        "path": "total",
+        "value": 32
+      }
+    ],
+    "response_sha256": "b726e9a125ba8da182b5156e496ff0d43bb136c39e4747a3906623ba16f6162b"
+  }
+]
