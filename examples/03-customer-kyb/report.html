@@ -37,6 +37,7 @@
     .biz-metric .m-tag.t-down { color:#dc2626; }
     .biz-metric .m-tag.t-neutral { color:#6366f1; }
     .biz-metric .m-value { color:#0b3768; font-size:26px; line-height:1.1; font-weight:900; letter-spacing:-.02em; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; margin-top:auto; }
+    .biz-metric .m-hint { color:#64748b; font-size:11px; line-height:1.5; margin-top:6px; text-align:left; }
     .biz-metric .m-value .m-tag.t-up { color:#16a34a; }
     .biz-metric .m-value .m-tag.t-down { color:#dc2626; }
     .biz-metric .m-value .m-tag.t-neutral { color:#6366f1; }
@@ -218,8 +219,10 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
   var status=window.__handaas_chart_status={state:'waiting',total:0,ready:0,failed:0};
   var timer=null, retries=0, MAX_RETRIES=100;
   var layoutRetries=0, MAX_LAYOUT_RETRIES=50;
-  var PALETTE=['#0b5ca8','#0284c7','#0b3768','#d97706','#059669','#dc2626','#7c3aed','#db2777','#0891b2','#65a30d'];
-  var FONTS='-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif';
+  var MSG_LOADING='图表库正在加载，数据明细仍可查看。';
+  var MSG_MISSING='图表交互不可用，已保留静态图表，数据明细仍可查看。';
+  var MSG_LAYOUT='图表等待布局完成后渲染，数据明细仍可查看。';
+  var MSG_FAILED='图表交互初始化失败，已保留静态图表，数据明细仍可查看。';
   function summarize(nodes){
     status.total=nodes.length;status.ready=0;status.failed=0;
     nodes.forEach(function(el){
@@ -229,18 +232,40 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     status.state=status.ready===status.total?'ready':
       (status.ready+status.failed===status.total?(status.ready?'degraded':'error'):'waiting');
   }
+  function frameOf(el){
+    var p=el.parentElement;
+    if(p&&(' '+p.className+' ').indexOf(' chart-frame ')>-1){return p;}
+    return null;
+  }
+  function setStatus(el,msg){
+    var f=frameOf(el);
+    if(f){
+      var p=f.querySelector('.chart-status');
+      if(p){p.textContent=msg;}
+    }else{
+      el.textContent=msg;
+    }
+  }
   function raf(fn){if(window.requestAnimationFrame){window.requestAnimationFrame(fn);}else{fn();}}
+  function hasGeometry(chart,el){
+    if(!chart || chart.getWidth()<2 || chart.getHeight()<2){return false;}
+    var svg=el.querySelector('svg');
+    if(!svg){return false;}
+    return !!svg.querySelector('path,rect,circle,line,text,polygon,polyline');
+  }
   function boot(){
     if(document.readyState==='loading'){return;}
     var nodes=document.querySelectorAll('.chart-canvas');
     if(!nodes.length){summarize(nodes);return;}
-    if(!window.echarts || typeof window.echarts.init!=='function'){
+    if(!window.echarts || typeof window.echarts.init!=='function' || typeof window.handaasChartOption!=='function'){
       var exhausted=retries>=MAX_RETRIES;
       nodes.forEach(function(el){
         if(el.__handaas_chart_ready){return;}
         el.__handaas_dependency_error=true;
         el.setAttribute('data-chart-state',exhausted?'error':'waiting');
-        el.textContent=exhausted?'图表库加载失败或不可用，请查看数据明细或重新生成离线报告。':'图表库正在加载，数据明细仍可查看。';
+        setStatus(el,exhausted?MSG_MISSING:MSG_LOADING);
+        var f=frameOf(el);
+        if(f){f.setAttribute('data-chart-state',exhausted?'error':'static');}
       });
       summarize(nodes);
       if(!exhausted && timer===null){
@@ -253,6 +278,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     var pendingLayout=0;
     nodes.forEach(function(el){
       if(el.__handaas_chart_ready){return;}
+      var f=frameOf(el);
       if(el.getAttribute('data-chart-state')==='error' && !el.__handaas_dependency_error){return;}
       if(window.ResizeObserver && !el.__handaas_resize_observer){
         el.__handaas_resize_observer=new ResizeObserver(function(){
@@ -264,7 +290,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
       }
       if((el.getClientRects && el.getClientRects().length===0) || el.clientWidth<2 || el.clientHeight<2){
         el.setAttribute('data-chart-state','waiting');
-        el.textContent='图表等待布局完成后渲染，数据明细仍可查看。';
+        setStatus(el,MSG_LAYOUT);
+        if(f){f.setAttribute('data-chart-state','static');}
         pendingLayout++;
         return;
       }
@@ -274,46 +301,36 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         if(!raw){throw new Error('Missing chart configuration');}
         // getAttribute already decodes HTML entities; a second decode corrupts labels.
         var spec=JSON.parse(raw);
-        if(['line','bar','pie','gauge','radar'].indexOf(spec.type)<0){throw new Error('Unsupported chart type');}
+        var opt=window.handaasChartOption(spec);
+        if(!opt){throw new Error('Unsupported chart type');}
         el.textContent='';
         chart=window.echarts.init(el,null,{renderer:'svg'});
-      var opt={color:PALETTE,tooltip:{trigger: spec.type==='pie'?'item':'axis'},textStyle:{fontFamily:FONTS,fontSize:12,color:'#334155'},grid:{left:48,right:24,top:30,bottom:40},legend:{top:0,textStyle:{fontSize:11}}};
-      if(spec.type==='line'){
-        opt.xAxis={type:'category',data:spec.x,axisLabel:{fontSize:11,interval:0,rotate: spec.x && spec.x.length>6?35:0}};
-        opt.yAxis={type:'value'};
-        opt.series=spec.series.map(function(s){return{name:s.name,type:'line',smooth:true,areaStyle: spec.area?{opacity:0.18}:undefined,stack: spec.stack?s.name:undefined,data:s.data,label:{show:true,position:'top',fontSize:11}};});
-        if(spec.stack){opt.tooltip={trigger:'axis'};}
-      }else if(spec.type==='bar'){
-        var horiz=spec.orient==='h';
-        var cats=spec.names, vals=spec.values;
-        if(horiz){opt.yAxis={type:'category',data:cats,axisLabel:{fontSize:11}};opt.xAxis={type:'value'};opt.grid={left:120,right:30,top:20,bottom:30};}
-        else{opt.xAxis={type:'category',data:cats,axisLabel:{fontSize:11,interval:0,rotate: cats&&cats.length>6?35:0}};opt.yAxis={type:'value'};}
-        opt.series=[{type:'bar',data:vals,itemStyle:{color:PALETTE[0]},label:{show:true,position: horiz?'right':'top',fontSize:11},barMaxWidth:42}];
-        opt.tooltip={trigger:'axis',axisPointer:{type:'shadow'}};
-      }else if(spec.type==='pie'){
-        opt.series=[{type:'pie',radius: spec.donut?['42%','68%']:'68%',center:['50%','55%'],data:spec.data,itemStyle:{borderColor:'#fff',borderWidth:2},label:{fontSize:11,formatter:'{b}: {c} ({d}%)'}}];
-        opt.legend={bottom:0,textStyle:{fontSize:11}};
-        opt.tooltip={trigger:'item',formatter:'{b}: {c} ({d}%)'};
-      }else if(spec.type==='gauge'){
-        var v=spec.value, mx=spec.max||100;
-        var col=v/mx>0.66?'#dc2626':(v/mx>0.33?'#d97706':'#059669');
-        opt.series=[{type:'gauge',min:0,max:mx,progress:{show:true,width:14,itemStyle:{color:col}},axisLine:{lineStyle:{width:14}},axisTick:{show:false},splitLine:{length:8,lineStyle:{color:'#fff'}},pointer:{width:5},detail:{valueAnimation:true,formatter:'{value}',fontSize:28,color:col,offsetCenter:[0,'30%']},data:[{value:v,name:spec.level||''}],title:{fontSize:13,color:'#475569',offsetCenter:[0,'62%']}}];
-      }else if(spec.type==='radar'){
-        opt.radar={indicator:spec.indicators,radius:'62%',axisName:{color:'#475569',fontSize:11},splitArea:{areaStyle:{color:['#f8fbff','#eef4fb']}}};
-        opt.series=[{type:'radar',areaStyle:{opacity:0.18},data:spec.series}];
-      }
         chart.setOption(opt);
+        // Real synchronous flush: setOption already flushes internally, but
+        // drive the zrender painter once more before the geometry gate. Any
+        // throw here falls into catch and keeps the static SVG.
+        var zr=chart.getZr();
+        if(zr && typeof zr.flush==='function'){zr.flush();}
+        // Never reveal the interactive layer (and never hide the static SVG)
+        // before real SVG geometry exists on the canvas overlay.
+        if(!hasGeometry(chart,el)){throw new Error('Empty chart geometry');}
         el.__handaas_chart=chart;
         el.__handaas_chart_ready=true;
         el.__handaas_dependency_error=false;
         el.setAttribute('data-chart-state','ready');
         window.__echarts_instances.push(chart);
+        if(f){
+          f.setAttribute('data-chart-state','ready');
+          var p=f.querySelector('.chart-status');
+          if(p){p.textContent='';}
+        }
         raf(function(){try{chart.resize();}catch(ignored){}});
       }catch(e){
         if(chart && typeof chart.dispose==='function'){try{chart.dispose();}catch(ignored){}}
         el.__handaas_dependency_error=false;
         el.setAttribute('data-chart-state','error');
-        el.textContent='图表绘制失败，请查看数据明细。';
+        setStatus(el,MSG_FAILED);
+        if(f){f.setAttribute('data-chart-state','error');}
       }
     });
     summarize(nodes);
@@ -363,10 +380,10 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         <h1>腾讯科技（深圳）有限公司 企业大数据报告</h1>
         <p class="report-lead">本报告以“腾讯科技（深圳）有限公司”为分析对象，基于工商公示及公开数据，系统呈现企业基础信息、股权结构、对外投资、分支机构与主要人员等核心维度。关键指标包括：注册资本 美元 200.00 万元、实缴资本 美元 200.00 万元、资本实缴率 100.0%、成立时间 2000-02-24、经营状态 营业。企业简介：腾讯互动娱乐，全球领先的综合互动娱乐服务品牌，旗下涵盖腾讯游戏、腾讯文学、腾讯动漫等多个互动娱乐业务平台，致力为用户提供包括网络游戏、文学、动漫、戏剧、影视等在内的多元化、高品质综合互动娱乐体验。立足“泛娱乐”战略，腾讯互动娱乐持续基于互联…报告同时给出对外投资、分支机构与核心人员的结构化明细，便于进一步尽调、关联分析与决策参考</p>
         <div class="abstract-box">报告涵盖查询对象、数据总览、核心分析、代表性记录与结构洞察，所有数据均标注口径与来源。</div>
-        <div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2000-02-24</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">17 家</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">5 家</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">5 人</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div>
+        <div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span><span class="m-hint">工商公示注册资本</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span><span class="m-hint">工商公示实缴资本</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span><span class="m-hint">实缴资本/注册资本</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2000-02-24</span><span class="m-hint">工商公示</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span><span class="m-hint">存续/在业/注销等</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">17 家</span><span class="m-hint">对外投资企业数</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">5 家</span><span class="m-hint">分支机构数</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">5 人</span><span class="m-hint">工商公示主要人员</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span><span class="m-hint">工商公示股东</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div>
         <ul class="exec-list"><li>该数量只描述工商数据中的投资主体数；扩张、多元化或活跃度需结合投资时间、金额和经营状态核验。</li><li>该数量只描述工商公示分支机构；实际区域经营范围和活跃程度需结合地址及经营状态核验。</li><li>股东数量本身不能判断控制权或治理稳定性；需结合持股比例、表决权和协议安排核验。</li><li>该比例仅按返回的实缴资本与注册资本计算，不能单独证明企业偿付能力、股东履约能力或未来出资风险。</li><li>以上仅为上游返回标识，不能据此推断创新能力、市场地位、融资能力或异常原因；需核验对应认定和公示记录。</li></ul>
         <div class="cover-findings"><h3 class="cover-findings-title">核心发现</h3><div class="cover-findings-grid"><div class="finding-card"><p class="f-label">对外投资布局</p><p class="f-text">企业对外投资 17 家。</p></div><div class="finding-card"><p class="f-label">分支机构网络</p><p class="f-text">工商公示分支机构 5 家。</p></div><div class="finding-card"><p class="f-label">股权结构</p><p class="f-text">工商公示股东 1 个。</p></div><div class="finding-card"><p class="f-label">资本实缴情况</p><p class="f-text">注册资本 美元 200.00 万元，实缴资本 美元 200.00 万元，资本实缴率 100.0%。</p></div></div></div>
-        <div class="cover-dimensions"><span class="dim-label">分析维度</span><div class="dim-tags"><span class="dim-tag">企业基本信息</span><span class="dim-tag">身份标签</span><span class="dim-tag">企业简介</span><span class="dim-tag">经营范围</span><span class="dim-tag">股东持股排行</span><span class="dim-tag">股东类型分布</span><span class="dim-tag">股东性质分布</span><span class="dim-tag">股东信息</span><span class="dim-tag">对外投资</span><span class="dim-tag">分支机构</span><span class="dim-tag">主要人员</span></div></div>
+        <div class="cover-dimensions"><span class="dim-label">分析维度</span><div class="dim-tags"><span class="dim-tag">企业基本信息</span><span class="dim-tag">身份标签</span><span class="dim-tag">企业简介</span><span class="dim-tag">股东信息</span><span class="dim-tag">对外投资</span><span class="dim-tag">分支机构</span><span class="dim-tag">主要人员</span></div></div>
         <div class="cover-scope-bar"><span class="scope-item"><em>数据产品</em>工商基础信息、企业简介、企业业务、企业标签、控股股东信息、对外投资信息、分支机构信息、主要人员信息</span><span class="scope-item"><em>覆盖范围</em>企业工商信息、简介、业务、企业标识标签、控股股东、对外投资、分支机构、主要人员</span></div>
       </section>
     </div>
@@ -374,8 +391,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
   <main class="research-doc">
     <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>报告摘要</h2><p class="biz-section-note">概述分析对象、数据覆盖范围与核心发现。</p></div><span class="biz-tag">Summary</span></div><p class="biz-summary">本报告以“腾讯科技（深圳）有限公司”为分析对象，基于工商公示及公开数据，系统呈现企业基础信息、股权结构、对外投资、分支机构与主要人员等核心维度。关键指标包括：注册资本 美元 200.00 万元、实缴资本 美元 200.00 万元、资本实缴率 100.0%、成立时间 2000-02-24、经营状态 营业。企业简介：腾讯互动娱乐，全球领先的综合互动娱乐服务品牌，旗下涵盖腾讯游戏、腾讯文学、腾讯动漫等多个互动娱乐业务平台，致力为用户提供包括网络游戏、文学、动漫、戏剧、影视等在内的多元化、高品质综合互动娱乐体验。立足“泛娱乐”战略，腾讯互动娱乐持续基于互联…报告同时给出对外投资、分支机构与核心人员的结构化明细，便于进一步尽调、关联分析与决策参考</p></section>
     <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>查询对象与口径</h2><p class="biz-section-note">说明匹配对象、匹配方式与数据范围。</p></div><span class="biz-tag">Caliber</span></div><div class="info-list"><div class="info-row"><span class="info-label">匹配对象</span><span class="info-value">腾讯科技（深圳）有限公司</span></div><div class="info-row"><span class="info-label">匹配方式</span><span class="info-value">企业全称精确匹配（keywordType=name）</span></div><div class="info-row"><span class="info-label">数据范围</span><span class="info-value">企业工商信息、简介、业务、企业标识标签、控股股东、对外投资、分支机构、主要人员</span></div><div class="info-row"><span class="info-label">局限说明</span><span class="info-value">数据来自工商公示及公开数据；少量字段可能存在更新延迟。</span></div></div></section>
-    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>数据总览</h2><p class="biz-section-note">关键指标一览。</p></div><span class="biz-tag">Metrics</span></div><div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2000-02-24</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">17 家</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">5 家</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">5 人</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div></section>
-    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>核心分析</h2><p class="biz-section-note">按维度展开目标核心数据与结构化明细。</p></div><span class="biz-tag">Analysis</span></div><h3 class="biz-subsection-title">身份标签</h3><div class="tag-row">{ &quot;高新技术企业&quot;: { &quot;value&quot;: &quot;是&quot;, &quot;flag&quot;: &quot;yes&quot; }, &quot;经营异常&quot;: { &quot;value&quot;: &quot;否&quot;, &quot;flag&quot;: &quot;no&quot; } }</div>
+    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>数据总览</h2><p class="biz-section-note">关键指标一览。</p></div><span class="biz-tag">Metrics</span></div><div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span><span class="m-hint">工商公示注册资本</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 200.00 万元</span><span class="m-hint">工商公示实缴资本</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span><span class="m-hint">实缴资本/注册资本</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2000-02-24</span><span class="m-hint">工商公示</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span><span class="m-hint">存续/在业/注销等</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">17 家</span><span class="m-hint">对外投资企业数</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">5 家</span><span class="m-hint">分支机构数</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">5 人</span><span class="m-hint">工商公示主要人员</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span><span class="m-hint">工商公示股东</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div></section>
+    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>核心分析</h2><p class="biz-section-note">按维度展开目标核心数据与结构化明细。</p></div><span class="biz-tag">Analysis</span></div><h3 class="biz-subsection-title">身份标签</h3><ul class="tag-row"><li>高新技术企业：value：是、flag：yes</li><li>经营异常：value：否、flag：no</li></ul>
 <h3 class="biz-subsection-title">企业简介</h3><p class="biz-summary">腾讯互动娱乐，全球领先的综合互动娱乐服务品牌，旗下涵盖腾讯游戏、腾讯文学、腾讯动漫等多个互动娱乐业务平台，致力为用户提供包括网络游戏、文学、动漫、戏剧、影视等在内的多元化、高品质综合互动娱乐体验。立足“泛娱乐”战略，腾讯互动娱乐持续基于互联网与移动互联网的多领域共生，打造明星IP（知识产权，IntellectualProperty）的粉丝经济，全面拥抱互动娱乐新时代，让想象绽放！！</p>
 <h3 class="biz-subsection-title">股东信息</h3><div class="table-wrap"><table><thead><tr><th>股东名称</th><th>股东类型</th><th>持股比例</th><th>认缴/实缴</th></tr></thead><tbody><tr><td>中霸集团有限公司</td><td>其他投资者</td><td>1.00%</td><td>2000000.0 万美元</td></tr></tbody></table></div>
 <h3 class="biz-subsection-title">对外投资</h3><div class="table-wrap"><table><thead><tr><th>被投资企业</th><th>成立日期</th><th>投资比例</th><th>注册资本</th><th>经营状态</th><th>所属地区</th></tr></thead><tbody><tr><td>深圳市腾讯网络信息技术有限公司</td><td>2017-12-22</td><td>1.00%</td><td>1000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市宝安区西乡街道蚝业社区“互联网+”未来科技城04街坊10栋5层</td></tr><tr><td>深圳市腾讯文化传媒有限公司</td><td>2017-08-03</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市宝安区西乡街道蚝业社区“互联网+”未来科技城04街坊10栋5层</td></tr><tr><td>合肥市腾讯信息科技有限公司</td><td>2011-03-15</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>安徽省合肥市高新区城西桥社区服中心望江西路900号中安创谷科技园一期A1楼18楼</td></tr><tr><td>广州腾讯科技有限公司</td><td>2014-12-31</td><td>1.00%</td><td>7000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>广州市海珠区新港中路397号自编72号(商业街F5-1)</td></tr><tr><td>深圳市美天影视传播有限公司</td><td>2017-05-24</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市前海深港合作区南山街道听海大道5212号腾讯数码大厦1栋(北塔)L3801</td></tr><tr><td>武汉市腾讯信息技术有限公司</td><td>2021-06-23</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>湖北省武汉市洪山区雄楚大道468号洪山数谷1-25层25楼2509A-01</td></tr><tr><td>深圳市腾讯魔方科技有限公司</td><td>2016-10-31</td><td>1.00%</td><td>1000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市前海深港合作区南山街道听海大道5212号腾讯数码大厦1栋(北塔)L3701</td></tr><tr><td>重庆腾讯信息技术有限公司</td><td>2013-10-16</td><td>1.00%</td><td>10.00 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>重庆市北碚区水土高新技术产业园云汉大道5号附40号</td></tr><tr><td>上海腾任科技有限公司</td><td>2019-09-05</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>上海市杨浦区杭州路741号16幢6258室</td></tr><tr><td>大连市世纪鲲鹏科技有限公司</td><td>2010-01-26</td><td>1.00%</td><td>1000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>辽宁省大连高新技术产业园区敬贤街26号地下2局部、地下1局部、1-22、机房层</td></tr><tr><td>深圳市腾讯信息技术有限公司</td><td>2014-08-07</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市前海深港合作区南山街道听海大道5212号腾讯数码大厦2栋(南塔)L501</td></tr><tr><td>深圳市保腾盛私募股权基金管理有限公司</td><td>2012-01-18</td><td>24.50%</td><td>1000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市前海深港合作区前湾一路1号A栋201室(入驻深圳市前海商务秘书有限公司)</td></tr><tr><td>深圳市高腾恒远投资管理有限公司</td><td>2014-09-18</td><td>20.00%</td><td>2.00 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市福田区华富街道莲花一村社区皇岗路5001号深业上城(南区)T2栋42层42055</td></tr><tr><td>深圳市优必选科技股份有限公司</td><td>2012-03-31</td><td>0.98%</td><td>5.03 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市南山区桃源街道长源社区学苑大道1001号南山智园C1栋2201</td></tr><tr><td>深圳市人保腾讯麦盛能源投资基金企业(有限合伙)</td><td>2012-03-20</td><td>-</td><td>100.00 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>深圳市前海深港合作区前湾一路1号A栋201室(入驻深圳市前海商务秘书有限公司)</td></tr><tr><td>大连世纪成讯科技有限公司</td><td>2011-09-20</td><td>1.00%</td><td>1000.00 万 人民币</td><td>注销 &gt; 注销</td><td>辽宁省大连市</td></tr><tr><td>武汉市世纪冲鸣科技有限公司</td><td>2011-09-15</td><td>1.00%</td><td>1000.00 万 人民币</td><td>注销 &gt; 注销</td><td>武汉市江夏经济开发区庙山阳光五路特2号</td></tr></tbody></table></div>

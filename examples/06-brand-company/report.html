@@ -37,6 +37,7 @@
     .biz-metric .m-tag.t-down { color:#dc2626; }
     .biz-metric .m-tag.t-neutral { color:#6366f1; }
     .biz-metric .m-value { color:#0b3768; font-size:26px; line-height:1.1; font-weight:900; letter-spacing:-.02em; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; margin-top:auto; }
+    .biz-metric .m-hint { color:#64748b; font-size:11px; line-height:1.5; margin-top:6px; text-align:left; }
     .biz-metric .m-value .m-tag.t-up { color:#16a34a; }
     .biz-metric .m-value .m-tag.t-down { color:#dc2626; }
     .biz-metric .m-value .m-tag.t-neutral { color:#6366f1; }
@@ -218,8 +219,10 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
   var status=window.__handaas_chart_status={state:'waiting',total:0,ready:0,failed:0};
   var timer=null, retries=0, MAX_RETRIES=100;
   var layoutRetries=0, MAX_LAYOUT_RETRIES=50;
-  var PALETTE=['#0b5ca8','#0284c7','#0b3768','#d97706','#059669','#dc2626','#7c3aed','#db2777','#0891b2','#65a30d'];
-  var FONTS='-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif';
+  var MSG_LOADING='图表库正在加载，数据明细仍可查看。';
+  var MSG_MISSING='图表交互不可用，已保留静态图表，数据明细仍可查看。';
+  var MSG_LAYOUT='图表等待布局完成后渲染，数据明细仍可查看。';
+  var MSG_FAILED='图表交互初始化失败，已保留静态图表，数据明细仍可查看。';
   function summarize(nodes){
     status.total=nodes.length;status.ready=0;status.failed=0;
     nodes.forEach(function(el){
@@ -229,18 +232,40 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     status.state=status.ready===status.total?'ready':
       (status.ready+status.failed===status.total?(status.ready?'degraded':'error'):'waiting');
   }
+  function frameOf(el){
+    var p=el.parentElement;
+    if(p&&(' '+p.className+' ').indexOf(' chart-frame ')>-1){return p;}
+    return null;
+  }
+  function setStatus(el,msg){
+    var f=frameOf(el);
+    if(f){
+      var p=f.querySelector('.chart-status');
+      if(p){p.textContent=msg;}
+    }else{
+      el.textContent=msg;
+    }
+  }
   function raf(fn){if(window.requestAnimationFrame){window.requestAnimationFrame(fn);}else{fn();}}
+  function hasGeometry(chart,el){
+    if(!chart || chart.getWidth()<2 || chart.getHeight()<2){return false;}
+    var svg=el.querySelector('svg');
+    if(!svg){return false;}
+    return !!svg.querySelector('path,rect,circle,line,text,polygon,polyline');
+  }
   function boot(){
     if(document.readyState==='loading'){return;}
     var nodes=document.querySelectorAll('.chart-canvas');
     if(!nodes.length){summarize(nodes);return;}
-    if(!window.echarts || typeof window.echarts.init!=='function'){
+    if(!window.echarts || typeof window.echarts.init!=='function' || typeof window.handaasChartOption!=='function'){
       var exhausted=retries>=MAX_RETRIES;
       nodes.forEach(function(el){
         if(el.__handaas_chart_ready){return;}
         el.__handaas_dependency_error=true;
         el.setAttribute('data-chart-state',exhausted?'error':'waiting');
-        el.textContent=exhausted?'图表库加载失败或不可用，请查看数据明细或重新生成离线报告。':'图表库正在加载，数据明细仍可查看。';
+        setStatus(el,exhausted?MSG_MISSING:MSG_LOADING);
+        var f=frameOf(el);
+        if(f){f.setAttribute('data-chart-state',exhausted?'error':'static');}
       });
       summarize(nodes);
       if(!exhausted && timer===null){
@@ -253,6 +278,7 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
     var pendingLayout=0;
     nodes.forEach(function(el){
       if(el.__handaas_chart_ready){return;}
+      var f=frameOf(el);
       if(el.getAttribute('data-chart-state')==='error' && !el.__handaas_dependency_error){return;}
       if(window.ResizeObserver && !el.__handaas_resize_observer){
         el.__handaas_resize_observer=new ResizeObserver(function(){
@@ -264,7 +290,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
       }
       if((el.getClientRects && el.getClientRects().length===0) || el.clientWidth<2 || el.clientHeight<2){
         el.setAttribute('data-chart-state','waiting');
-        el.textContent='图表等待布局完成后渲染，数据明细仍可查看。';
+        setStatus(el,MSG_LAYOUT);
+        if(f){f.setAttribute('data-chart-state','static');}
         pendingLayout++;
         return;
       }
@@ -274,46 +301,36 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         if(!raw){throw new Error('Missing chart configuration');}
         // getAttribute already decodes HTML entities; a second decode corrupts labels.
         var spec=JSON.parse(raw);
-        if(['line','bar','pie','gauge','radar'].indexOf(spec.type)<0){throw new Error('Unsupported chart type');}
+        var opt=window.handaasChartOption(spec);
+        if(!opt){throw new Error('Unsupported chart type');}
         el.textContent='';
         chart=window.echarts.init(el,null,{renderer:'svg'});
-      var opt={color:PALETTE,tooltip:{trigger: spec.type==='pie'?'item':'axis'},textStyle:{fontFamily:FONTS,fontSize:12,color:'#334155'},grid:{left:48,right:24,top:30,bottom:40},legend:{top:0,textStyle:{fontSize:11}}};
-      if(spec.type==='line'){
-        opt.xAxis={type:'category',data:spec.x,axisLabel:{fontSize:11,interval:0,rotate: spec.x && spec.x.length>6?35:0}};
-        opt.yAxis={type:'value'};
-        opt.series=spec.series.map(function(s){return{name:s.name,type:'line',smooth:true,areaStyle: spec.area?{opacity:0.18}:undefined,stack: spec.stack?s.name:undefined,data:s.data,label:{show:true,position:'top',fontSize:11}};});
-        if(spec.stack){opt.tooltip={trigger:'axis'};}
-      }else if(spec.type==='bar'){
-        var horiz=spec.orient==='h';
-        var cats=spec.names, vals=spec.values;
-        if(horiz){opt.yAxis={type:'category',data:cats,axisLabel:{fontSize:11}};opt.xAxis={type:'value'};opt.grid={left:120,right:30,top:20,bottom:30};}
-        else{opt.xAxis={type:'category',data:cats,axisLabel:{fontSize:11,interval:0,rotate: cats&&cats.length>6?35:0}};opt.yAxis={type:'value'};}
-        opt.series=[{type:'bar',data:vals,itemStyle:{color:PALETTE[0]},label:{show:true,position: horiz?'right':'top',fontSize:11},barMaxWidth:42}];
-        opt.tooltip={trigger:'axis',axisPointer:{type:'shadow'}};
-      }else if(spec.type==='pie'){
-        opt.series=[{type:'pie',radius: spec.donut?['42%','68%']:'68%',center:['50%','55%'],data:spec.data,itemStyle:{borderColor:'#fff',borderWidth:2},label:{fontSize:11,formatter:'{b}: {c} ({d}%)'}}];
-        opt.legend={bottom:0,textStyle:{fontSize:11}};
-        opt.tooltip={trigger:'item',formatter:'{b}: {c} ({d}%)'};
-      }else if(spec.type==='gauge'){
-        var v=spec.value, mx=spec.max||100;
-        var col=v/mx>0.66?'#dc2626':(v/mx>0.33?'#d97706':'#059669');
-        opt.series=[{type:'gauge',min:0,max:mx,progress:{show:true,width:14,itemStyle:{color:col}},axisLine:{lineStyle:{width:14}},axisTick:{show:false},splitLine:{length:8,lineStyle:{color:'#fff'}},pointer:{width:5},detail:{valueAnimation:true,formatter:'{value}',fontSize:28,color:col,offsetCenter:[0,'30%']},data:[{value:v,name:spec.level||''}],title:{fontSize:13,color:'#475569',offsetCenter:[0,'62%']}}];
-      }else if(spec.type==='radar'){
-        opt.radar={indicator:spec.indicators,radius:'62%',axisName:{color:'#475569',fontSize:11},splitArea:{areaStyle:{color:['#f8fbff','#eef4fb']}}};
-        opt.series=[{type:'radar',areaStyle:{opacity:0.18},data:spec.series}];
-      }
         chart.setOption(opt);
+        // Real synchronous flush: setOption already flushes internally, but
+        // drive the zrender painter once more before the geometry gate. Any
+        // throw here falls into catch and keeps the static SVG.
+        var zr=chart.getZr();
+        if(zr && typeof zr.flush==='function'){zr.flush();}
+        // Never reveal the interactive layer (and never hide the static SVG)
+        // before real SVG geometry exists on the canvas overlay.
+        if(!hasGeometry(chart,el)){throw new Error('Empty chart geometry');}
         el.__handaas_chart=chart;
         el.__handaas_chart_ready=true;
         el.__handaas_dependency_error=false;
         el.setAttribute('data-chart-state','ready');
         window.__echarts_instances.push(chart);
+        if(f){
+          f.setAttribute('data-chart-state','ready');
+          var p=f.querySelector('.chart-status');
+          if(p){p.textContent='';}
+        }
         raf(function(){try{chart.resize();}catch(ignored){}});
       }catch(e){
         if(chart && typeof chart.dispose==='function'){try{chart.dispose();}catch(ignored){}}
         el.__handaas_dependency_error=false;
         el.setAttribute('data-chart-state','error');
-        el.textContent='图表绘制失败，请查看数据明细。';
+        setStatus(el,MSG_FAILED);
+        if(f){f.setAttribute('data-chart-state','error');}
       }
     });
     summarize(nodes);
@@ -363,10 +380,10 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
         <h1>北京京东世纪贸易有限公司 企业大数据报告</h1>
         <p class="report-lead">本报告以“北京京东世纪贸易有限公司”为分析对象，基于工商公示及公开数据，系统呈现企业基础信息、股权结构、对外投资、分支机构与主要人员等核心维度。关键指标包括：注册资本 美元 13.9799 亿元、实缴资本 美元 13.9799 亿元、资本实缴率 100.0%、成立时间 2007-04-20、经营状态 营业。企业简介：北京京东世纪贸易有限公司是一家以批发、零售定型包装食品、保健食品等为主营业务的公司。报告同时给出对外投资、分支机构与核心人员的结构化明细，便于进一步尽调、关联分析与决策参考</p>
         <div class="abstract-box">报告涵盖查询对象、数据总览、核心分析、代表性记录与结构洞察，所有数据均标注口径与来源。</div>
-        <div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2007-04-20</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">190 家</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">11 家</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">2 人</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div>
+        <div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span><span class="m-hint">工商公示注册资本</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span><span class="m-hint">工商公示实缴资本</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span><span class="m-hint">实缴资本/注册资本</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2007-04-20</span><span class="m-hint">工商公示</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span><span class="m-hint">存续/在业/注销等</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">190 家</span><span class="m-hint">对外投资企业数</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">11 家</span><span class="m-hint">分支机构数</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">2 人</span><span class="m-hint">工商公示主要人员</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span><span class="m-hint">工商公示股东</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div>
         <ul class="exec-list"><li>该数量只描述工商数据中的投资主体数；扩张、多元化或活跃度需结合投资时间、金额和经营状态核验。</li><li>该数量只描述工商公示分支机构；实际区域经营范围和活跃程度需结合地址及经营状态核验。</li><li>股东数量本身不能判断控制权或治理稳定性；需结合持股比例、表决权和协议安排核验。</li><li>该比例仅按返回的实缴资本与注册资本计算，不能单独证明企业偿付能力、股东履约能力或未来出资风险。</li><li>人数只描述工商公示名单规模；团队能力与关联风险需结合人员履历和任职关系核验。</li></ul>
         <div class="cover-findings"><h3 class="cover-findings-title">核心发现</h3><div class="cover-findings-grid"><div class="finding-card"><p class="f-label">对外投资布局</p><p class="f-text">企业对外投资 190 家。</p></div><div class="finding-card"><p class="f-label">分支机构网络</p><p class="f-text">工商公示分支机构 11 家。</p></div><div class="finding-card"><p class="f-label">股权结构</p><p class="f-text">工商公示股东 1 个。</p></div><div class="finding-card"><p class="f-label">资本实缴情况</p><p class="f-text">注册资本 美元 13.9799 亿元，实缴资本 美元 13.9799 亿元，资本实缴率 100.0%。</p></div></div></div>
-        <div class="cover-dimensions"><span class="dim-label">分析维度</span><div class="dim-tags"><span class="dim-tag">企业基本信息</span><span class="dim-tag">身份标签</span><span class="dim-tag">企业简介</span><span class="dim-tag">经营范围</span><span class="dim-tag">股东持股排行</span><span class="dim-tag">股东类型分布</span><span class="dim-tag">股东性质分布</span><span class="dim-tag">股东信息</span><span class="dim-tag">对外投资</span><span class="dim-tag">分支机构</span><span class="dim-tag">主要人员</span></div></div>
+        <div class="cover-dimensions"><span class="dim-label">分析维度</span><div class="dim-tags"><span class="dim-tag">企业基本信息</span><span class="dim-tag">身份标签</span><span class="dim-tag">企业简介</span><span class="dim-tag">股东信息</span><span class="dim-tag">对外投资</span><span class="dim-tag">分支机构</span><span class="dim-tag">主要人员</span></div></div>
         <div class="cover-scope-bar"><span class="scope-item"><em>数据产品</em>工商基础信息、企业简介、企业业务、企业标签、控股股东信息、对外投资信息、分支机构信息、主要人员信息</span><span class="scope-item"><em>覆盖范围</em>企业工商信息、简介、业务、企业标识标签、控股股东、对外投资、分支机构、主要人员</span></div>
       </section>
     </div>
@@ -374,8 +391,8 @@ var Fr={},Gr={};var Wr,Hr=function(){function t(t,e,n){var i=this;this._sleepAft
   <main class="research-doc">
     <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>报告摘要</h2><p class="biz-section-note">概述分析对象、数据覆盖范围与核心发现。</p></div><span class="biz-tag">Summary</span></div><p class="biz-summary">本报告以“北京京东世纪贸易有限公司”为分析对象，基于工商公示及公开数据，系统呈现企业基础信息、股权结构、对外投资、分支机构与主要人员等核心维度。关键指标包括：注册资本 美元 13.9799 亿元、实缴资本 美元 13.9799 亿元、资本实缴率 100.0%、成立时间 2007-04-20、经营状态 营业。企业简介：北京京东世纪贸易有限公司是一家以批发、零售定型包装食品、保健食品等为主营业务的公司。报告同时给出对外投资、分支机构与核心人员的结构化明细，便于进一步尽调、关联分析与决策参考</p></section>
     <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>查询对象与口径</h2><p class="biz-section-note">说明匹配对象、匹配方式与数据范围。</p></div><span class="biz-tag">Caliber</span></div><div class="info-list"><div class="info-row"><span class="info-label">匹配对象</span><span class="info-value">北京京东世纪贸易有限公司</span></div><div class="info-row"><span class="info-label">匹配方式</span><span class="info-value">企业全称精确匹配（keywordType=name）</span></div><div class="info-row"><span class="info-label">数据范围</span><span class="info-value">企业工商信息、简介、业务、企业标识标签、控股股东、对外投资、分支机构、主要人员</span></div><div class="info-row"><span class="info-label">局限说明</span><span class="info-value">数据来自工商公示及公开数据；少量字段可能存在更新延迟。</span></div></div></section>
-    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>数据总览</h2><p class="biz-section-note">关键指标一览。</p></div><span class="biz-tag">Metrics</span></div><div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2007-04-20</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">190 家</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">11 家</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">2 人</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div></section>
-    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>核心分析</h2><p class="biz-section-note">按维度展开目标核心数据与结构化明细。</p></div><span class="biz-tag">Analysis</span></div><h3 class="biz-subsection-title">身份标签</h3><div class="tag-row">{ &quot;经营异常&quot;: { &quot;value&quot;: &quot;否&quot;, &quot;flag&quot;: &quot;no&quot; } }</div>
+    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>数据总览</h2><p class="biz-section-note">关键指标一览。</p></div><span class="biz-tag">Metrics</span></div><div class="biz-metrics"><div class="biz-metric"><span class="m-name">注册资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span><span class="m-hint">工商公示注册资本</span></div><div class="biz-metric"><span class="m-name">实缴资本</span><span class="m-tag"></span><span class="m-value">美元 13.9799 亿元</span><span class="m-hint">工商公示实缴资本</span></div><div class="biz-metric"><span class="m-name">资本实缴率</span><span class="m-tag t-neutral">实缴</span><span class="m-value">100.0%</span><span class="m-hint">实缴资本/注册资本</span></div><div class="biz-metric"><span class="m-name">成立时间</span><span class="m-tag"></span><span class="m-value">2007-04-20</span><span class="m-hint">工商公示</span></div><div class="biz-metric"><span class="m-name">经营状态</span><span class="m-tag"></span><span class="m-value">营业</span><span class="m-hint">存续/在业/注销等</span></div><div class="biz-metric"><span class="m-name">对外投资</span><span class="m-tag"></span><span class="m-value">190 家</span><span class="m-hint">对外投资企业数</span></div><div class="biz-metric"><span class="m-name">分支机构</span><span class="m-tag"></span><span class="m-value">11 家</span><span class="m-hint">分支机构数</span></div><div class="biz-metric"><span class="m-name">主要人员</span><span class="m-tag"></span><span class="m-value">2 人</span><span class="m-hint">工商公示主要人员</span></div><div class="biz-metric"><span class="m-name">股东数量</span><span class="m-tag"></span><span class="m-value">1 个</span><span class="m-hint">工商公示股东</span></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div><div class="biz-metric-empty"></div></div></section>
+    <section class="report-page biz-section"><div class="report-topbar"><div class="report-stripe"></div><div class="report-banner">企业大数据报告</div></div><div class="biz-section-head"><div><h2>核心分析</h2><p class="biz-section-note">按维度展开目标核心数据与结构化明细。</p></div><span class="biz-tag">Analysis</span></div><h3 class="biz-subsection-title">身份标签</h3><ul class="tag-row"><li>经营异常：value：否、flag：no</li></ul>
 <h3 class="biz-subsection-title">企业简介</h3><p class="biz-summary">北京京东世纪贸易有限公司是一家以批发、零售定型包装食品、保健食品等为主营业务的公司</p>
 <h3 class="biz-subsection-title">股东信息</h3><div class="table-wrap"><table><thead><tr><th>股东名称</th><th>股东类型</th><th>持股比例</th><th>认缴/实缴</th></tr></thead><tbody><tr><td>JD.COM INTERNATIONAL LIMITED</td><td>外国（地区）企业</td><td>1.00%</td><td>1397985564.0 万美元</td></tr></tbody></table></div>
 <h3 class="biz-subsection-title">对外投资</h3><div class="table-wrap"><table><thead><tr><th>被投资企业</th><th>成立日期</th><th>投资比例</th><th>注册资本</th><th>经营状态</th><th>所属地区</th></tr></thead><tbody><tr><td>北京京玩互娱网络科技有限公司</td><td>2026-10-13</td><td>1.00%</td><td>100.00 万 人民币</td><td>营业 &gt; 开业</td><td>北京市北京经济技术开发区科创十一街18号院1号楼A座8层808</td></tr><tr><td>柳州京东高汇贸易有限公司</td><td>2024-03-22</td><td>1.00%</td><td>100.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>柳州市柳江区穿山镇广源路1号物业综合用房</td></tr><tr><td>北京京东达锐贸易有限公司</td><td>2017-10-11</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市北京经济技术开发区(通州)驸马庄路1号院1号楼1层102室</td></tr><tr><td>石家庄京东优凯贸易有限公司</td><td>2024-05-22</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>中国(河北)自由贸易试验区正定片区正定高新技术产业开发区北区赵普大街8号创业创新中心307-19</td></tr><tr><td>武汉京东德瑞贸易有限公司</td><td>2018-04-18</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>湖北省武汉市蔡甸区奓山街中原村八方山6号综合楼303室</td></tr><tr><td>海南京东弘天贸易有限公司</td><td>2020-12-03</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>海南省海口市美兰区琼山大道63-1号和风家园海口市美兰区动迁工作指挥部-57</td></tr><tr><td>天津京东达业贸易有限公司</td><td>2019-01-24</td><td>1.00%</td><td>1.00 亿 人民币</td><td>营业 &gt; 存续</td><td>天津市东丽区华明街道弘程道20号京东亚洲一号园区综合楼608室</td></tr><tr><td>郑州锦络熠盛贸易有限公司</td><td>2025-12-17</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 开业</td><td>河南省郑州市</td></tr><tr><td>杭州京东晟行贸易有限责任公司</td><td>2018-08-01</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续</td><td>浙江省杭州大江东产业集聚区临江街道纬八路2998号</td></tr><tr><td>廊坊京东友盛贸易有限公司</td><td>2015-12-10</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>河北省廊坊市固安县大清河园区安华路西侧、永乐街北侧京东廊坊固安智能产业园(二期)综合楼1号楼</td></tr><tr><td>常州京东尚信贸易有限公司</td><td>2025-12-25</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 开业</td><td>常州市钟楼区新前路45号30幢4楼</td></tr><tr><td>绍兴京启贸易有限公司</td><td>2025-06-06</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续</td><td>浙江省绍兴市越城区沥海街道听海路9号2幢201室</td></tr><tr><td>广西京东彩石电子商务有限公司</td><td>2020-09-07</td><td>1.00%</td><td>100.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>来宾市荣和路2号来宾市华侨创业大厦主楼901号9楼921室</td></tr><tr><td>京东家政服务(广州)有限公司</td><td>2025-12-15</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>广州市黄埔区永悦南街2号101房</td></tr><tr><td>昆山京东尚信贸易有限公司</td><td>2014-02-28</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>昆山市千灯镇瞿家路555号8号房</td></tr><tr><td>北京汽广行信息技术有限公司</td><td>2017-12-19</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市北京经济技术开发区科创十一街18号院1号楼C座4层402室</td></tr><tr><td>宿迁京东朝升信息技术有限公司</td><td>2025-07-01</td><td>1.00%</td><td>5000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>江苏省宿迁市湖滨新区保险小镇B15幢1007室</td></tr><tr><td>北京京东家政服务有限公司</td><td>2025-05-15</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市北京经济技术开发区科创十一街18号院1号楼C座2层201室</td></tr><tr><td>西安华讯得贸易有限公司</td><td>2013-12-17</td><td>1.00%</td><td>2.00 亿 人民币</td><td>营业 &gt; 开业</td><td>陕西省西安市国际港务区保税大道8号京东亚洲一号物流园一期5幢2层203室</td></tr><tr><td>北京沃东天骏信息技术有限公司</td><td>2018-05-03</td><td>1.00%</td><td>5000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市北京经济技术开发区科创十一街18号院2号楼4层A402室</td></tr><tr><td>宁夏沐全圣贸易有限公司</td><td>2025-04-07</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>宁夏回族自治区银川市兴庆区数字经济产业园C座1202号</td></tr><tr><td>云南京东世纪贸易有限公司</td><td>2025-04-25</td><td>1.00%</td><td>5000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>云南省昆明市西山区前卫街道办事处前兴路688号万达南塔7楼701-712号</td></tr><tr><td>北京京东金航贸易有限公司</td><td>2026-03-05</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市大兴区柏树庄街1号院4号楼5层</td></tr><tr><td>京东家政服务(重庆)有限公司</td><td>2026-02-12</td><td>1.00%</td><td>500.00 万 人民币</td><td>营业 &gt; 存续</td><td>重庆市万州区周家坝街道（天城）心连心广场（闽天会展中心大楼）北楼301室</td></tr><tr><td>哈尔滨京东广道贸易有限公司</td><td>2018-12-24</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>哈尔滨经开区哈南工业新城哈南第十二大道与哈南三路东南侧12号7#综合楼一层</td></tr><tr><td>承德格优铭成贸易有限公司</td><td>2026-09-01</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 开业</td><td>河北省承德市开发区冯营子承德大数据研发展示中心6层617室</td></tr><tr><td>海口恒昇世纪贸易有限公司</td><td>2025-05-27</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>海南省海口市龙华区海垦街道海秀中路71号王府井海垦广场(铺位号:L1-23-24-25-29-28-30)</td></tr><tr><td>江苏京东海元贸易有限公司</td><td>2016-08-11</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>宿迁市宿豫区洪泽湖东路南侧呼叫中心办公5层</td></tr><tr><td>京东吉讯(苏州)科技有限公司</td><td>2026-07-24</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续</td><td>江苏省苏州市姑苏区沧浪街道书院巷111号</td></tr><tr><td>北京京东尚科信息技术有限公司</td><td>2012-03-13</td><td>1.00%</td><td>2.60 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市北京经济技术开发区科创十一街18号院1号楼A座7层A711</td></tr><tr><td>济南京东富荣贸易有限公司</td><td>2021-09-26</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 在营(开业)</td><td>山东省济南市高新区临港街道温泉路2413号1号单层仓库101</td></tr><tr><td>大连京东达扬贸易有限公司</td><td>2023-06-25</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>辽宁省大连市金普新区七顶山街道陆海村王家崴子93-1号1层</td></tr><tr><td>北京望岳房产管理经营有限公司</td><td>1987-01-23</td><td>1.00%</td><td>7.25 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市海淀区知春路76号(写字楼)1号楼4至11层1-7、12层1-9、13层1-11、14层1-13,知春路76号(酒店)1幢,2幢</td></tr><tr><td>天津瑞佳讯贸易有限公司</td><td>2013-10-30</td><td>1.00%</td><td>1.00 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>天津市武清区京津电子商务产业园宏达道26号101室(存在多址信息)</td></tr><tr><td>杭州京东霁纬信息技术有限公司</td><td>2025-04-07</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续</td><td>浙江省杭州市萧山区宁围街道民和路600号大象国际中心1单元3001</td></tr><tr><td>北京七鲜小厨餐饮有限公司</td><td>2025-08-12</td><td>1.00%</td><td>100.00 万 人民币</td><td>营业 &gt; 存续</td><td>北京市东城区安化北里1号1幢1层103-6</td></tr><tr><td>北京京东云河旅行社有限公司</td><td>2019-04-08</td><td>1.00%</td><td>300.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市北京经济技术开发区科创十一街18号院1号楼10层c1001室</td></tr><tr><td>龙岩锦络盛通贸易有限公司</td><td>2025-08-20</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>福建省龙岩市新罗区龙腾南路14号办公楼425室</td></tr><tr><td>佛山京东广途贸易有限公司</td><td>2024-01-26</td><td>1.00%</td><td>100.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>佛山市三水区乐平镇贤北路8号5栋</td></tr><tr><td>昆山京东广臻贸易有限公司</td><td>2019-01-07</td><td>1.00%</td><td>5000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>昆山市花桥镇蓬青路369号4号房</td></tr><tr><td>中山京东青石贸易有限公司</td><td>2020-10-21</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>中山市黄圃镇迎港路14号</td></tr><tr><td>北京京东拓帆贸易有限公司</td><td>2018-02-09</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市顺义区龙塘路大孙各庄段240号院240号楼2幢117室</td></tr><tr><td>西宁智锐昌贸易有限公司</td><td>2025-04-14</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 开业</td><td>青海省西宁市城北区宁张路42号创新大厦1707室</td></tr><tr><td>苏州京相贸易有限公司</td><td>2023-04-24</td><td>1.00%</td><td>100.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>苏州市漕湖街道春耀路60号</td></tr><tr><td>汽广行(天津)能源科技有限公司</td><td>2018-03-01</td><td>1.00%</td><td>5000.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>天津自贸试验区(东疆综合保税区)鄂尔多斯路599号,东疆商务中心B1座401室</td></tr><tr><td>济南京东奥升贸易有限公司</td><td>2019-04-12</td><td>1.00%</td><td>2000.00 万 人民币</td><td>营业 &gt; 在营(开业)</td><td>山东省济南市起步区崔寨街道国道220以东、崔耿路以南(京东亚洲一号物流园1号101室)</td></tr><tr><td>北京京东文旅发展有限公司</td><td>2025-12-31</td><td>1.00%</td><td>50.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>北京市怀柔区安平路27号院1号楼1单元302</td></tr><tr><td>上海圆迈贸易有限公司</td><td>2007-08-22</td><td>1.00%</td><td>3.00 亿 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>上海市嘉定工业区叶城路925号B区3幢109室</td></tr><tr><td>天津易新贸易有限公司</td><td>2025-08-22</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 在营(开业)</td><td>天津市河西区黑牛城道与内江北路交口西北侧七贤南里11-1-301-38</td></tr><tr><td>莆田荔城熠盛世纪贸易有限公司</td><td>2025-08-18</td><td>1.00%</td><td>10.00 万 人民币</td><td>营业 &gt; 存续(在营、开业、在册)</td><td>福建省莆田市荔城区西天尾镇荔园北路888号25号楼304室</td></tr></tbody></table></div>

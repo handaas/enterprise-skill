@@ -29,7 +29,9 @@ _生成时间：2026-10-27T10:44:25+08:00_
 
 ### 身份标签
 
-{ "头部企业": { "value": "是", "flag": "yes" }, "上市公司": { "value": "是", "flag": "yes" }, "经营异常": { "value": "否", "flag": "no" } }
+- 头部企业：value：是、flag：yes
+- 上市公司：value：是、flag：yes
+- 经营异常：value：否、flag：no
 
 ### 企业简介
 
