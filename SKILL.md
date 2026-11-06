@@ -71,6 +71,34 @@ description: Use for generating a professional enterprise big-data report (企�
 4. **渲染三件套**：`compose_report.py --enterprise ... --output ... --report-output ...` 直接产出 JSON + HTML + Markdown；或用 `render_report.py --input ... --output ...` 重渲染。
 5. **返回路径**：返回 JSON、HTML、Markdown 文件路径，以及企业全称映射与数据口径。
 
+- **渲染前置检查**：执行会产出含图表 HTML / PDF 的报告命令前，先验证 `node --version` 与本 skill 自带 `assets/vendor/echarts.min.js` 存在；内嵌静态 SVG 的生成需要 Node.js（推荐当前 LTS，无需 npm 包），缺失时报告生成明确报错。查看已生成的 HTML 与 Markdown 输出不需要 Node。
+
+## AI 内容审校（正常生成已内置，离线复核可重放）
+
+脚本只做确定性解析；以下语义核对由当前 AI 在渲染前完成，并把“原值 → 规范值 → 证据位置”写入审校记录。不得把未执行的审校写成已完成。
+
+正常生成（`build_payload` / CLI 非 `--dry-run`）在组装阶段自动执行 `apply_content_review`，并把同次 `holderList` 原始数值作为 `source_evidence` 传入；`--dry-run` 与正常生成共用同一条组装/审校路径，只执行一次。下面的离线入口用于复核已有报告；重复调用会保留此前的 `content_review.corrections`，不会清空首次修正依据。
+
+1. **主体与名称**：`subject.enterprise`、标题、工商基础信息、统一社会信用代码必须指向同一主体；曾用名只作历史名称，不拼成当前主体。输入含“集团”但无“公司/有限”等法定后缀时，不得仅凭后缀判定全称，需在口径中标注“按输入名称查询，未做候选核验”。
+2. **股东两套口径**：工商登记股东表（`holderList`，含认缴/实缴）与证券持有人排行（`stockHolderList`，含持股比例）不可相加或互相替换；同一股东比例差异 ≥0.5 个百分点时保留两套原值并提示核验。“其他股东/其他无限售条件股东”是汇总行，不计入股东人数。
+3. **金额与比例**：认缴/实缴金额的上游单位是元或币种基础单位，不得再追加“万”；注册资本按亿/万缩放时保留币种。持股比例保留上游有效数字，`0` 是真实值、`-` 是缺失；百分数字符串（如 `1.00%`）是源端权威值，不得因“唯一股东/法人独资”改成 `100%`；`ratio=1.0` 的分数/百分数歧义必须标记待核实。派生实缴率标注“约”并保留 2 位小数。
+4. **状态与时效**：对外投资、分支机构数量是上游 `total`，可能含注销、吊销记录；必须同时给出本次返回行中的非存续数量，不能把“54 家”读成 54 家当前存续。企业简介是上游原文，可能含历史年份和宣传口径，引用时标明“上游简介摘录”，不把旧营收/排名当当前事实。
+5. **标识与结论**：`0/1` 标签只按明确值转“是/否”；空值或无法识别的文本记为“未提供”，不得默认“否”。洞察只描述返回字段，不据标签推断创新能力、市场地位或异常原因。
+
+离线修订已有报告（不调用 MCP、不覆盖 `examples/` 原件）：
+
+```python
+import json
+from compose_report import apply_content_review
+
+report = json.load(open("examples/01-investment-dd/report.json", encoding="utf-8"))
+evidence = json.load(open("examples/01-investment-dd/calls.json", encoding="utf-8"))
+revised = apply_content_review(report, evidence)   # 纯函数，返回修正后的完整 payload
+json.dump(revised, open("output/content-quality-review/01-investment-dd/report.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+```
+
+`source_evidence` 接受同案 `calls.json`（list，或含 `calls`/`numeric_evidence` 的 dict）。只有金额数值与 `holderList[i].subscriptionDetail.amount`/`payAmount.value` 完全一致时才重排单位；没有证据则保留原值并写入 `review_flags`。比例字符串不改写；未解决的金额/比例单位会在正文生成“待核验事项”表，并在股东表 note 标注，不能只藏在 JSON 元数据里。其余修正是汇总行计数、股东口径标题、行业重复层级、实缴率展示与状态提示，均记录在 `data_source.content_review.corrections`。
+
 ## 脚本速查
 
 ```bash

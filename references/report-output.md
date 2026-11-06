@@ -49,14 +49,15 @@
 
 3. **指标值可读化**：所有 `metrics` 的 `value` 字段必须格式化为人类可读形式：
    - 金额：`10995210218.0` → `109.95 亿 人民币`（≥1 亿用亿，≥1 万用万）
+     - 金额文本可能含千分位（如 `人民币 2,380.00 万元`）；离线复算比率时必须先按千分位解析再换算亿/万，不得只读取逗号后的尾段。实缴为 0 或缺失时不生成“资本实缴率”。
    - 地址：嵌套 dict → 省+市+区拼接 或取 `value` 字段
    - 比率：`0.8858` → `88.58%`
    - 日期：保持 `yyyy-MM-dd` 格式
    - "-" 表示字段缺失（MCP 未返回）；`0` 表示真实为零
 
-4. **企业画像指标提取**：有 fuzzy_search 的 skill 必须从返回的 record 中提取 `regCapitalValue` / `foundTime` / `operStatus` / `enterpriseType` / `legalRepresentative`，通过 `_enrich_metrics_with_profile()` 追加为指标卡。
+4. **企业画像指标提取**：有 fuzzy_search 的 skill 可从返回的候选记录中提取 `regCapitalValue` / `foundTime` / `operStatus` / `enterpriseType` / `legalRepresentative` 追加为指标卡；若主体未唯一确认，不得把候选记录画像当作目标企业事实。
 
-5. **分布派生指标**：`_derive_core_metrics()` 从 core_analysis 各 section 计算分布指标（CR3 集中度、覆盖城市/平台/类目数、价格区间、正面占比等），确保指标总数 M ≥ 6。
+5. **分布派生指标**：本 skill 由 `_shareholder_charts()` 生成股东排行/类型/性质分布，由 `build_insights()` 生成 CR3 等解读。指标与洞察必须来自 `metrics` 和 `core_analysis` 已返回字段；数量、样本范围与统计口径在名称或 hint 中写清，不从洞察句子正则抓数字补 KPI。
 
 ## 工作流
 
@@ -83,3 +84,19 @@ python scripts/render_report.py --input output/enterprise.json --output output/e
 ```
 
 返回：JSON 路径、HTML 路径、Markdown 路径，以及企业全称映射与数据口径摘要。
+
+## AI 内容审校清单（企业）
+
+| 检查项 | 原值示例 | 允许的规范动作 | 证据位置 |
+| --- | --- | --- | --- |
+| 认缴/实缴单位 | `41141131820.0 万人民币` | 按元重排为 `人民币 411.4113 亿元`，保留币种 | `holderList[].subscriptionDetail/payAmount` |
+| 唯一股东比例 | `1.00%`（法人独资） | 保留 `1.00%`；`ratio=1.0` 的分数/百分数歧义写入待核验，不改成 100% | `holderList[].ratio` + 同案 calls.json |
+| 股东人数 | `5 个` 含“其他股东” | 计为 `4 个（另有 1 条汇总行）` | `holderList` 名称 |
+| 两套股东口径 | 工商 `61.76%` / 证券 `54.50%` | 分别标注口径并提示冲突，不合并 | `holderList` vs `stockHolderList` |
+| 关联主体状态 | `对外投资 54 家` | 补“返回行中注销 9 家（非全量）” | `investments[].经营状态` |
+| 简介时效 | 2021 年营收/旧榜单 | 标为“上游简介摘录（可能含历史信息）” | `base.desc` |
+| 行业层级 | `研究和试验发展 / 研究和试验发展` | 仅去相邻重复，不改名称 | `base_info.industry` |
+| 待核验项展示 | `review_flags` 仅在 JSON | 正文生成“待核验事项”表，股东表加“单位待核验”note，摘要提示数量 | `core_analysis.review_flags` + sections |
+| 标签 0/1 | 空串/无法识别 | 记“未提供”，不写“否” | `tag.*` |
+
+离线修订入口：`compose_report.py::apply_content_review(report, source_evidence=None)`。正常生成（`build_payload` / CLI 非 `--dry-run`）已在组装阶段自动执行同一审校，并传入同次 `holderList` 原始数值；`--dry-run` 共用该路径且只执行一次。`source_evidence` 传同案 `calls.json`；金额/比例只有与 `numeric_evidence` 路径数值一致时才改，否则保留原值并写 `review_flags`。不查 MCP；修正项写入 `data_source.content_review.corrections`，重复处理会保留既有修正记录，原文与冻结证据文件不变。
