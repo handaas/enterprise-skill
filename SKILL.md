@@ -73,9 +73,9 @@ description: Use for generating a professional enterprise big-data report (企�
 
 - **渲染前置检查**：执行会产出含图表 HTML / PDF 的报告命令前，先验证 `node --version` 与本 skill 自带 `assets/vendor/echarts.min.js` 存在；内嵌静态 SVG 的生成需要 Node.js（推荐当前 LTS，无需 npm 包），缺失时报告生成明确报错。查看已生成的 HTML 与 Markdown 输出不需要 Node。
 
-## AI 内容审校（正常生成已内置，离线复核可重放）
+## 数据整理与交付前 AI 审校（强制）
 
-脚本只做确定性解析；以下语义核对由当前 AI 在渲染前完成，并把“原值 → 规范值 → 证据位置”写入审校记录。不得把未执行的审校写成已完成。
+脚本只做确定性解析，`apply_content_review` 只是规则整理，不等于实际 AI 语义审校；以下语义核对由当前 AI 在渲染前完成，并把“原值 → 规范值 → 证据位置”写入审校记录。不得把未执行的审校写成已完成。
 
 正常生成（`build_payload` / CLI 非 `--dry-run`）在组装阶段自动执行 `apply_content_review`，并把同次 `holderList` 原始数值作为 `source_evidence` 传入；`--dry-run` 与正常生成共用同一条组装/审校路径，只执行一次。下面的离线入口用于复核已有报告；重复调用会保留此前的 `content_review.corrections`，不会清空首次修正依据。
 
@@ -99,7 +99,17 @@ json.dump(revised, open("output/content-quality-review/01-investment-dd/report.j
 
 `source_evidence` 接受同案 `calls.json`（list，或含 `calls`/`numeric_evidence` 的 dict）。只有金额数值与 `holderList[i].subscriptionDetail.amount`/`payAmount.value` 完全一致时才重排单位；没有证据则保留原值并写入 `review_flags`。比例字符串不改写；未解决的金额/比例单位会在正文生成“待核验事项”表，并在股东表 note 标注，不能只藏在 JSON 元数据里。其余修正是汇总行计数、股东口径标题、行业重复层级、实缴率展示与状态提示，均记录在 `data_source.content_review.corrections`。
 
+### 草稿 → AI 审校 → 最终交付
+
+1. **采集一次，只出草稿**：本 Skill 的采集脚本（`compose_report.py` 或 `compose_fusion_report.py`，以脚本速查为准）在正常生成和 `--dry-run` 时都于写盘前标记 `data_source.semantic_review.status=pending`，产出 `output/draft.json` 与 `output/draft.html`/`draft.md`。后两者只是预览，不能交付；`apply_content_review`、`organize_report` 等确定性整理不等于实际 AI 审校。
+2. **实际阅读再判断**：当前 AI 智能体打开 draft，逐项阅读 `subject`、`core_analysis`、`metrics`、`caliber`、`analysis_request`、`data_source`，按含义做标准化归类、3–5 句三层摘要和有证据的洞察；只引用本报告实际存在的 JSON Pointer，数字逐字取自所引 values，保留否定、最高/至少/至多、试用期/转正后、仅限/部分、疑似/待定/已失效等限定；无数据不生成事实或业务判断。
+3. **准备审校请求**：`python scripts/review_report.py --input output/draft.json --request output/review-request.json`。该命令只读草稿，不调用 MCP、外部模型 API，也不新增查询。
+4. **写回实际判断**：按请求的 `response_fields` 将逐句摘要、标准化和含 evidence 的洞察写入 `output/ai-review.json`；`source_sha256` 必须与请求一致。字段与 JSON Pointer 规则见 `references/report-output.md`。
+5. **应用并核对成品**：`python scripts/review_report.py --input output/draft.json --review output/ai-review.json --output output/final/report.json --report-output output/final/report.html`；核对最终 JSON、HTML、Markdown（目录、图表、空章节）后才交付。不得停在审校请求文件，也不得另存手工润色件冒充最终报告。
+6. **展示纪律**：空板块连标题和目录一起隐藏；真实 `0`/`False` 原样保留；失败或未查询只在口径限制中简述，不补 0、不推断“无风险”或“无数据”。空维度只影响展示，不从 `quality_report` 分母抹去未覆盖维度；AI 标准化/摘要是解释视图，不新增数据来源或源数据覆盖率。
+
 ## 脚本速查
+以下采集示例只生成待审校草稿（`data_source.semantic_review.status=pending`）；最终报告须按上方门禁用 `review_report.py` 生成。
 
 ```bash
 # 校验连接配置（脱敏）

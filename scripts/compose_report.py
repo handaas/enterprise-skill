@@ -29,6 +29,7 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 from common import REPORT_BANNER, REPORT_TYPE, json_dumps, load_json_file, print_json
 import mcp_client
 from render_report import build_payload as render_build_payload  # noqa: F401  (kept for clarity)
+from semantic_review import prepare_draft
 from render_report import render_html, render_markdown, html_to_pdf
 
 SAMPLE_PATH = pathlib.Path(__file__).resolve().parent.parent / "assets" / "report.example.json"
@@ -1536,6 +1537,8 @@ def main() -> None:
         payload = build_dry_run_payload(args.enterprise, args.keyword_type)
     else:
         payload = build_payload(args.enterprise, args.keyword_type)
+
+    payload = prepare_draft(payload)
 
     if args.output:
         out = pathlib.Path(args.output).expanduser()
